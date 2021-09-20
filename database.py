@@ -1,5 +1,5 @@
 from flask import Flask
-from models import *
+from app.models import *
 from werkzeug.security import generate_password_hash
 import argparse
 

@@ -23,16 +23,19 @@ def index():
 
 @login_bp.route('/login', methods = ['POST'])
 def login():
-   if request.method == 'POST':
-      username = request.form['username']
-      password = request.form['password']
-      user = help.find_user(db, username)
-      if user is None or not help.validate_user_password(password, user.password_hash):
+    '''
+    Post method to handle login requests    
+    '''
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        user = help.find_user(db, username)
+        if user is None or not help.validate_user_password(password, user.password_hash):
             return render_template('index.html', msg = "The username or password you entered does not match or is incorrect")
-      elif help.validate_user_password(password, user.password_hash):
+        elif help.validate_user_password(password, user.password_hash):
             if user.user_type == "admin":
                 return redirect(url_for('login_bp.adminlanding'))
             elif user.user_type == "user":
                 return redirect(url_for('login_bp.userlanding'))
-      else:
-          return "Something went wrong"
+        else:
+            return "Something went wrong"
