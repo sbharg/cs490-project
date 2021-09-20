@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, url_for, redirect
 from flask_sqlalchemy import SQLAlchemy
 from models import User
 import argparse
-import helpers
+import helpers as help
 
 app = Flask(__name__)
 
@@ -19,7 +19,6 @@ def userlanding():
 @app.route('/')
 def index():
     return render_template('index.html')
-
 
 @app.route('/login', methods = ['POST'])
 def login():
