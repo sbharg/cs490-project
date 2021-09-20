@@ -15,10 +15,29 @@ def index():
 @app.route('/adminlanding')
 def adminlanding():
     return render_template('adminlanding.html')
-
+    
 @app.route('/userlanding')
 def userlanding():
     return render_template('userlanding.html')
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/login', methods = 'POST')
+def login():
+   if request.method == ['POST']:
+      username = request.form['username']
+      password = request.form['password']
+      user = help.find_user(db, username)
+      if user is None or not help.validate_user_password(password, user.password_hash):
+          return "The username or password you enter does not match or is incorrect"
+      elif help.validate_user_password(password, user.password_hash):
+          if user.user_type == "admin":
+              return redirect(url_for('adminlanding'))
+          elif user.user_type == "user":
+              return redirect(url_for('userlanding'))
+      else:
+          return "Something went wrong"
 
 def configs(env):
     if env == 'dev':
