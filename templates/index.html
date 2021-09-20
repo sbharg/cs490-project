@@ -1,18 +1,24 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <link rel="stylesheet" href="login-page.css">
+</head>
+
 <body>
-<form>
-<ul>
-<li>Username: <input class="username" type="text" name="username" required>
-</li>
-<li>Password: <input class="password" type="password" name="password" required>
-</li>
-
-</ul>
-<br>
-<input type="button" class="submit" value="Log In" name="submit">
-
-
-</form>
+  <main id="main-holder">
+    <h1 id="login-header">Login</h1>
+        
+    <form id="login-form">
+      <input type="text" name="username" id="username-field" class="lf-field" placeholder="Username">
+      <input type="password" name="password" id="password-field" class="lf-field" placeholder="Password">
+      <input type="submit" value="Login" id="lf-submit">
+    </form>
+  
+  </main>
 </body>
+
 </html>
