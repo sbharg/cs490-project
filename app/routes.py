@@ -1,5 +1,4 @@
 from flask import Blueprint, render_template, request, url_for, redirect
-from flask import current_app as app
 from app import db
 import app.helpers as help
 
