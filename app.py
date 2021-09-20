@@ -20,9 +20,10 @@ def userlanding():
 def index():
     return render_template('index.html')
 
-@app.route('/login', methods = 'POST')
+
+@app.route('/login', methods = ['POST'])
 def login():
-   if request.method == ['POST']:
+   if request.method == 'POST':
       username = request.form['username']
       password = request.form['password']
       user = help.find_user(db, username)
