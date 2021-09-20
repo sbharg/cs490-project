@@ -12,6 +12,14 @@ db = SQLAlchemy(app)
 def index():
     return render_template('index.html')
 
+@app.route('/adminlanding')
+def adminlanding():
+    return render_template('adminlanding.html')
+
+@app.route('/userlanding')
+def userlanding():
+    return render_template('userlanding.html')
+
 def configs(env):
     if env == 'dev':
         app.config.from_object('config.DevelopmentConfig')
