@@ -15,7 +15,7 @@ def adminlanding():
 @app.route('/userlanding')
 def userlanding():
     return render_template('userlanding.html')
-    
+
 @app.route('/')
 def index():
     return render_template('index.html')
