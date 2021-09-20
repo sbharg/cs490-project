@@ -8,17 +8,14 @@ app = Flask(__name__)
 
 db = SQLAlchemy(app)
 
-@app.route('/')
-def index():
-    return render_template('index.html')
-
 @app.route('/adminlanding')
 def adminlanding():
     return render_template('adminlanding.html')
-    
+
 @app.route('/userlanding')
 def userlanding():
     return render_template('userlanding.html')
+    
 @app.route('/')
 def index():
     return render_template('index.html')
