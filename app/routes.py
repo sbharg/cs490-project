@@ -28,11 +28,11 @@ def login():
       password = request.form['password']
       user = help.find_user(db, username)
       if user is None or not help.validate_user_password(password, user.password_hash):
-          return "The username or password you enter does not match or is incorrect"
+            return render_template('index.html', msg = "The username or password you entered does not match or is incorrect")
       elif help.validate_user_password(password, user.password_hash):
-          if user.user_type == "admin":
-              return redirect(url_for('login_bp.adminlanding'))
-          elif user.user_type == "user":
-              return redirect(url_for('login_bp.userlanding'))
+            if user.user_type == "admin":
+                return redirect(url_for('login_bp.adminlanding'))
+            elif user.user_type == "user":
+                return redirect(url_for('login_bp.userlanding'))
       else:
           return "Something went wrong"

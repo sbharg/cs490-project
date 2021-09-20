@@ -11,7 +11,9 @@
 <body>
   <main id="main-holder">
     <h1 id="login-header">Login</h1>
-        
+      {% if msg %}
+        <p>{{ msg | safe }}</p>
+      {% endif %}
     <form id="login-form" method="post" action="/login">
       <input type="text" name="username" id="username-field" class="lf-field" placeholder="Username" required>
       <input type="password" name="password" id="password-field" class="lf-field" placeholder="Password" required>
