@@ -15,12 +15,10 @@ def init_db(env):
     db.drop_all()
     db.create_all()
 
-    admin1 = User('admin1', generate_password_hash('admin'), 'admin')
-    admin2 = User('admin2', generate_password_hash('admin'), 'admin')
+    admin1 = User('admin', generate_password_hash('admin'), 'admin')
     reg_user = User('user1', generate_password_hash('password'), 'user')
     reg_user2 = User('user2', generate_password_hash('password'), 'user')
     admin1.insert()
-    admin2.insert()
     reg_user2.insert()
     reg_user.insert()
 
