@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, url_for, redirect
 from app import db
 import app.helpers as help
+from werkzeug.security import check_password_hash
 
 # Blueprint Configuration
 login_bp = Blueprint(
@@ -31,9 +32,9 @@ def login():
         username = request.form['username']
         password = request.form['password']
         user = help.find_user(db, username)
-        if user is None or not help.validate_user_password(password, user.password_hash):
+        if user is None or not check_password_hash(user.password_hash, password):
             return render_template('index.html', msg = "The username or password you entered does not match or is incorrect")
-        elif help.validate_user_password(password, user.password_hash):
+        elif check_password_hash(user.password_hash, password):
             if user.user_type == "admin":
                 return redirect(url_for('login_bp.adminlanding'))
             elif user.user_type == "user":
