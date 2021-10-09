@@ -10,16 +10,6 @@
 
 <body>
   <main id="sub-holder">
-  {% if login %}
-    
-    <input type="sign-in" value="Sign-In" id="lf-signin" onclick="window.location.href='https://cs490-project-group10.herokuapp.com/sign-in';">
-    <input type="log-in" value="Login-In" id="lf-login" onclick="window.location.href='https://cs490-project-group10.herokuapp.com/log-in';">
-    
-  {% endif %}
-  <!--- Please make this part use same variable, if possible. --->
-  {% if login %}
-    <p>login sucessful</p>
-  {% endif %}
   </main>
 
   <main id="main-holder">
@@ -35,7 +25,18 @@
       <input type="checkbox" checked="checked" name="remember"> Remember me
       </label>
 
+
+
     </form>
+
+      <p></p>
+      <p></p>
+      <p></p>
+
+      <a id="lf-signin" class="lf-signin" onclick="window.location.href='https://cs490-project-group10.herokuapp.com/sign-in';">Sign-In</a>
+
+      <p></p>
+      <p></p>
   
   </main>
 </body>
