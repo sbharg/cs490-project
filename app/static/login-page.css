@@ -55,11 +55,6 @@ body {
 	outline: none;
 }
 
-#lf-signin {
-        align-self: flex-end;
-        padding: 2px;
-}
-
 a:hover {
   cursor:pointer;
 }
