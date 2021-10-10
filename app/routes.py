@@ -26,7 +26,7 @@ def index():
 
 ## actual page for sign in.
 @login_bp.route('/sign-in')
-def index():
+def signup():
     return render_template('signup.html')
 
 ## TODO: make signin functions    
@@ -49,7 +49,7 @@ def signin():
         elif requested_type == 'teachers':
             ##add account using client stuff
         else:
-            return render_template('signin.html', msg = "Error, Please contact the system admin.")
+            return render_template('signup.html', msg = "Error, Please contact the system admin.")
 
 
 
