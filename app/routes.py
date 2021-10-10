@@ -23,8 +23,15 @@ def userlanding():
 def index():
     return render_template('index.html')
 
+
+## actual page for sign in.
+@login_bp.route('/sign-in')
+def index():
+    return render_template('signup.html')
+
 ## TODO: make signin functions    
 
+## sign in route(a sign in verison of login below)
 @login_bp.route('/signin', methods = ['POST'])
 def signin():
     '''
