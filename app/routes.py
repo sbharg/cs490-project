@@ -24,33 +24,7 @@ def index():
     return render_template('index.html')
 
 
-## actual page for sign in.
-@login_bp.route('/signpage')
-def signpage():
-    return render_template('signup.html')
-
-## TODO: make signin functions    
-
-## sign in route(a sign in verison of login below)
-@login_bp.route('/signin', methods = ['POST'])
-def signin():
-    '''
-    Post method to handle new user systems
-    '''
-    if request.method == 'POST':
-
-        requested_type = request.form['account_type']
-
-        username_new = request.form['username']
-        password_new = request.form['password']
-
-        if requested_type == 'student':
-            ##add account using student stuff
-        elif requested_type == 'teachers':
-            ##add account using client stuff
-        else:
-            return render_template('signup.html', msg = "Error, Please contact the system admin.")
-
+##TODO add the sign in page support
 
 
 @login_bp.route('/login', methods = ['POST'])
