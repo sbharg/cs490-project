@@ -23,6 +23,29 @@ def userlanding():
 def index():
     return render_template('index.html')
 
+## TODO: make signin functions    
+
+@login_bp.route('/signin', methods = ['POST'])
+def signin():
+    '''
+    Post method to handle new user systems
+    '''
+    if request.method == 'POST':
+
+        requested_type = request.form['account_type']
+
+        username_new = request.form['username']
+        password_new = request.form['password']
+
+        if requested_type == 'student':
+            ##add account using student stuff
+        elif requested_type == 'teachers':
+            ##add account using client stuff
+        else:
+            return render_template('signin.html', msg = "Error, Please contact the system admin.")
+
+
+
 @login_bp.route('/login', methods = ['POST'])
 def login():
     '''
