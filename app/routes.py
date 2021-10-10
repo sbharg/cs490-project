@@ -25,8 +25,8 @@ def index():
 
 
 ## actual page for sign in.
-@login_bp.route('/sign-in')
-def signup():
+@login_bp.route('/signpage')
+def signpage():
     return render_template('signup.html')
 
 ## TODO: make signin functions    
