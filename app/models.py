@@ -9,7 +9,7 @@ class User(db.Model):
     id = Column(Integer, primary_key=True)
     username = Column(String(25), unique=True, nullable=False)
     password_hash = Column(String(), nullable=False)
-    user_type = Column(String(5))
+    user_type = Column(String())
 
     def __init__(self, username, password_hash, user_type):
         self.username = username
