@@ -29,16 +29,15 @@ def add_user_to_course(user, course):
     user_course = UserCourse(user.user_id, course.course_id)
     user_course.insert()
 
-def get_students_in_course(db, course):
-    ret_students = []
+def get_students_in_course(course):
+    students = []
     for person in course.users:
-        user = find_user_by_user_id(db, person.user_id)
-        if user.user_type == "student":
-            ret_students.append(user)
-    return ret_students
+        if person.user.user_type == "student":
+            students.append(person.user)
+    return students
 
-def get_user_courses(db, user):
-    ret_courses = []
-    for course in user.courses:
-        ret_courses.append(find_course_by_course_id(db, course.course_id))
-    return ret_courses
+def get_user_courses(user):
+    courses = []
+    for user_course in user.courses:
+        courses.append(user_course.course)
+    return courses

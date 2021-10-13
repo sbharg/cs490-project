@@ -28,8 +28,8 @@ def init_db(env):
     add_user_to_course(user3, course2)
     add_user_to_course(user4, course1)
 
-    #print(get_students_in_course(db, course1))
-    #print(get_user_courses(db, user3))
+    #print(get_students_in_course(course1))
+    #print(get_user_courses(user3))
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
