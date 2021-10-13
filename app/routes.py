@@ -65,7 +65,7 @@ def login():
         if user is None or not check_password_hash(user.password_hash, password):
             return render_template('index.html', msg = "The username or password you entered does not match or is incorrect")
         elif check_password_hash(user.password_hash, password):
-            session['user_id'] = user.id
+            session['user_id'] = user.user_id
             if user.user_type == "teacher":
                 return redirect(url_for('login_bp.adminlanding'))
             elif user.user_type == "student":
