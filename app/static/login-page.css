@@ -54,3 +54,9 @@ body {
 	cursor: pointer;
 	outline: none;
 }
+
+a:hover {
+  cursor:pointer;
+}
+
+

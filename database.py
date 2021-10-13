@@ -1,6 +1,7 @@
 from flask import Flask
 from app.models import *
 from werkzeug.security import generate_password_hash
+from app.helpers import add_user
 import argparse
 
 app = Flask(__name__)
@@ -14,15 +15,11 @@ def init_db(env):
 
     db.drop_all()
     db.create_all()
-
-    admin1 = User('admin1', generate_password_hash('admin'), 'admin')
-    admin2 = User('admin2', generate_password_hash('admin'), 'admin')
-    reg_user = User('user1', generate_password_hash('password'), 'user')
-    reg_user2 = User('user2', generate_password_hash('password'), 'user')
-    admin1.insert()
-    admin2.insert()
-    reg_user2.insert()
-    reg_user.insert()
+    
+    add_user('admin', 'admin', 'teacher')
+    add_user('teacher2', 'admin', 'teacher')
+    add_user('user1', 'password', 'student')
+    add_user('user2', 'password', 'student')
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
