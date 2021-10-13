@@ -5,7 +5,7 @@ def find_username(db, username):
     return db.session.query(User).filter(User.username == username).first()
 
 def find_user_id(db, user_id):
-    return db.session.query(User).filter(User.id == user_id).first()
+    return db.session.query(User).filter(User.user_id == user_id).first()
 
 ## required later. please make add_user() or something that adds new user.
 ## even better when there is two functions for new teacher and student
