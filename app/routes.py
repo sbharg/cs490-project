@@ -45,6 +45,10 @@ def index():
 
 ##TODO add the sign in page support
 
+@login_bp.route('/signpage')
+def signpage():
+    return render_template('signup.html')
+
 
 @login_bp.route('/login', methods = ['POST'])
 def login():
