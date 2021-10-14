@@ -71,14 +71,18 @@ class QuestionCluster(db.Model):
     __tablename__ = 'question_clusters'
     cluster_id = Column(Integer, primary_key=True)
     course_id = Column(ForeignKey('courses.course_id'), nullable=False)
+    category = Column(String())
+    difficulty = Column(String())
 
     # One to Many relation
     questions = relationship("Question")
     # Many to Many relation
     exams = relationship("ExamQuestionCluster", back_populates="cluster")
 
-    def __init__(self, course_id):
+    def __init__(self, course_id, category, difficulty):
         self.course_id = course_id
+        self.category = category
+        self.difficulty = difficulty
     def insert(self):
         db.session.add(self)
         db.session.commit()
@@ -90,15 +94,17 @@ class Question(db.Model):
     question_id = Column(Integer, primary_key=True)
     question = Column(String(), nullable=False)
     cluster_id = Column(ForeignKey('question_clusters.cluster_id'), nullable=False)
+    func_name = Column(String(), nullable=False)
 
     # One to many relation
     testcases = relationship("Testcase")
 
     grades = relationship("GradedExamQuestion")
 
-    def __init__(self, question, cluster_id):
+    def __init__(self, question, cluster_id, func_name):
         self.question = question
         self.cluster_id = cluster_id
+        self.func_name = func_name
     def insert(self):
         db.session.add(self)
         db.session.commit()
@@ -109,13 +115,17 @@ class Testcase(db.Model):
     __tablename__ = 'testcases'
     testcase_id = Column(Integer, primary_key=True)
     question_id = Column(ForeignKey('questions.question_id'), nullable=False)
-    case_input = Column(String(), nullable=False)
-    case_output = Column(String(), nullable=False)
+    case_input = Column(String(), nullable=False, unique=True)
+    input_type = Column(String(), nullable=False)
+    case_output = Column(String(), nullable=False, unique=True)
+    output_type = Column(String(), nullable=False)
 
-    def __init__(self, question_id, case_input, case_output):
+    def __init__(self, question_id, case_input, input_type, case_output, output_type):
         self.question_id = question_id
         self.case_input = case_input
+        self.input_type = input_type
         self.case_output = case_output
+        self.output_type = output_type
     def insert(self):
         db.session.add(self)
         db.session.commit()
@@ -164,13 +174,17 @@ class GradedExamQuestion(db.Model):
     exam_id = Column(ForeignKey('exams.exam_id'), primary_key=True)
     question_id = Column(ForeignKey('questions.question_id'), primary_key=True)
     user_id = Column(ForeignKey('users.user_id'), primary_key=True)
+    student_answer = Column(String(), nullable=False)
     question_grade = Column(Integer, nullable=False)
+    comment = Column(String())
 
-    def __init__(self, exam_id, question_id, user_id, question_grade):
+    def __init__(self, exam_id, question_id, user_id, student_answer, question_grade, comment):
         self.exam_id = exam_id
         self.question_id = question_id
         self.user_id = user_id
         self.question_grade = question_grade
+        self.student_answer = student_answer
+        self.comment = comment
     def insert(self):
         db.session.add(self)
         db.session.commit()
