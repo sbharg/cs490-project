@@ -15,24 +15,24 @@
       {% if msg %}
         <p>{{ msg | safe }}</p>
       {% endif %}
-    <form id="signin-form" method="post" action="/signin">
+    <form id="signin-form" method="post" action="/signup">
 
       <!--- Uses the code partially from shaw transforming toggle system --->
       <!--- The selection-output is the part where the form takes information --->
       <div class="sf-radio-container">
-        <input type='radio' class='selection-output' name="options" id="option-1" required checked/> 
-        <input type='radio' class='selection-output' name="options" id="option-2" /> 
+        <input type='radio' class='selection-output' name="options" id="student" required checked/> 
+        <input type='radio' class='selection-output' name="options" id="teacher" /> 
 
 
         <!--- These lables are the ones that actualy get selected, via "for" tag --->
-        <label class="option" for="option-1">
+        <label class="option" for="student">
           <span class="option__indictator"></span>
           <span class="option__label">
           Student
           </span>
         </label>
 
-        <label class="option" for="option-2">
+        <label class="option" for="teacher">
           <span class="option__indictator"></span>
           <span class="option__label">
           Class Admin
