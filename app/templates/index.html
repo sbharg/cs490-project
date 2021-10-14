@@ -12,9 +12,13 @@
 
   <main id="main-holder">
     <h1 id="login-header">Login</h1>
-      {% if msg %}
-        <p>{{ msg | safe }}</p>
-      {% endif %}
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+       {% for message in messages %}
+          {{ message }}
+       {% endfor %}
+    {% endif %}
+    {% endwith %}
     <form id="login-form" method="post" action="/login">
       <input type="text" name="username" id="username-field" class="lf-field" placeholder="Username" required>
       <input type="password" name="password" id="password-field" class="lf-field" placeholder="Password" required>
@@ -26,7 +30,7 @@
     </form>
 
       <p></p>
-        <a id="lf-signin" class="lf-signin" onclick="window.location.href='/signpage';">Sign-Up</a>
+        <a id="lf-signin" class="lf-signin" onclick="window.location.href='/signup';">Sign-Up</a>
       <p></p>
   </main>
 </body>

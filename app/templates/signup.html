@@ -12,10 +12,14 @@
 
   <main id="main-holder">
     <h1 id="signin-header">Sign Up</h1>
-      {% if msg %}
-        <p>{{ msg | safe }}</p>
-      {% endif %}
-    <form id="signin-form" method="post" action="/signup">
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+       {% for message in messages %}
+          {{ message }}
+       {% endfor %}
+    {% endif %}
+    {% endwith %}
+    <form id="signin-form" method="post" action="/register">
 
       <!--- Uses the code partially from shaw transforming toggle system --->
       <!--- The selection-output is the part where the form takes information --->

@@ -5,7 +5,8 @@ from flask import (
     url_for, 
     redirect, 
     g, 
-    session
+    session, 
+    flash
 )
 from app import db
 import app.helpers as help
@@ -42,12 +43,12 @@ def userlanding():
 def index():
     return render_template('index.html')
 
-@login_bp.route('/signpage')
-def signpage():
+@login_bp.route('/signup')
+def signup():
     return render_template('signup.html')
 
-@login_bp.route('/signup', methods = ['POST'])
-def signup():
+@login_bp.route('/register', methods = ['POST'])
+def register():
     if request.method == 'POST':
         who = request.form['options']
         username = request.form['username']
@@ -56,9 +57,11 @@ def signup():
 
         if user is None:
             help.add_user(username, password, who)
-            return render_template('index.html', msg = "You have successfully signed up!")
+            flash('You have successfully signed up!')
+            return redirect(url_for('login_bp.index'))
         else:
-            return render_template('signup.html', msg = "Username already exist")
+            flash('Username already exists')
+            return redirect(url_for('login_bp.signup'))
 
 @login_bp.route('/login', methods = ['POST'])
 def login():
@@ -73,8 +76,10 @@ def login():
         user = help.find_user_by_username(db, username)
 
         if user is None or not check_password_hash(user.password_hash, password):
-            return render_template('index.html', msg = "The username or password you entered does not match or is incorrect")
+            flash("Incorrect Credentials")
+            return redirect(url_for('login_bp.index'))
         elif check_password_hash(user.password_hash, password):
+            session.pop('_flashes', None)
             session['user_id'] = user.user_id
             if user.user_type == "teacher":
                 return redirect(url_for('login_bp.adminlanding'))
