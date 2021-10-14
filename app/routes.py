@@ -24,7 +24,7 @@ def before_request():
     g.user = None
 
     if 'user_id' in session:
-        g.user = help.find_user_id(db, session['user_id'])
+        g.user = help.find_user_by_user_id(db, session['user_id'])
 
 @login_bp.route('/adminlanding')
 def adminlanding():
@@ -49,6 +49,19 @@ def index():
 def signpage():
     return render_template('signup.html')
 
+@login_bp.route('/signup', methods = ['POST'])
+def signup():
+    if request.method == 'POST':
+        who = request.form['options']
+        username = request.form['username']
+        password = request.form['password']
+        user = help.find_user_by_username(db, username)
+
+        if user is None:
+            help.add_user(username, password, who)
+            return render_template('index.html')
+        else:
+            return render_template('signup.html', msg = "Username already exist")
 
 @login_bp.route('/login', methods = ['POST'])
 def login():
@@ -60,7 +73,7 @@ def login():
 
         username = request.form['username']
         password = request.form['password']
-        user = help.find_username(db, username)
+        user = help.find_user_by_username(db, username)
 
         if user is None or not check_password_hash(user.password_hash, password):
             return render_template('index.html', msg = "The username or password you entered does not match or is incorrect")

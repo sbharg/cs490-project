@@ -20,8 +20,8 @@
       <!--- Uses the code partially from shaw transforming toggle system --->
       <!--- The selection-output is the part where the form takes information --->
       <div class="sf-radio-container">
-        <input type='radio' class='selection-output' name="options" id="student" required checked/> 
-        <input type='radio' class='selection-output' name="options" id="teacher" /> 
+        <input type='radio' class='selection-output' name="options" value="student" id="student" required checked/> 
+        <input type='radio' class='selection-output' name="options" value="teacher" id="teacher" /> 
 
 
         <!--- These lables are the ones that actualy get selected, via "for" tag --->
@@ -43,7 +43,7 @@
 
       <input type="text" name="username" id="username-field" class="sf-field" placeholder="Username" required>
       <input type="password" name="password" id="password-field" class="sf-field" placeholder="Password" required>
-      <input type="passworconfirm" name="passworconfirm" id="password-field" class="sf-field" placeholder="Confirm Password" required>
+      <input type="password" name="passwordconfirm" id="password-field" class="sf-field" placeholder="Confirm Password" required>
       <input type="submit" value="Sign Up" id="sf-submit">
     </form>
   </main>
