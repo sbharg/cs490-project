@@ -53,3 +53,39 @@ def create_testcase(q: Question, case_input, case_output):
     testcase = Testcase(q.question_id, case_input, case_output)
     testcase.insert()
     return testcase
+
+def create_exam(course_id, visible):
+    exam = Exam(course_id, visible)
+    exam.insert()
+    return exam
+
+def add_question_cluster_to_exam(qc: QuestionCluster, e: Exam):
+    '''
+    Adds a question cluster to an exam
+    '''
+    exam_question_cluster = ExamQuestionCluster(e.exam_id, qc.cluster_id)
+    exam_question_cluster.insert()
+
+def get_question_clusters_in_exam(e: Exam):
+    '''
+    Returns all questions clusters in an exam
+    '''
+    clusters = []
+    for eqc in e.question_clusters:
+        clusters.append(eqc.cluster)
+    return clusters
+
+def get_questions_in_clusert(qc: QuestionCluster):
+    '''
+    Returns a list of all questions in a question cluster
+    '''
+    return QuestionCluster.questions
+
+def get_questions_in_exam(e: Exam):
+    '''
+    Returns a 2-D list of all questions in an exam
+    '''
+    questions = []
+    for cluster in get_question_clusters_in_exam(e):
+        questions.append(cluster.questions)
+    return questions
