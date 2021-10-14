@@ -24,6 +24,11 @@ def init_db(env):
     course1 = create_course('temp', 'asdf')
     course2 = create_course('temp2', 'asdf')
 
+    q_cluster = create_question_cluster(course1.course_id)
+    q = create_question("Sample Question", q_cluster)
+    t = create_testcase(q, "input", "output")
+    t = create_testcase(q, "input2", "output2")
+
     add_user_to_course(user3, course1)
     add_user_to_course(user3, course2)
     add_user_to_course(user4, course1)

@@ -27,9 +27,6 @@ class User(db.Model):
     def update(self):
         db.session.commit()
 
-    def add_course(self, course):
-        self.courses.append(course)
-
 class Course(db.Model):
     __tablename__ = 'courses'
     course_id = Column(Integer, primary_key=True)
@@ -38,6 +35,8 @@ class Course(db.Model):
 
     # Many to many relation
     users = relationship("UserCourse", back_populates="course")
+    # One to many relation
+    question_clusters = relationship("QuestionCluster")
 
     def __init__(self, class_name, class_password_hash):
         self.course_name = class_name    
@@ -62,6 +61,57 @@ class UserCourse(db.Model):
     def __init__(self, user_id, course_id):
         self.user_id = user_id    
         self.course_id = course_id
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+    def update(self):
+        db.session.commit()
+
+class QuestionCluster(db.Model):
+    __tablename__ = 'question_clusters'
+    cluster_id = Column(Integer, primary_key=True)
+    course_id = Column(ForeignKey('courses.course_id'), nullable=False)
+
+    # One to many relation
+    questions = relationship("Question")
+
+    def __init__(self, course_id):
+        self.course_id = course_id
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+    def update(self):
+        db.session.commit()
+
+class Question(db.Model):
+    __tablename__ = 'questions'
+    question_id = Column(Integer, primary_key=True)
+    question = Column(String(), nullable=False)
+    cluster_id = Column(ForeignKey('question_clusters.cluster_id'), nullable=False)
+
+    # One to many relation
+    testcases = relationship("Testcase")
+
+    def __init__(self, question, cluster_id):
+        self.question = question
+        self.cluster_id = cluster_id
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+    def update(self):
+        db.session.commit()
+
+class Testcase(db.Model):
+    __tablename__ = 'testcases'
+    testcase_id = Column(Integer, primary_key=True)
+    question_id = Column(ForeignKey('questions.question_id'), nullable=False)
+    case_input = Column(String(), nullable=False)
+    case_output = Column(String(), nullable=False)
+
+    def __init__(self, question_id, case_input, case_output):
+        self.question_id = question_id
+        self.case_input = case_input
+        self.case_output = case_output
     def insert(self):
         db.session.add(self)
         db.session.commit()
