@@ -75,7 +75,7 @@ class QuestionCluster(db.Model):
     # One to Many relation
     questions = relationship("Question")
     # Many to Many relation
-    exams = relationship("ExamQuestion", back_populates="cluster")
+    exams = relationship("ExamQuestionCluster", back_populates="cluster")
 
     def __init__(self, course_id):
         self.course_id = course_id
@@ -129,7 +129,7 @@ class Exam(db.Model):
     visible = Column(Boolean, nullable=False)
 
     # Many to Many relation
-    question_clusters = relationship("ExamQuestion", back_populates="exam")
+    question_clusters = relationship("ExamQuestionCluster", back_populates="exam")
     # One to Many relation
     graded_exams = relationship("GradedExamQuestion")
 
@@ -142,7 +142,7 @@ class Exam(db.Model):
     def update(self):
         db.session.commit()
 
-class ExamQuestion(db.Model):
+class ExamQuestionCluster(db.Model):
     __tablename__ = 'exam_questions'
     exam_id = Column(ForeignKey('exams.exam_id'), primary_key=True)
     cluster_id = Column(ForeignKey('question_clusters.cluster_id'), primary_key=True)
