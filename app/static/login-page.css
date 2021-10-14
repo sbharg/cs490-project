@@ -43,6 +43,19 @@ body {
 	padding: 0px 0px 5px 5px;
 }
 
+#lf-signin {
+	text-align: center;
+	width:27%;
+	padding: 7px;
+	border: none;
+	border-radius: 5px;
+	color: white;
+	font-weight: bold;
+	background-color: #3f3f3f;
+	cursor: pointer;
+	outline: none;
+}
+
 #lf-submit {
 	width:100%;
 	padding: 7px;
