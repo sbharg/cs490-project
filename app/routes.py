@@ -42,9 +42,6 @@ def userlanding():
 def index():
     return render_template('index.html')
 
-
-##TODO add the sign in page support
-
 @login_bp.route('/signpage')
 def signpage():
     return render_template('signup.html')
