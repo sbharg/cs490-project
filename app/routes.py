@@ -59,7 +59,7 @@ def signup():
 
         if user is None:
             help.add_user(username, password, who)
-            return render_template('index.html')
+            return render_template('index.html', msg = "You have successfully signed up!")
         else:
             return render_template('signup.html', msg = "Username already exist")
 
