@@ -87,3 +87,26 @@ def login():
                 return redirect(url_for('login_bp.userlanding'))
         else:
             return "Something went wrong"
+
+''' 
+@login_bp.route('/qbank')
+def qbank():
+    
+
+@login_bp.route('/question', methods = ['POST'])
+def question():
+    if request.method == 'POST':
+        courseid = session['course_id']
+        cat = request.form['cat']
+        diff = request.form['diff']
+
+        cluster = help.create_question_cluster(courseid, cat, diff)
+
+        text = request.form('text')
+        func = request.form('func')
+        numofQ = request.form('num')
+
+        for x in numofQ:
+            question = help.create_question(text, cluster, func)
+            #cluster.questions.append(question)
+'''
