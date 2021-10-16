@@ -24,8 +24,8 @@ def init_db(env):
     course1 = create_course('temp', 'asdf')
     course2 = create_course('temp2', 'asdf')
 
-    q_cluster = create_question_cluster(course1.course_id, 'temp', 'easy')
-    q = create_question("Sample Question", q_cluster, "addsix")
+    #q_cluster = create_question_cluster(course1.course_id, 'temp', 'easy')
+    q = create_question("Sample Question", course1, "addsix")
     t1 = create_testcase(q, "1", "int", "6", "int")
     t2 = create_testcase(q, "3", "int", "8", "int")
     t3 = create_testcase(q, "4", "int", "9", "int")

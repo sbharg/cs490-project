@@ -27,6 +27,12 @@ def add_user_to_course(user: User, course: Course):
     user_course.insert()
 
 def get_students_in_course(course: Course):
+    '''
+    Returns all students in a course
+    
+    Input: Course object
+    Output: List of Student objects
+    '''
     students = []
     for person in course.users:
         if person.user.user_type == "student":
@@ -34,18 +40,19 @@ def get_students_in_course(course: Course):
     return students
 
 def get_user_courses(user: User):
+    '''
+    Returns all courses a user is registered in
+    
+    Input: User object
+    Output: List of Course objects
+    '''
     courses = []
     for user_course in user.courses:
         courses.append(user_course.course)
     return courses
 
-def create_question_cluster(course_id, cat, diff):
-    cluster = QuestionCluster(course_id, cat, diff)
-    cluster.insert()
-    return cluster
-
-def create_question(question_text, cluster: QuestionCluster, func_name):
-    question = Question(question_text, cluster.cluster_id, func_name)
+def create_question(question_text, course: Course, func_name):
+    question = Question(question_text, course.course_id, func_name)
     question.insert()
     return question
 
@@ -59,33 +66,14 @@ def create_exam(course_id, visible):
     exam.insert()
     return exam
 
-def add_question_cluster_to_exam(qc: QuestionCluster, e: Exam):
-    '''
-    Adds a question cluster to an exam
-    '''
-    exam_question_cluster = ExamQuestionCluster(e.exam_id, qc.cluster_id)
-    exam_question_cluster.insert()
-
-def get_question_clusters_in_exam(e: Exam):
-    '''
-    Returns all questions clusters in an exam
-    '''
-    clusters = []
-    for eqc in e.question_clusters:
-        clusters.append(eqc.cluster)
-    return clusters
-
-def get_questions_in_clusert(qc: QuestionCluster):
-    '''
-    Returns a list of all questions in a question cluster
-    '''
-    return QuestionCluster.questions
-
 def get_questions_in_exam(e: Exam):
     '''
-    Returns a 2-D list of all questions in an exam
+    Returns all questions in an exam
+
+    Input: Exam object
+    Output: List of Questions objects
     '''
     questions = []
-    for cluster in get_question_clusters_in_exam(e):
-        questions.append(cluster.questions)
+    for qs in e.questions:
+        questions.append(qs.question)
     return questions

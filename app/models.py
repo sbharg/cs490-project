@@ -36,7 +36,7 @@ class Course(db.Model):
     # Many to many relation
     users = relationship("UserCourse", back_populates="course")
     # One to many relation
-    question_clusters = relationship("QuestionCluster")
+    questions = relationship("Question")
 
     def __init__(self, class_name, class_password_hash):
         self.course_name = class_name    
@@ -67,6 +67,7 @@ class UserCourse(db.Model):
     def update(self):
         db.session.commit()
 
+'''
 class QuestionCluster(db.Model):
     __tablename__ = 'question_clusters'
     cluster_id = Column(Integer, primary_key=True)
@@ -88,22 +89,22 @@ class QuestionCluster(db.Model):
         db.session.commit()
     def update(self):
         db.session.commit()
+'''
 
 class Question(db.Model):
     __tablename__ = 'questions'
     question_id = Column(Integer, primary_key=True)
     question = Column(String(), nullable=False)
-    cluster_id = Column(ForeignKey('question_clusters.cluster_id'), nullable=False)
+    course_id = Column(ForeignKey('courses.course_id'), nullable=False)
     func_name = Column(String(), nullable=False)
 
-    # One to many relation
     testcases = relationship("Testcase")
-
+    exams = relationship("ExamQuestions", back_populates="question")
     grades = relationship("GradedExamQuestion")
 
-    def __init__(self, question, cluster_id, func_name):
+    def __init__(self, question, course_id, func_name):
         self.question = question
-        self.cluster_id = cluster_id
+        self.course_id = course_id
         self.func_name = func_name
     def insert(self):
         db.session.add(self)
@@ -139,7 +140,7 @@ class Exam(db.Model):
     visible = Column(Boolean, nullable=False)
 
     # Many to Many relation
-    question_clusters = relationship("ExamQuestionCluster", back_populates="exam")
+    questions = relationship("ExamQuestions", back_populates="exam")
     # One to Many relation
     graded_exams = relationship("GradedExamQuestion")
 
@@ -152,17 +153,17 @@ class Exam(db.Model):
     def update(self):
         db.session.commit()
 
-class ExamQuestionCluster(db.Model):
+class ExamQuestions(db.Model):
     __tablename__ = 'exam_questions'
     exam_id = Column(ForeignKey('exams.exam_id'), primary_key=True)
-    cluster_id = Column(ForeignKey('question_clusters.cluster_id'), primary_key=True)
+    question_id = Column(ForeignKey('questions.question_id'), primary_key=True)
 
-    exam = relationship("Exam", back_populates="question_clusters")
-    cluster = relationship("QuestionCluster", back_populates="exams")
+    exam = relationship("Exam", back_populates="questions")
+    question = relationship("Question", back_populates="exams")
 
-    def __init__(self, exam_id, cluster_id):
+    def __init__(self, exam_id, question_id):
         self.exam_id = exam_id
-        self.cluster_id = cluster_id
+        self.question_id = question_id
     def insert(self):
         db.session.add(self)
         db.session.commit()
