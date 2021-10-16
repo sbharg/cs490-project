@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Question Selector</title>
+</head>
+
+<body>
+  <main id="main-holder">
+    <form id="question-select-form" method="post" action="/question">
+      <select name="Questions" size="20">
+        <!--- Forloop of question list--->
+                {% for question in questions %}
+                  <option value="{{ question }}">{{ question }}</option>
+                {% endfor %}
+      </select>  
+    </form>
+  </main>
+</body>
+
+</html>
