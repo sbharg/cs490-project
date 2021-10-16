@@ -10,13 +10,18 @@
 <body>
   <main id="main-holder">
     <form id="question-select-form" method="post" action="/question">
-      <select name="Questions" size="20">
+      <select name="Questions" size="20" style="width:90%;" required>
         <!--- Forloop of question list--->
-                {% for question in questions %}
-                  <option value="{{ question }}">{{ question }}</option>
-                {% endfor %}
-      </select>  
+          {% if questions %}
+            {% for question in questions %}
+              <option value="{{ question.question_id }}">{{ question.question_id }}:{{ question.question }}</option>
+            {% endfor %}
+          {% endif %}
+      </select>
+
+      <input type="submit" value="Edit" id="qf-selectq">
     </form>
+    <a id="qf-nquestion" class="qf-nquestion" onclick="window.location.href='/newquestion'">New Question</a>
   </main>
 </body>
 

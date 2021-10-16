@@ -9,7 +9,50 @@
 
 <body>
   <main id="main-holder">
+    <form action="/updatequestion" method="post">Question ID : {{ question_id }}
+    <br>
+    <textarea id="tbox1" name="tbox1" rows="4" cols="50" placeholder="Question" required></textarea>
+    <br>
+    <input type="submit" value="Update Question" id="questionupload">
+    <br>
+    <br>
+    </form>
 
+    Test Cases
+    <br>
+    {% if testcases %}
+      <ul>
+        {% for testcase in testcases %}
+        <li></li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <ul>
+        <li>No Test Cases!</li>
+      </ul>
+    {% endif %}
+    <form action="/add_testcase" method="post">
+      Add New Test Case
+      <div>
+        <textarea id="tbox2" name="tbox2" rows="4" cols="25" placeholder="Inputs" required>
+        </textarea>
+        <select name="InputType" required>
+          <option value="string">String</option>
+          <option value="int">Integer</option>
+          <option value="float">Floating Point</option>
+        </select>
+      </div>
+      <div>
+        <textarea id="tbox3" name="tbox3" rows="4" cols="25" placeholder="Output" required>
+        </textarea>
+        <select name="InputType" required>
+          <option value="string">String</option>
+          <option value="int">Integer</option>
+          <option value="float">Floating Point</option>
+        </select>
+      </div>
+      <input type="submit" value="Add New Test Case" id="questionupload">
+    </form>
 
   </main>
 </body>
