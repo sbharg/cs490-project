@@ -8,12 +8,26 @@ def find_user_by_user_id(db, user_id):
     return db.session.query(User).filter(User.user_id == user_id).first()
 
 def add_user(username, password, u_type='student'):
+    '''
+    Creates a new user
+
+    Input:  A string represnting the username of the user, a string representing the 
+            plaintext password of the user, and the user type
+    Output: A User object
+    '''
     password_hash = generate_password_hash(password)
     user = User(username, password_hash, u_type)
     user.insert()
     return user
 
-def create_course(name, password):
+def create_course(name: str, password: str):
+    '''
+    Creates a new course
+
+    Input:  A string represnting the name of the course, and a string representing the 
+            plaintext password of the course
+    Output: A Course object
+    '''
     password_hash = generate_password_hash(password)
     course = Course(name, password_hash)
     course.insert()
@@ -22,15 +36,22 @@ def create_course(name, password):
 def find_course_by_course_id(db, course_id):
     return db.session.query(Course).filter(Course.course_id == course_id).first()
 
-def add_user_to_course(user: User, course: Course):
-    user_course = UserCourse(user.user_id, course.course_id)
+def add_user_to_course(u: User, c: Course):
+    '''
+    Adds a user to a course
+
+    Input:  A User object and a Course object
+    Output: A UserCourse object
+    '''
+    user_course = UserCourse(u.user_id, c.course_id)
     user_course.insert()
+    return user_course
 
 def get_students_in_course(course: Course):
     '''
     Returns all students in a course
     
-    Input: Course object
+    Input:  Course object
     Output: List of Student objects
     '''
     students = []
@@ -43,7 +64,7 @@ def get_user_courses(user: User):
     '''
     Returns all courses a user is registered in
     
-    Input: User object
+    Input:  User object
     Output: List of Course objects
     '''
     courses = []
@@ -51,29 +72,109 @@ def get_user_courses(user: User):
         courses.append(user_course.course)
     return courses
 
-def create_question(question_text, course: Course, points, category, difficulty):
-    question = Question(question_text, course.course_id, points, category, difficulty)
+def create_question(question_text, c: Course, points: int, category: str, difficulty: str):
+    '''
+    Creates a question
+
+    Input:  A string representing the question, a Course object, an int representing the number
+            of points for the question, a string representing the category of the question, and
+            a string representing the difficulty of the question
+    Output: A Question object
+    '''
+    question = Question(question_text, c.course_id, points, category, difficulty)
     question.insert()
     return question
 
-def create_testcase(q: Question, case_input, case_output):
+def find_question_by_question_id(db, question_id):
+    return db.session.query(Question).filter(Question.question_id == question_id).first()
+
+def create_testcase(q: Question, case_input: str, case_output: str):
+    '''
+    Creates a testcase for a question
+    
+    Input:  A Question object, a string represnting the case input, and a string representing the case output
+            Case inputs can have the form "x1, x2, x3, ..." if the function has multiple parameters
+    Output: A Testcase Object
+    '''
     testcase = Testcase(q.question_id, case_input, case_output)
     testcase.insert()
     return testcase
 
-def create_exam(course_id, visible):
-    exam = Exam(course_id, visible)
+def create_exam(c: Course, visible):
+    '''
+    Creates an exam for a course
+
+    Input:  A Course object, and a boolean flag to determine if the exam is visible to students
+    Output: An Exam object
+    '''
+    exam = Exam(c.course_id, visible)
     exam.insert()
     return exam
+
+def add_question_to_exam(q: Question, e: Exam):
+    '''
+    Adds a question to an exam
+
+    Input:  A Question object, and an Exam object
+    Output: An ExamQuestion object
+    '''
+    exam_question = ExamQuestion(e.exam_id, q.question_id)
+    exam_question.insert()
+    return exam_question
 
 def get_questions_in_exam(e: Exam):
     '''
     Returns all questions in an exam
 
-    Input: Exam object
+    Input:  Exam object
     Output: List of Questions objects
     '''
     questions = []
     for qs in e.questions:
         questions.append(qs.question)
     return questions
+
+def grade_exam_question(eq: ExamQuestion, u: User, ans: str, grade: float, comment=""):
+    '''
+    Grades an exam question for a specified user
+
+    Input:  ExamQuestion object, User object, user answer, grade, and optional comment
+            The user answer is expected to be a string, while the grade is expected to be a float
+    Output: A GradedExamQuestion object
+    '''
+    exam_question_grade = GradedExamQuestion(eq.exam_id, eq.question_id, u.user_id, ans, grade, comment)
+    exam_question_grade.insert()
+    return exam_question_grade
+
+def update_grade(geq: GradedExamQuestion, new_grade: float):
+    '''
+    Updates the grade for an exam question for a specified user
+
+    Input:  A GradedExamQuestion object and a float for a grade
+    Output: Updates the grade in the database
+    '''
+    geq.grade = new_grade
+    geq.update()
+
+def update_comment(geq: GradedExamQuestion, new_comment: str):
+    '''
+    Updates the grade for an exam question for a specified user
+
+    Input:  A GradedExamQuestion object and a string for a comment
+    Output: Updates the comment in the database
+    '''
+    geq.comment = new_comment
+    geq.update()
+
+def get_user_grade_on_question(u: User, eq: ExamQuestion):
+    '''
+    Gets a specified user's grade on an exam question
+
+    Input:  A User object and an ExamQuestion object
+    Output: A float with the user's grade if it exists, None otherwise 
+    '''
+    for geq in eq.grades:
+        if geq.user_id == u.user_id:
+            return geq.grade
+        else:
+            return None 
