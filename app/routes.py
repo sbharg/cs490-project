@@ -87,12 +87,24 @@ def login():
                 return redirect(url_for('login_bp.userlanding'))
         else:
             return "Something went wrong"
-
-''' 
-@login_bp.route('/qbank')
+   
+            
+#pseudo code for qbank/selector?
+'''
+@login_bp.route('/qbank', methods = ['POST'])
 def qbank():
-    
+    if request.method == 'POST':
+        help.get_questions_in_exam('exam') #I believe this goes here if im reading qselect right
 
+        if request.form['submit_button']:
+            #help.add_questions_to_exam('question', 'exam')
+            #do something here? not sure what you want to return from submit button
+'''
+
+            
+
+#not used atm   
+'''
 @login_bp.route('/question', methods = ['POST'])
 def question():
     if request.method == 'POST':
