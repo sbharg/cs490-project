@@ -1,7 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship
-from sqlalchemy.sql.schema import Column, ForeignKey
-from sqlalchemy.sql.sqltypes import Boolean, Integer, String
+from sqlalchemy.sql.schema import Column, ForeignKey, ForeignKeyConstraint
+from sqlalchemy.sql.sqltypes import Boolean, FLOAT, Integer, String
 
 db = SQLAlchemy()
 
@@ -102,8 +102,7 @@ class Question(db.Model):
     difficulty = Column(String())
 
     testcases = relationship("Testcase")
-    exams = relationship("ExamQuestions", back_populates="question")
-    grades = relationship("GradedExamQuestion")
+    exams = relationship("ExamQuestion", back_populates="question")
 
     def __init__(self, question, course_id, points, category, difficulty):
         self.question = question
@@ -146,9 +145,7 @@ class Exam(db.Model):
     visible = Column(Boolean, nullable=False)
 
     # Many to Many relation
-    questions = relationship("ExamQuestions", back_populates="exam")
-    # One to Many relation
-    graded_exams = relationship("GradedExamQuestion")
+    questions = relationship("ExamQuestion", back_populates="exam")
 
     def __init__(self, course_id, visible):
         self.course_id = course_id
@@ -159,13 +156,14 @@ class Exam(db.Model):
     def update(self):
         db.session.commit()
 
-class ExamQuestions(db.Model):
+class ExamQuestion(db.Model):
     __tablename__ = 'exam_questions'
     exam_id = Column(ForeignKey('exams.exam_id'), primary_key=True)
     question_id = Column(ForeignKey('questions.question_id'), primary_key=True)
 
     exam = relationship("Exam", back_populates="questions")
     question = relationship("Question", back_populates="exams")
+    grades = relationship("GradedExamQuestion")
 
     def __init__(self, exam_id, question_id):
         self.exam_id = exam_id
@@ -178,18 +176,22 @@ class ExamQuestions(db.Model):
 
 class GradedExamQuestion(db.Model):
     __tablename__ = 'graded_exam_questions'
-    exam_id = Column(ForeignKey('exams.exam_id'), primary_key=True)
-    question_id = Column(ForeignKey('questions.question_id'), primary_key=True)
+    exam_id = Column(Integer, primary_key=True)
+    question_id = Column(Integer, primary_key=True)
     user_id = Column(ForeignKey('users.user_id'), primary_key=True)
     student_answer = Column(String(), nullable=False)
-    question_grade = Column(Integer, nullable=False)
+    grade = Column(FLOAT, nullable=False)
     comment = Column(String())
 
-    def __init__(self, exam_id, question_id, user_id, student_answer, question_grade, comment):
+    __table_args__ = (ForeignKeyConstraint(['exam_id', 'question_id'], 
+                                           ['exam_questions.exam_id', 'exam_questions.question_id']), 
+                      {})
+
+    def __init__(self, exam_id, question_id, user_id, student_answer, grade, comment):
         self.exam_id = exam_id
         self.question_id = question_id
         self.user_id = user_id
-        self.question_grade = question_grade
+        self.grade = grade
         self.student_answer = student_answer
         self.comment = comment
     def insert(self):
