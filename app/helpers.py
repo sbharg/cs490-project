@@ -51,13 +51,13 @@ def get_user_courses(user: User):
         courses.append(user_course.course)
     return courses
 
-def create_question(question_text, course: Course, func_name):
-    question = Question(question_text, course.course_id, func_name)
+def create_question(question_text, course: Course, points, category, difficulty):
+    question = Question(question_text, course.course_id, points, category, difficulty)
     question.insert()
     return question
 
-def create_testcase(q: Question, case_input, input_type, case_output, output_type):
-    testcase = Testcase(q.question_id, case_input, input_type, case_output, output_type)
+def create_testcase(q: Question, case_input, case_output):
+    testcase = Testcase(q.question_id, case_input, case_output)
     testcase.insert()
     return testcase
 

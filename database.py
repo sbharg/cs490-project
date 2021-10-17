@@ -25,14 +25,15 @@ def init_db(env):
     course2 = create_course('temp2', 'asdf')
 
     #q_cluster = create_question_cluster(course1.course_id, 'temp', 'easy')
-    q = create_question("Sample Question", course1, "addsix")
-    t1 = create_testcase(q, "1", "int", "6", "int")
-    t2 = create_testcase(q, "3", "int", "8", "int")
-    t3 = create_testcase(q, "4", "int", "9", "int")
+    q = create_question("Sample Question", course1, 10, "arithmetic", "easy")
+    t1 = create_testcase(q, "1", "6")
+    t2 = create_testcase(q, "3", "8")
+    t3 = create_testcase(q, "4", "9")
 
+    add_user_to_course(user1, course1)
     add_user_to_course(user3, course1)
-    add_user_to_course(user3, course2)
     add_user_to_course(user4, course1)
+    add_user_to_course(user3, course2)
 
     #print(get_students_in_course(course1))
     #print(get_user_courses(user3))

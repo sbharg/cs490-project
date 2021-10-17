@@ -2,21 +2,21 @@ from models import Testcase
 
 class CodeTester():
 
-    def __init__(self, func_name: str, func: str):
-        self.func_name = func_name
+    def __init__(self, func: str):
         self.func = func
+        self.func_name = func.partition('(')[0][4:]
 
+    '''
     def __type_mapping(self, v: str, v_type: str):
-        '''
+        
         Private method to return correct type for a variable
 
         Inputs:
         v       --  value as a string
         v_type  --  value type as a string
 
-        Output:
-        v as its correct type, else None if type is not str, int, or float
-        '''
+        Output: v as its correct type, else None if type is not str, int, or float
+        
         if v_type == "str" or v_type == "string" or v_type == "String":
             return str(v)
         elif v_type == "int" or v_type == "Int":
@@ -25,20 +25,18 @@ class CodeTester():
             return float(v)
         else:
             return None
+    '''
     
-    def test_single_case(self, test_input: str, input_type: str, test_output: str, output_type: str):
+    def test_single_case(self, case: Testcase):
         '''
         Method to test a single testcase
 
-        Input:
-        test_input  --  testcase input
-        input_type  --  testcase input type (str, int, or float)
-        test_output --  testcase output
-        output_type --  testcase output type (str, int, or float)
-
-        Output:
-        returns 1 if the testcase is passed, 0 otherwise
+        Input: case  --  Testcase object
+        Output: returns 1 if the testcase is passed, 0 otherwise
         '''
+
+        test_input = case.case_input
+        test_output = case.case_output
 
         # Edge Case: func is empty string
         if(self.func.replace(' ', '') == ""):
@@ -53,11 +51,8 @@ class CodeTester():
         method = possibles.get(self.func_name)
         local_params = {self.func_name: method}     # Allows execution of user defined method 
 
-        func_input = self.__type_mapping(test_input, input_type)
-        desired_ouput = self.__type_mapping(test_output, output_type)
-
-        out = eval(self.func_name, global_params, local_params)(func_input)
-        if out != desired_ouput:
+        out = eval(self.func_name + '(%s)' % test_input, global_params, local_params)
+        if str(out) != test_output:
             return 0
         else:
             return 1
@@ -66,15 +61,12 @@ class CodeTester():
         '''
         Method to test multiple testcases passed as a list
 
-        Input:
-        test_cases  --  A list with elements of the type Testcase 
-
-        Output:
-        returns the proportion of test cases passed
+        Input: test_cases  --  A list with elements of the type Testcase 
+        Output: returns the proportion of test cases passed
         '''
         cases_passed = 0
         for case in test_cases:
-            cases_passed += self.test_single_case(case.case_input, case.input_type, case.case_output, case.output_type)
+            cases_passed += self.test_single_case(case)
         prop_passed = cases_passed / len(test_cases)
         return prop_passed
 
@@ -84,7 +76,7 @@ if __name__ == "__main__":
     code = """def test(a):
             return a+5
     """
-    tester = CodeTester("test", code)
+    tester = CodeTester(code)
 
     case1 = Testcase(1, "1", "int", "6", "int")
     case2 = Testcase(1, "2", "int", "7", "int")

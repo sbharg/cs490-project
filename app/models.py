@@ -96,16 +96,22 @@ class Question(db.Model):
     question_id = Column(Integer, primary_key=True)
     question = Column(String(), nullable=False)
     course_id = Column(ForeignKey('courses.course_id'), nullable=False)
-    func_name = Column(String(), nullable=False)
+    #func_name = Column(String(), nullable=False)
+    points = Column(Integer, nullable=False)
+    category = Column(String())
+    difficulty = Column(String())
 
     testcases = relationship("Testcase")
     exams = relationship("ExamQuestions", back_populates="question")
     grades = relationship("GradedExamQuestion")
 
-    def __init__(self, question, course_id, func_name):
+    def __init__(self, question, course_id, points, category, difficulty):
         self.question = question
         self.course_id = course_id
-        self.func_name = func_name
+        self.points = points
+        self.category = category
+        self.difficulty = difficulty
+        #self.func_name = func_name
     def insert(self):
         db.session.add(self)
         db.session.commit()
@@ -117,16 +123,16 @@ class Testcase(db.Model):
     testcase_id = Column(Integer, primary_key=True)
     question_id = Column(ForeignKey('questions.question_id'), nullable=False)
     case_input = Column(String(), nullable=False, unique=True)
-    input_type = Column(String(), nullable=False)
+    #input_type = Column(String(), nullable=False)
     case_output = Column(String(), nullable=False, unique=True)
-    output_type = Column(String(), nullable=False)
+    #output_type = Column(String(), nullable=False)
 
-    def __init__(self, question_id, case_input, input_type, case_output, output_type):
+    def __init__(self, question_id, case_input, case_output):
         self.question_id = question_id
         self.case_input = case_input
-        self.input_type = input_type
+        #self.input_type = input_type
         self.case_output = case_output
-        self.output_type = output_type
+        #self.output_type = output_type
     def insert(self):
         db.session.add(self)
         db.session.commit()
