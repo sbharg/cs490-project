@@ -72,16 +72,17 @@ def get_user_courses(user: User):
         courses.append(user_course.course)
     return courses
 
-def create_question(question_text, c: Course, points: int, category: str, difficulty: str):
+def create_question(question_text, c: Course, points: int, category: str, difficulty: str, func_name: str):
     '''
     Creates a question
 
     Input:  A string representing the question, a Course object, an int representing the number
-            of points for the question, a string representing the category of the question, and
-            a string representing the difficulty of the question
+            of points for the question, a string representing the category of the question,
+            a string representing the difficulty of the question, and a string representing
+            the intended function name
     Output: A Question object
     '''
-    question = Question(question_text, c.course_id, points, category, difficulty)
+    question = Question(question_text, c.course_id, points, category, difficulty, func_name)
     question.insert()
     return question
 

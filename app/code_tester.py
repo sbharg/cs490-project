@@ -2,8 +2,9 @@ from models import Testcase
 
 class CodeTester():
 
-    def __init__(self, func: str):
+    def __init__(self, func: str, correct_func_name: str):
         self.func = func
+        self.correct_func_name = correct_func_name
         self.func_name = func.partition('(')[0][4:]
 
     '''
@@ -26,6 +27,9 @@ class CodeTester():
         else:
             return None
     '''
+
+    def check_func_name(self):
+        return self.correct_func_name == self.func_name
     
     def test_single_case(self, case: Testcase):
         '''
@@ -42,7 +46,10 @@ class CodeTester():
         if(self.func.replace(' ', '') == ""):
             return 0
 
-        exec(self.func)                             # Executes the user defined function and makes it callable
+        try:
+            exec(self.func)                         # Executes the user defined function and makes it callable
+        except SyntaxError:
+            return 0                       
 
         global_params = {}                          # Allows execution of only __builtins__ functions      
 
@@ -51,7 +58,11 @@ class CodeTester():
         method = possibles.get(self.func_name)
         local_params = {self.func_name: method}     # Allows execution of user defined method 
 
-        out = eval(self.func_name + '(%s)' % test_input, global_params, local_params)
+        try:
+            out = eval(self.func_name + '(%s)' % test_input, global_params, local_params)
+        except NameError:
+            return 0
+        
         if str(out) != test_output:
             return 0
         else:
