@@ -1,16 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login</title>
-  <link rel="stylesheet" href="../static/login-page.css"
-  <link rel="stylesheet" href="{{ url_for('login_bp.static', filename='login-page.css') }}">
+  <title>Exam Selector</title>
 </head>
 
 <body>
   <main id="main-holder">
-    <h1 id="login-header">User Landing Page</h1>
+    <form id="exam-select-form" method="post" action="/exam-client-begin">
+      <select name="exam-selection" size="20" style="width:90%;" required>
+        <!--- Forloop of exams list. currently in limited reference due to limited computing power. need replacement--->
+          {% if exams %}
+            {% for exam in exams %}
+              <option value="{{ exam.exam_id }}">{{ exam.exam_id }}:{{ exam.exam_id }}</option>
+            {% endfor %}
+          {% endif %}
+      </select>
+
+      <input type="submit" value="Take Exam" id="exam-client-submit">
+    </form>
   </main>
 </body>
 
 </html>
-         
