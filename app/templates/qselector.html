@@ -9,8 +9,8 @@
 
 <body>
   <main id="main-holder">
-    <form id="question-select-form" method="post" action="/question">
-      <select name="Questions" size="20" style="width:90%;" required>
+    <form id="question-select-form" method="post" action="/questionbank">
+      <select name="question" size="20" style="width:90%;" required>
         <!--- Forloop of question list--->
           {% if questions %}
             {% for question in questions %}
@@ -21,7 +21,7 @@
 
       <input type="submit" value="Edit" id="qf-selectq">
     </form>
-    <a id="qf-nquestion" class="qf-nquestion" onclick="window.location.href='/newquestion'">New Question</a>
+    <a id="qf-nquestion" class="qf-nquestion" onclick="window.location.href='/question-editor?edit=new'">New Question</a>
   </main>
 </body>
 

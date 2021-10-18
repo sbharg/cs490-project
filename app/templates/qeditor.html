@@ -9,21 +9,92 @@
 
 <body>
   <main id="main-holder">
-    <form action="/updatequestion" method="post">Question ID : {{ question_id }}
-    <br>
-    <textarea id="tbox1" name="tbox1" rows="4" cols="50" placeholder="Question" required></textarea>
-    <br>
-    <input type="submit" value="Update Question" id="questionupload">
-    <br>
-    <br>
+    <form action="/submit-question" method="post">
+      <!-- 
+      {% if question %}
+      Question ID : {{ question.question_id }}
+      {% endif %}
+      <br>
+      <label for="func_name">Function Name:</label>
+      <input type="text" id="func_name" name="func_name" required><br>
+
+      <label for="category">Category:</label>
+      <input type="text" id="category" name="category">
+
+      <label for="fname">Difficulty:</label>
+      <select name="DifficultyType" required>
+        <option value="easy">Easy</option>
+        <option value="med">Medium</option>
+        <option value="hard">Hard</option>
+      </select>
+
+      {% if question %}
+        <textarea id="tbox1" name="tbox1" rows="4" cols="50" placeholder="Question" required> {{ question.question }} </textarea>
+      {% else %}
+        <textarea id="tbox1" name="tbox1" rows="4" cols="50" placeholder="Question" required></textarea>
+      {% endif %}
+      <br>
+      {% if question %}
+        <input type="submit" value="Update Question" id="questionsubmit">
+      {% else %}
+        <input type="submit" value="Add Question" id="questionsubmit">
+      {% endif %}
+      <br>
+      <br>
+      -->
+
+      {% if question %}
+        Question ID : {{ question.question_id }}
+        <br>
+        <label for="func_name">Function Name:</label>
+        <input type="text" id="func_name" name="func_name" value="{{ question.func_name }}" required><br>
+
+        <label for="category">Category:</label>
+        <input type="text" id="category" name="category" value="{{ question.category }}">
+
+        <label for="fname">Difficulty:</label>
+        <select name="DifficultyType" required>
+          <option value="easy" {% if question.difficulty == "easy" %} selected {% endif %}>Easy</option>
+          <option value="medi" {% if question.difficulty == "medi" %} selected {% endif %}>Medium</option>
+          <option value="hard" {% if question.difficulty == "hard" %} selected {% endif %}>Hard</option>
+        </select>
+
+        <textarea id="tbox1" name="tbox1" rows="4" cols="50" placeholder="Question" required> {{ question.question }} </textarea>
+        <label for="category">Points:</label>
+        <input type="text" id="points" name="points" value="{{ question.points }}">
+
+        <input type="submit" value="Update Question" id="question_submit" name="question_submit">
+      {% else %}
+        New Question
+        <br>
+        <label for="func_name">Function Name:</label>
+        <input type="text" id="func_name" name="func_name" required><br>
+
+        <label for="category">Category:</label>
+        <input type="text" id="category" name="category">
+
+        <label for="fname">Difficulty:</label>
+        <select name="DifficultyType" required>
+          <option value="easy">Easy</option>
+          <option value="med">Medium</option>
+          <option value="hard">Hard</option>
+        </select>
+
+        <textarea id="tbox1" name="tbox1" rows="4" cols="50" placeholder="Question" required></textarea>
+        <label for="category">Points:</label>
+        <input type="text" id="points" name="points">
+
+        <input type="submit" value="Add Question" id="question_submit" name="question_submit">
+      {% endif %}
     </form>
 
+    {% if question %}
     Test Cases
     <br>
     {% if testcases %}
       <ul>
         {% for testcase in testcases %}
-        <li></li>
+        <li> Input: {{ testcase.case_input }}, Output: {{ testcase.case_output }} </li>
         {% endfor %}
       </ul>
     {% else %}
@@ -31,28 +102,30 @@
         <li>No Test Cases!</li>
       </ul>
     {% endif %}
-    <form action="/add_testcase" method="post">
+
+    <form action="/add-testcase" method="post">
       Add New Test Case
       <div>
-        <textarea id="tbox2" name="tbox2" rows="4" cols="25" placeholder="Inputs" required>
-        </textarea>
-        <select name="InputType" required>
+        <textarea id="tbox2" name="tbox2" rows="4" cols="25" placeholder="Inputs" required></textarea>
+        <!-- <select name="InputType" required>
           <option value="string">String</option>
           <option value="int">Integer</option>
           <option value="float">Floating Point</option>
         </select>
+        -->
       </div>
       <div>
-        <textarea id="tbox3" name="tbox3" rows="4" cols="25" placeholder="Output" required>
-        </textarea>
-        <select name="InputType" required>
+        <textarea id="tbox3" name="tbox3" rows="4" cols="25" placeholder="Output" required></textarea>
+        <!-- <select name="InputType" required>
           <option value="string">String</option>
           <option value="int">Integer</option>
           <option value="float">Floating Point</option>
         </select>
+        -->
       </div>
-      <input type="submit" value="Add New Test Case" id="questionupload">
+      <input type="submit" value="Add New Test Case" id="testcase_submit">
     </form>
+    {% endif %}
 
   </main>
 </body>
