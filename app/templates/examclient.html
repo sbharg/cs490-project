@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exam</title>
+</head>
+
+<body>
+  {% if questions %}
+  	<table>
+  	{% for question in questions %}
+		{% if loop.index % {{ questionrowmax }} == 0 %}
+			<tr>
+		{% endif %}i
+		<td><a id="cq-select" class="cq-select" onclick="window.location.href='/clientexamq?question_id={{ question.question_id }}';">{{ question.question | truncate(20,true) }}</a></td>
+		{% if (loop.index - 1) % {{ questionrowmax }} == 0 %}
+			</tr>
+		{% endif %}
+	{% endfor %}
+	</table>
+  {% endif %}
+</body>
+
+</html>
