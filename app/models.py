@@ -99,7 +99,7 @@ class Question(db.Model):
     func_name = Column(String(), nullable=False)
     points = Column(Integer, nullable=False)
     category = Column(String())
-    difficulty = Column(String())
+    difficulty = Column(String(4))
 
     testcases = relationship("Testcase")
     exams = relationship("ExamQuestion", back_populates="question")
