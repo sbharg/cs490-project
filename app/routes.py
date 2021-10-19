@@ -1,3 +1,4 @@
+from app.models import Testcase
 from flask import (
     Blueprint, 
     render_template, 
@@ -8,6 +9,8 @@ from flask import (
     session, 
     flash
 )
+from sqlalchemy.sql.functions import func
+from sqlalchemy.exc import IntegrityError
 from app import db
 import app.helpers as help
 from werkzeug.security import check_password_hash
@@ -23,15 +26,22 @@ login_bp = Blueprint(
 @login_bp.before_request
 def before_request():
     g.user = None
+    g.course = None
+    g.question = None
 
     if 'user_id' in session:
         g.user = help.find_user_by_user_id(db, session['user_id'])
+    # Temporary hardcode while course enrollment feature is being worked on
+    if 'course_id' in session:
+        g.course = help.find_course_by_course_id(db, session['course_id'])
+    if 'question_id' in session:
+        g.question = help.find_question_by_question_id(db, session['question_id'])
 
 @login_bp.route('/adminlanding')
 def adminlanding():
     if not g.user or g.user.user_type != 'teacher':
         return redirect(url_for('login_bp.index'))
-    return render_template('adminlanding.html')
+    return render_template('adminlanding.html', loggedperson = g.user.username)
 
 @login_bp.route('/userlanding')
 def userlanding():
@@ -81,27 +91,90 @@ def login():
         elif check_password_hash(user.password_hash, password):
             session.pop('_flashes', None)
             session['user_id'] = user.user_id
+            # Temporary hardcode while course enrollment feature is being worked on
+            session['course_id'] = help.get_user_courses(user)[0].course_id
+
             if user.user_type == "teacher":
                 return redirect(url_for('login_bp.adminlanding'))
             elif user.user_type == "student":
                 return redirect(url_for('login_bp.userlanding'))
         else:
             return "Something went wrong"
-   
-            
-#pseudo code for qbank/selector?
-'''
-@login_bp.route('/qbank', methods = ['POST'])
-def qbank():
+
+@login_bp.route('/questionbank', methods = ['POST', 'GET'])
+def question_bank():
+    try:
+        questions = g.course.questions
+    except:
+        return render_template('qselector.html')
+
     if request.method == 'POST':
-        help.get_questions_in_exam('exam') #I believe this goes here if im reading qselect right
+        session.pop("question_id", None)
+        session['question_id'] = int(request.form["question"])
+        # Redirect to question editor page
+        return redirect(url_for('login_bp.question_editor', edit="update"))
 
-        if request.form['submit_button']:
-            #help.add_questions_to_exam('question', 'exam')
-            #do something here? not sure what you want to return from submit button
-'''
+    if len(questions) > 0:
+        return render_template('qselector.html', questions = questions)
+    else:
+        return render_template('qselector.html')
 
-            
+@login_bp.route('/question-editor', methods = ['POST', 'GET'])
+def question_editor():
+    try:
+        testcases = g.question.testcases
+    except:
+        return render_template('qeditor.html')
+
+    if request.method == 'GET':
+        if request.args.get('edit') == "new":
+            session.pop("question_id", None)
+            g.question = None
+            return render_template('qeditor.html')
+        else:
+            if len(testcases) > 0:
+                return render_template('qeditor.html', testcases = testcases, question = g.question)
+            else:
+                return render_template('qeditor.html', question = g.question)
+    elif request.method == 'POST':
+        return render_template("ERROR")
+
+@login_bp.route('/submit-question', methods = ['POST'])
+def submit_question():
+    if request.method == 'POST':
+        new_question = True if request.form['question_submit'] == "Add Question" else False
+        q_text = request.form['tbox1']
+        cat = request.form['category']
+        diff = request.form['DifficultyType']
+        points = int(request.form['points'])
+        func_name = request.form['func_name']
+        if new_question:
+            question = help.create_question(q_text, g.course, points, cat, diff, func_name)
+            session['question_id'] = question.question_id
+            return render_template('qeditor.html', question = question)
+        else:
+            g.question.question = q_text
+            g.question.func_name = func_name
+            g.question.points = points
+            g.question.category = cat
+            g.question.difficulty = diff
+            db.session.commit()
+
+            return redirect(url_for('login_bp.question_bank'))
+
+@login_bp.route('/add-testcase', methods = ['POST'])
+def add_testcase():
+    if request.method == 'POST':
+        test_inputs = request.form['tbox2']
+        test_output = request.form['tbox3']
+        tcase = Testcase(g.question.question_id, test_inputs, test_output)
+        try:
+            tcase.insert()
+        except IntegrityError:
+            print("Invalid Testcase")
+
+        return render_template('qeditor.html', testcases = g.question.testcases ,question = g.question)
+
 
 #not used atm   
 '''
