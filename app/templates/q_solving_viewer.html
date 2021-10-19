@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Question {{ question.question_id }}</title>
+</head>
+
+<body>
+  <main id="main-holder">
+    <form action="/submit-answer?question_id={{ question.quesiton_id }}" method="post">
+        Question ID : {{ question.question_id }}
+        <br>
+        <br>
+        {{ question.question }}
+        <textarea id="q_answ1" name="q_answ1" rows="4" cols="50" placeholder="Please Code Using Python" required></textarea>
+        <input type="submit" value="Submit" id="answer_submit" name="answer_submit">
+  </main>
+</body>
+
+</html>
