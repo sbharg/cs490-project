@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Exam List</title>
+  <title>Editing Question Bank for Exam {{ current_exam_id }}</title>
 </head>
 
 <!--- new way. will swap if time permits
@@ -35,19 +35,26 @@
 
 <body>
   <main id="main-holder">
-    <form id="exam-select-form" method="post" action="/exambank">
-      <select name="exams" size="20" style="width:90%;" required>
-        <!--- Forloop of exam list--->
-          {% if exams %}
-            {% for exam in exams %}
-              <option value="{{ exam.exam_id }}">{{ exam.exam_id }}</option>
+    <form id="q-select-form" method="post" action="/exam-qbank-remove">
+          {% if q-in-exam %}
+            {% for q-exam in q-in-exam %}
+              <option value="{{ q-exam.question_id }}">{{ q-exam.question_id }}:{{ q-exam.question | truncate(20) }}</option>
             {% endfor %}
           {% endif %}
-      </select>
-
-      <input type="submit" value="Edit" id="ef-selecte">
+          <input type="submit" value="Remove" id="eqf-remove-question">
     </form>
-    <a id="ef-nexam" class="ef-nexam" onclick="window.location.href='/exam-editor?edit=new'">New Exam</a>
+    <form id="new-q-add-form" method="post" action="/exam-qbank-newq">
+    			<div>
+    				<select name="question-to-add" id="q-to-add">
+    				{% if question-bank %}
+            	{% for qtemplate in question-bank %}
+              	<option value="{{ qtemplate.question_id }}">{{ qtemplate.question_id }}:{{ qtemplate.question | truncate(10) }}</option>
+            	{% endfor %}
+          	{% endif %}
+    				</select>
+    				<input type="submit" value="add..." id="eqf-add-question">
+    			</div>
+    </form>
   </main>
 </body>
 

@@ -4,23 +4,40 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Exam</title>
+  <title>Exam {{ exam_id }}</title>
 </head>
-
+<!--- new idea. will swap if time permits
 <body>
-  {% if exam %}
+  {% if questions %}
   	<table>
-  	{% for exam in exams %}
-		{% if loop.index % {{ examrowmax }} == 0 %}
+  	{% for question in questions %}
+		{% if loop.index % {{ qrowmax }} == 0 %}
 			<tr>
 		{% endif %}i
-		<td><a id="cq-select" class="cq-select" onclick="window.location.href='/c_examselector?exam_id={{ exam.exam_id }}';">{{ exam.exam_id }}</a></td>
-		{% if (loop.index - 1) % {{ examrowmax }} == 0 %}
+		<td><a id="cq-select" class="cq-select" onclick="window.location.href='/c_examselector?exam_id={{ question.question_id }}';">{{ question.question | truncate(20) }}</a></td>
+		{% if (loop.index - 1) % {{ qrowmax }} == 0 %}
 			</tr>
 		{% endif %}
 	{% endfor %}
 	</table>
   {% endif %}
+</body>
+--->
+<body>
+  <main id="main-holder">
+    <form id="question-select-form-client" method="post" action="/exam-question-client-begin">
+      <select name="question" size="20" style="width:90%;" required>
+        <!--- Forloop of question list--->
+          {% if questions %}
+            {% for question in questions %}
+              <option value="{{ question.question_id }}">{{ question.question_id }}:{{ question.question }}</option>
+            {% endfor %}
+          {% endif %}
+      </select>
+
+      <input type="submit" value="Solve" id="qf-selectq">
+    </form>
+  </main>
 </body>
 
 </html>
