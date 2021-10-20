@@ -161,6 +161,7 @@ class GradedExamQuestion(db.Model):
     user_id = Column(Integer, primary_key=True)
 
     student_answer = Column(String(), nullable=False)
+    # Proportion of Testcases Passed
     grade = Column(FLOAT, nullable=False)
     comment = Column(String())
 
