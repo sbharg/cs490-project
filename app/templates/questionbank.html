@@ -5,16 +5,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Template Question Bank</title>
+  <link rel="stylesheet" href="../static/select.css">
 </head>
 
 <body>
   <main id="main-holder">
     <form id="question-select-form" method="post" action="/questionbank">
-      <select name="question" size="20" style="width:90%;" required>
+      <select name="question" size="20" style="width:90%;" class="select-css" required>
         <!--- Forloop of question list--->
           {% if questions %}
             {% for question in questions %}
-              <option value="{{ question.question_id }}">{{ question.question_id }}:{{ question.func_name }}</option>
+              <option value="{{ question.question_id }}">{{ question.question_id }}: {{ question.func_name }}</option>
             {% endfor %}
           {% endif %}
       </select>

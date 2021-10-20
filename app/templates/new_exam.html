@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>New Exam</title>
+  <link rel="stylesheet" href="../static/select.css">
 </head>
 
 <body>
@@ -33,7 +34,7 @@
         <form action="/add-question-to-exam" method="post">
             Question Bank
             <div>
-                <select name="question" size="20" style="width:90%;" required>
+                <select name="question" size="20" style="width:90%;" class="select-css" required>
                 {% if question_bank %}
                     {% for question in question_bank %}
                         <option value="{{ question.question_id }}">{{ question.question_id }}:{{ question.func_name }}</option>

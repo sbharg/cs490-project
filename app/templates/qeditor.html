@@ -47,7 +47,12 @@
         Question ID : {{ question.question_id }}
         <br>
         <label for="func_name">Function Name:</label>
-        <input type="text" id="func_name" name="func_name" value="{{ question.func_name }}" required><br>
+        <input type="text" id="func_name" name="func_name" value="{{ question.func_name }}" required>
+        <label for="category">Points:</label>
+        <input type="text" id="points" name="points" value="{{ question.points }}"><br>
+
+        <textarea id="tbox1" name="tbox1" rows="4" cols="50" placeholder="Question" required> {{ question.question }} </textarea>
+        <br>
 
         <label for="category">Category:</label>
         <input type="text" id="category" name="category" value="{{ question.category }}">
@@ -59,16 +64,19 @@
           <option value="hard" {% if question.difficulty == "hard" %} selected {% endif %}>Hard</option>
         </select>
 
-        <textarea id="tbox1" name="tbox1" rows="4" cols="50" placeholder="Question" required> {{ question.question }} </textarea>
-        <label for="category">Points:</label>
-        <input type="text" id="points" name="points" value="{{ question.points }}">
+        <br>
 
         <input type="submit" value="Update Question" id="question_submit" name="question_submit">
       {% else %}
         New Question
         <br>
         <label for="func_name">Function Name:</label>
-        <input type="text" id="func_name" name="func_name" required><br>
+        <input type="text" id="func_name" name="func_name" required>
+        <label for="points">Points:</label>
+        <input type="text" id="points" name="points"><br>
+
+        <textarea id="tbox1" name="tbox1" rows="4" cols="50" placeholder="Question" required></textarea>
+        <br>
 
         <label for="category">Category:</label>
         <input type="text" id="category" name="category">
@@ -80,15 +88,14 @@
           <option value="hard">Hard</option>
         </select>
 
-        <textarea id="tbox1" name="tbox1" rows="4" cols="50" placeholder="Question" required></textarea>
-        <label for="category">Points:</label>
-        <input type="text" id="points" name="points">
+        <br>
 
         <input type="submit" value="Add Question" id="question_submit" name="question_submit">
       {% endif %}
     </form>
 
     {% if question %}
+    <br>
     Test Cases
     <br>
     {% if testcases %}
