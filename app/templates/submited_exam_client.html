@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ exam.username }}'s Exam</title>
+  <link rel="stylesheet" href="../static/select.css">
+</head>
+
+<body>
+    <main id="main-holder">
+        <form action="/view-review" method="post">
+            <h1>{{ exam.username }}'s Exam</h1>
+            <br>
+            <div>
+            <!---Please help me and try to figure out this mess. we need a table of information that has question, points, and the question id. not sure how to do that.--->
+            {% if gradedexamquestions %}
+            <table id="single-exam-question-selector">
+                <tr>
+                    <td>Question ID</td>
+                    <td>Question</td>
+                    <td>Score</td>
+                    <td>Select to View</td>
+                </tr>
+                {% for graded_q in gradedexamquestions %}
+                    <tr>
+                        <td>{{ graded_q.question_id }}</td>
+                        <td>{{ graded_q.question | truncate(10) }}</td>
+                        <td>{{ graded_q.auto_grade_points }}</td>
+                        <td><input type="radio" name="question_selected" value="{{ graded_q.question_id }}" id="{{ graded_q.question_id }}" title="{{ graded_q.question_id }}" /></td>
+                    </tr>
+                {% endfor %}
+            </table>
+            {% endif %}
+            </div>
+            <br>
+            <input type="submit" value="View Question" id="question_submit">
+        </form>
+    </main>
+</body>
+
+</html>
