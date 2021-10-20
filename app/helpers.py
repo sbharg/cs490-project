@@ -200,8 +200,15 @@ def get_submitted_exams(c: Course):
 def find_user_exam(db, u_id, e_id):
     return db.session.query(UserExam).filter(UserExam.user_id == u_id, UserExam.exam_id == e_id).first()
 
-def create_user_exam(u: User, e: Exam):
-    ue = UserExam(e.exam_id, u.user_id)
+def create_user_exam(u: User, e: Exam, visible=False):
+    ue = UserExam(e.exam_id, u.user_id, visible)
     ue.insert()
     return ue
 
+def get_visible_course_exams(c: Course):
+    visibleExams = [e for e in c.exams if e.visible == True]
+    return visibleExams
+
+def get_visible_user_exams(u: User):
+    exams = [e.exam for e in u.submitted_exams if e.visible == True]
+    return exams
