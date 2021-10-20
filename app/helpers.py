@@ -112,6 +112,9 @@ def create_exam(c: Course, visible):
     exam.insert()
     return exam
 
+def find_exam_by_exam_id(db, exam_id):
+    return db.session.query(Exam).filter(Exam.exam_id == exam_id).first()
+
 def add_question_to_exam(q: Question, e: Exam):
     '''
     Adds a question to an exam
@@ -135,7 +138,14 @@ def get_questions_in_exam(e: Exam):
         questions.append(qs.question)
     return questions
 
-def grade_exam_question(eq: ExamQuestion, u: User, ans: str, grade: float, comment=""):
+def get_graded_exam(e: Exam, u: User):
+    graded_questions = []
+    for graded_q in u.exams:
+        if graded_q.exam_id == e.exam_id:
+            graded_questions.append(graded_q)
+    return graded_questions
+
+def grade_exam_question(q: Question, ue: UserExam, ans: str, grade: float, comment=""):
     '''
     Grades an exam question for a specified user
 
@@ -143,7 +153,7 @@ def grade_exam_question(eq: ExamQuestion, u: User, ans: str, grade: float, comme
             The user answer is expected to be a string, while the grade is expected to be a float
     Output: A GradedExamQuestion object
     '''
-    exam_question_grade = GradedExamQuestion(eq.exam_id, eq.question_id, u.user_id, ans, grade, comment)
+    exam_question_grade = GradedExamQuestion(ue.exam_id, q.question_id, ue.user_id, ans, grade, comment)
     exam_question_grade.insert()
     return exam_question_grade
 
@@ -179,3 +189,19 @@ def get_user_grade_on_question(u: User, eq: ExamQuestion):
             return geq.grade
         else:
             return None 
+
+def get_submitted_exams(c: Course):
+    submitted_exams = []
+    for e in c.exams:
+        for sub in e.submitted:
+            submitted_exams.append(sub)
+    return submitted_exams
+
+def find_user_exam(db, u_id, e_id):
+    return db.session.query(UserExam).filter(UserExam.user_id == u_id, UserExam.exam_id == e_id).first()
+
+def create_user_exam(u: User, e: Exam):
+    ue = UserExam(e.exam_id, u.user_id)
+    ue.insert()
+    return ue
+

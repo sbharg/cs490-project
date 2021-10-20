@@ -5,37 +5,39 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Exam {{ exam_id }}</title>
+  <link rel="stylesheet" href="../static/select.css">
 </head>
-<!--- new idea. will swap if time permits
-<body>
-  {% if questions %}
-  	<table>
-  	{% for question in questions %}
-		{% if loop.index % {{ qrowmax }} == 0 %}
-			<tr>
-		{% endif %}i
-		<td><a id="cq-select" class="cq-select" onclick="window.location.href='/c_examselector?exam_id={{ question.question_id }}';">{{ question.question | truncate(20) }}</a></td>
-		{% if (loop.index - 1) % {{ qrowmax }} == 0 %}
-			</tr>
-		{% endif %}
-	{% endfor %}
-	</table>
-  {% endif %}
-</body>
---->
+
 <body>
   <main id="main-holder">
-    <form id="question-select-form-client" method="post" action="/exam-question-client-begin">
-      <select name="question" size="20" style="width:90%;" required>
-        <!--- Forloop of question list--->
+    <form id="question-select-form-client" method="post" action="/submit-answers">
+      <!-- 
+      <select name="question" size="20" style="width:90%;" class="select-css" required>
           {% if questions %}
             {% for question in questions %}
-              <option value="{{ question.question_id }}">{{ question.question_id }}:{{ question.question }}</option>
+              <option value="{{ question.question_id }}">{{ question.question_id }}: {{ question.question }}</option>
             {% endfor %}
           {% endif %}
       </select>
+      -->
 
-      <input type="submit" value="Solve" id="qf-selectq">
+      <br>
+
+      {% if questions %}
+          {% for eq in questions %}
+            Question ID : {{ eq.question_id }}
+            <br>
+            <br>
+            {{ eq.question.question }}
+            <br>
+            <textarea id="q_answ{{ eq.question_id }}" name="q_answ{{ eq.question_id }}" rows="4" cols="50" required></textarea>
+            <!--<input type="submit" value="Submit" id="answer_submit" name="answer_submit">-->
+            <br>
+          {% endfor %}
+      {% endif %}
+
+      <br>
+      <input type="submit" value="Submit" id="qf-selectq">
     </form>
     
     <form id="submitwhole" method="post" action="/exam-submit">

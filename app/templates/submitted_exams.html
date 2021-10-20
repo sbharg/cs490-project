@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Submitted Exams</title>
+  <link rel="stylesheet" href="../static/select.css">
+</head>
+
+<body>
+    <main id="main-holder">
+        <form action="/edit-submission" method="post">
+            Submitted Exams
+            <br>
+            <div>
+                <select name="exam" size="20" style="width:90%;" class="select-css" required>
+                {% if submitted_exams %}
+                    {% for exam in submitted_exams %}
+                        <option value="{{ exam.exam_id }},{{ exam.user_id }}">Exam {{ exam.exam_id }} submitted by {{ exam.user_id }}:{{ exam.user.username }}</option>
+                    {% endfor %}
+                {% endif %}
+                </select>
+            </div>
+            <br>
+            <input type="submit" value="Edit and Review Submission" id="question_submit">
+        </form>
+
+    </main>
+</body>
+
+</html>

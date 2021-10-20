@@ -1,5 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship
+from sqlalchemy.sql.functions import user
 from sqlalchemy.sql.schema import Column, ForeignKey, ForeignKeyConstraint
 from sqlalchemy.sql.sqltypes import Boolean, FLOAT, Integer, String
 
@@ -15,7 +16,7 @@ class User(db.Model):
     # Many to many relation
     courses = relationship("UserCourse", back_populates="user")
     # One to many relation
-    exams = relationship("GradedExamQuestion")
+    submitted_exams = relationship("UserExam", back_populates="user")
 
     def __init__(self, username, password_hash, user_type):
         self.username = username
@@ -37,6 +38,7 @@ class Course(db.Model):
     users = relationship("UserCourse", back_populates="course")
     # One to many relation
     questions = relationship("Question")
+    exams = relationship("Exam")
 
     def __init__(self, class_name, class_password_hash):
         self.course_name = class_name    
@@ -66,30 +68,6 @@ class UserCourse(db.Model):
         db.session.commit()
     def update(self):
         db.session.commit()
-
-'''
-class QuestionCluster(db.Model):
-    __tablename__ = 'question_clusters'
-    cluster_id = Column(Integer, primary_key=True)
-    course_id = Column(ForeignKey('courses.course_id'), nullable=False)
-    category = Column(String())
-    difficulty = Column(String())
-
-    # One to Many relation
-    questions = relationship("Question")
-    # Many to Many relation
-    exams = relationship("ExamQuestionCluster", back_populates="cluster")
-
-    def __init__(self, course_id, category, difficulty):
-        self.course_id = course_id
-        self.category = category
-        self.difficulty = difficulty
-    def insert(self):
-        db.session.add(self)
-        db.session.commit()
-    def update(self):
-        db.session.commit()
-'''
 
 class Question(db.Model):
     __tablename__ = 'questions'
@@ -121,9 +99,9 @@ class Testcase(db.Model):
     __tablename__ = 'testcases'
     testcase_id = Column(Integer, primary_key=True)
     question_id = Column(ForeignKey('questions.question_id'), nullable=False)
-    case_input = Column(String(), nullable=False, unique=True)
+    case_input = Column(String(), nullable=False)
     #input_type = Column(String(), nullable=False)
-    case_output = Column(String(), nullable=False, unique=True)
+    case_output = Column(String(), nullable=False)
     #output_type = Column(String(), nullable=False)
 
     def __init__(self, question_id, case_input, case_output):
@@ -146,6 +124,7 @@ class Exam(db.Model):
 
     # Many to Many relation
     questions = relationship("ExamQuestion", back_populates="exam")
+    submitted = relationship("UserExam", back_populates="exam")
 
     def __init__(self, course_id, visible):
         self.course_id = course_id
@@ -163,7 +142,8 @@ class ExamQuestion(db.Model):
 
     exam = relationship("Exam", back_populates="questions")
     question = relationship("Question", back_populates="exams")
-    grades = relationship("GradedExamQuestion")
+
+    grades = relationship("GradedExamQuestion", viewonly=True, back_populates="exam_question")
 
     def __init__(self, exam_id, question_id):
         self.exam_id = exam_id
@@ -178,14 +158,18 @@ class GradedExamQuestion(db.Model):
     __tablename__ = 'graded_exam_questions'
     exam_id = Column(Integer, primary_key=True)
     question_id = Column(Integer, primary_key=True)
-    user_id = Column(ForeignKey('users.user_id'), primary_key=True)
+    user_id = Column(Integer, primary_key=True)
+
     student_answer = Column(String(), nullable=False)
     grade = Column(FLOAT, nullable=False)
     comment = Column(String())
 
     __table_args__ = (ForeignKeyConstraint(['exam_id', 'question_id'], 
                                            ['exam_questions.exam_id', 'exam_questions.question_id']), 
-                      {})
+                    ForeignKeyConstraint(['exam_id', 'user_id'], 
+                                        ['user_exams.exam_id', 'user_exams.user_id']),
+                    {})
+    exam_question = relationship("ExamQuestion", back_populates="grades", uselist=False, viewonly=True)
 
     def __init__(self, exam_id, question_id, user_id, student_answer, grade, comment):
         self.exam_id = exam_id
@@ -194,6 +178,28 @@ class GradedExamQuestion(db.Model):
         self.grade = grade
         self.student_answer = student_answer
         self.comment = comment
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+    def update(self):
+        db.session.commit()
+
+class UserExam(db.Model):
+    __tablename__ = 'user_exams'
+    exam_id = Column(ForeignKey('exams.exam_id'), primary_key=True)
+    user_id = Column(ForeignKey('users.user_id'), primary_key=True)
+    #final_grade = Column(FLOAT)
+
+    # One to many relation
+    questions = relationship("GradedExamQuestion")
+
+    user = relationship("User", back_populates="submitted_exams")
+    exam = relationship("Exam", back_populates="submitted")
+    
+    def __init__(self, exam_id, user_id):
+        self.exam_id = exam_id
+        self.user_id = user_id
+        #self.final_grade = final_grade
     def insert(self):
         db.session.add(self)
         db.session.commit()
