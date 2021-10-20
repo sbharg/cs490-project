@@ -12,6 +12,8 @@
   <main id="main-holder">
     
       <h1>Question ID : {{ question.question_id }}</h1>
+      <textarea readonly>{{ question.question }}</textarea>
+      <br>
       <textarea readonly>{{ question.answer }}</textarea>
       <br>
       <!---Test case system re-edit required. --->
@@ -41,6 +43,7 @@
       <br>
       <br>
       <b>Score</b>
+      <br>
       <input type="number" value="{{ ((success/question.testcases|length)*question.points)|float }}" required></input>/{{question.points}}
       <br>
       <textarea id="question-comment" placeholder="Comments"></textarea>
