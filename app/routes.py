@@ -29,6 +29,7 @@ def before_request():
     g.course = None
     g.question = None
     g.exam = None
+    g.submitted_exam = None
 
     if 'user_id' in session:
         g.user = help.find_user_by_user_id(db, session['user_id'])
@@ -39,6 +40,8 @@ def before_request():
         g.question = help.find_question_by_question_id(db, session['question_id'])
     if 'exam_id' in session:
         g.exam = help.find_exam_by_exam_id(db, session['exam_id'])
+    if 'submitted_exam' in session:
+        g.submitted_exam = help.find_user_exam(db, session['submitted_exam'][0], session['submitted_exam'][1])
 
 @login_bp.route('/adminlanding')
 def adminlanding():
@@ -50,7 +53,11 @@ def adminlanding():
 def userlanding():
     if not g.user or g.user.user_type != 'student':
         return redirect(url_for('login_bp.index'))
-    return render_template('userlanding.html')
+    visibleExams = []
+    for exam in g.course.exams:
+        if exam.visible:
+            visibleExams.append(exam)
+    return render_template('userlanding.html', exams=visibleExams)
 
 @login_bp.route('/')
 def index():
@@ -178,34 +185,13 @@ def add_testcase():
 
         return render_template('qeditor.html', testcases = g.question.testcases ,question = g.question)
 
-
 @login_bp.route('/new-exam', methods = ['GET'])
 def new_exam():
-    '''
-    try:
-        examq = g.exam.questions
-    except:
-        return render_template('new_exam.html')
-    '''
     if request.method == 'GET':
         exam = help.create_exam(g.course, False)
         session['exam_id'] = exam.exam_id
-        # Create a g.exam thing like how we made g.question and g.course
         return render_template('new_exam.html', question_bank=g.course.questions)
 
-        '''
-        if request.args.get('edit') == "new":
-            session.pop("exam_id", None)
-            g.exam = None
-            return render_template('new_exam.html')
-        else:
-            if len(examq) > 0:
-                return render_template('new_exam.html', - , - )
-            else:
-                return render_template('new_exam.html', question_bank=g.course.questions)
-        elif request.method == 'POST':
-            return render_template("ERROR")
-        '''
 @login_bp.route('/add-question-to-exam', methods = ['POST'])
 def add_question_to_exam():
     if request.method == 'POST':
@@ -222,3 +208,48 @@ def publish_exam():
         db.session.commit()
         return redirect(url_for('login_bp.adminlanding'))
 
+@login_bp.route('/submitted-exams', methods = ['GET'])
+def submitted_exams():
+    if request.method == 'GET':
+        submitted_exams = help.get_submitted_exams(g.course)
+        return render_template('submitted_exams.html', submitted_exams=submitted_exams)
+
+@login_bp.route('/edit-submission', methods = ['POST'])
+def edit_submission():
+    if request.method == 'POST':
+        session.pop("submitted_exam", None)
+        val = request.form["exam"]
+        e_id, _, u_id = val.partition(',')
+        session['submitted_exam'] = [int(e_id), int(u_id)]
+
+        # Redirect to exam submission editor page
+        #return redirect(url_for('login_bp.question_editor', edit="update"))
+        print("Working on this")
+
+@login_bp.route('/begin-exam', methods = ['POST'])
+def begin_exam():
+    if request.method == 'POST':
+        session.pop("exam_id", None)
+        session['exam_id'] = request.form['exam-selection']
+        return redirect(url_for('login_bp.exam', exam=session['exam_id']))
+
+@login_bp.route('/exam', methods = ['POST', 'GET'])
+def exam():
+    if request.method == 'GET':
+        for q in g.exam.questions:
+            print(q.question)
+        return render_template('questionselectorclient.html', exam_id=g.exam.exam_id, questions=g.exam.questions)
+
+@login_bp.route('/submit-answers', methods = ['POST'])
+def submit_answers():
+    if request.method == 'POST':
+        ue = help.create_user_exam(g.user, g.exam)
+        for key, val in request.form.items():
+            if key.startswith("q_answ"):
+                question_id = int(key[6:])
+                q = help.find_question_by_question_id(db, question_id)
+                '''
+                insert code tester here to get grade
+                '''
+                geq = help.grade_exam_question(q, ue, val, 0)
+        return redirect(url_for('login_bp.userlanding'))
