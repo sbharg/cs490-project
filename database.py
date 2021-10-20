@@ -42,17 +42,17 @@ def init_db(env):
     add_user_to_course(user3, course1)
     add_user_to_course(user4, course1)
 
-    e = create_exam(course1, False)
+    e = create_exam(course1, True)
     eq1 = add_question_to_exam(q1, e)
     eq2 = add_question_to_exam(q2, e)
 
-    sub_exam = user_take_exam(user2, e)
-    ge1 = grade_exam_question(eq1, sub_exam, "asdfasdfasdf", 8.9, "qwerty")
-    ge2 = grade_exam_question(eq2, sub_exam, "bababhdkbaf", 9.9, "masdf")
+    sub_exam = create_user_exam(user2, e)
+    ge1 = grade_exam_question(q1, sub_exam, "asdfasdfasdf", 8.9, "qwerty")
+    ge2 = grade_exam_question(q2, sub_exam, "bababhdkbaf", 9.9, "masdf")
 
-    sub_exam2 = user_take_exam(user3, e)
-    ge1 = grade_exam_question(eq1, sub_exam2, "bhbcbxzvuoi", 8.9, "mkmj")
-    ge2 = grade_exam_question(eq2, sub_exam2, "pokpkvzc", 9.9, "njn")
+    sub_exam2 = create_user_exam(user3, e)
+    ge1 = grade_exam_question(q1, sub_exam2, "bhbcbxzvuoi", 8.9, "mkmj")
+    ge2 = grade_exam_question(q2, sub_exam2, "pokpkvzc", 9.9, "njn")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -69,3 +69,10 @@ if __name__ == "__main__":
     
     with app.app_context():
         init_db(env)
+
+
+'''
+def plus_six(x):\r return x+6
+
+def factorial(x):\r fact = 1\r for i in range(1, x+1):\r  fact*=i\r return fact
+'''

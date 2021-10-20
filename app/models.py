@@ -188,7 +188,7 @@ class UserExam(db.Model):
     __tablename__ = 'user_exams'
     exam_id = Column(ForeignKey('exams.exam_id'), primary_key=True)
     user_id = Column(ForeignKey('users.user_id'), primary_key=True)
-    final_grade = Column(FLOAT)
+    #final_grade = Column(FLOAT)
 
     # One to many relation
     questions = relationship("GradedExamQuestion")
@@ -196,10 +196,10 @@ class UserExam(db.Model):
     user = relationship("User", back_populates="submitted_exams")
     exam = relationship("Exam", back_populates="submitted")
     
-    def __init__(self, exam_id, user_id, final_grade):
+    def __init__(self, exam_id, user_id):
         self.exam_id = exam_id
         self.user_id = user_id
-        self.final_grade = final_grade
+        #self.final_grade = final_grade
     def insert(self):
         db.session.add(self)
         db.session.commit()

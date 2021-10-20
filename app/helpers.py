@@ -145,7 +145,7 @@ def get_graded_exam(e: Exam, u: User):
             graded_questions.append(graded_q)
     return graded_questions
 
-def grade_exam_question(eq: ExamQuestion, ue: UserExam, ans: str, grade: float, comment=""):
+def grade_exam_question(q: Question, ue: UserExam, ans: str, grade: float, comment=""):
     '''
     Grades an exam question for a specified user
 
@@ -153,7 +153,7 @@ def grade_exam_question(eq: ExamQuestion, ue: UserExam, ans: str, grade: float, 
             The user answer is expected to be a string, while the grade is expected to be a float
     Output: A GradedExamQuestion object
     '''
-    exam_question_grade = GradedExamQuestion(eq.exam_id, eq.question_id, ue.user_id, ans, grade, comment)
+    exam_question_grade = GradedExamQuestion(ue.exam_id, q.question_id, ue.user_id, ans, grade, comment)
     exam_question_grade.insert()
     return exam_question_grade
 
@@ -197,10 +197,11 @@ def get_submitted_exams(c: Course):
             submitted_exams.append(sub)
     return submitted_exams
 
-def user_take_exam(u: User, e: Exam):
-    ue = UserExam(e.exam_id, u.user_id, 0)
+def find_user_exam(db, u_id, e_id):
+    return db.session.query(UserExam).filter(UserExam.user_id == u_id, UserExam.exam_id == e_id).first()
+
+def create_user_exam(u: User, e: Exam):
+    ue = UserExam(e.exam_id, u.user_id)
     ue.insert()
     return ue
 
-def find_user_exam(db, u_id, e_id):
-    return db.session.query(UserExam).filter(UserExam.user_id == u_id, UserExam.exam_id == e_id).first()
