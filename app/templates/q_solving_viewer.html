@@ -10,12 +10,13 @@
 <body>
   <main id="main-holder">
     <form action="/submit-answer?question_id={{ question.quesiton_id }}" method="post">
-        Question ID : {{ question.question_id }}
+        <h1>Question ID : {{ question.question_id }}</h1>
         <br>
         <br>
         {{ question.question }}
         <textarea id="q_answ1" name="q_answ1" rows="4" cols="50" placeholder="Please Code Using Python" required></textarea>
         <input type="submit" value="Submit" id="answer_submit" name="answer_submit">
+    </form>
   </main>
 </body>
 
