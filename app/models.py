@@ -98,9 +98,9 @@ class Testcase(db.Model):
     __tablename__ = 'testcases'
     testcase_id = Column(Integer, primary_key=True)
     question_id = Column(ForeignKey('questions.question_id'), nullable=False)
-    case_input = Column(String(), nullable=False, unique=True)
+    case_input = Column(String(), nullable=False)
     #input_type = Column(String(), nullable=False)
-    case_output = Column(String(), nullable=False, unique=True)
+    case_output = Column(String(), nullable=False)
     #output_type = Column(String(), nullable=False)
 
     def __init__(self, question_id, case_input, case_output):
