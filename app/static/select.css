@@ -37,3 +37,7 @@
 .select-css option {
 	font-weight:normal;
 }
+
+table, th, td {
+  border: 1px solid black;
+}
