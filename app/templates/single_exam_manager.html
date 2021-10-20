@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Question Editor</title>
+  <link rel="stylesheet" href="../static/select.css">
+</head>
+
+<body>
+  <main id="main-holder">
+    <form action="/submition-question-edit" method="post">
+      <h1>Question ID : {{ question.question_id }}</h1>
+      <textarea readonly>{{ question.answer }}</textarea>
+      <br>
+      <!---Test case system re-edit required. --->
+      <table>
+        <tr>
+          <td>Test Case</td>
+          <td>Success?</td>
+        </tr>
+        {% if question.testcases %}
+          {% for tcase in question.testcases %}
+          <tr>
+            <td>{{ tcase.case_input }} -> {{ tcase.case_output }}</td>
+            <td>{{ tcase.success }}</td>
+          </tr>
+          {% endfor %}
+        {% endif %}
+      </table>
+
+    </form>
+  </main>
+</body>
+
+</html>
