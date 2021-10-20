@@ -28,6 +28,7 @@ def before_request():
     g.user = None
     g.course = None
     g.question = None
+    g.exam = None
 
     if 'user_id' in session:
         g.user = help.find_user_by_user_id(db, session['user_id'])
@@ -36,6 +37,8 @@ def before_request():
         g.course = help.find_course_by_course_id(db, session['course_id'])
     if 'question_id' in session:
         g.question = help.find_question_by_question_id(db, session['question_id'])
+    if 'exam_id' in session:
+        g.exam = help.find_exam_by_exam_id(db, session['exam_id'])
 
 @login_bp.route('/adminlanding')
 def adminlanding():
@@ -175,6 +178,74 @@ def add_testcase():
 
         return render_template('qeditor.html', testcases = g.question.testcases ,question = g.question)
 
+
+@login_bp.route('/new-exam', methods = ['GET'])
+def new_exam():
+    '''
+    try:
+        examq = g.exam.questions
+    except:
+        return render_template('new_exam.html')
+    '''
+    if request.method == 'GET':
+        exam = help.create_exam(g.course, False)
+        session['exam_id'] = exam.exam_id
+        # Create a g.exam thing like how we made g.question and g.course
+        '''
+        if request.args.get('edit') == "new":
+            session.pop("exam_id", None)
+            g.exam = None
+            return render_template('new_exam.html')
+        else:
+            if len(examq) > 0:
+                return render_template('new_exam.html', - , - )
+            else:
+                return render_template('new_exam.html', question_bank=g.course.questions)
+    elif request.method == 'POST':
+        return render_template("ERROR")
+    '''
+@login_bp.route('/add-question-to-exam', methods = ['POST'])
+def add_question_to_exam():
+    if request.method == 'POST':
+        question_id = int(request.form["question"])
+        q = help.find_question_by_question_id(db, question_id)
+        help.add_question_to_exam(q, g.exam)
+        eqs = help.get_questions_in_exam(g.exam)
+        return render_template('new_exam.html', exam_questions = eqs, question_bank=g.course.questions)
+
+@login_bp.route('/publish-exam', methods = ['POST'])
+def publish_exam():
+    if request.method == 'POST':
+        g.exam.visible = True
+        db.session.commit()
+        return redirect(url_for('login_bp.adminlanding'))
+
+
+#Exam editor not needed atm
+'''
+@login_bp.route('/exeditor', methods = ['POST', 'GET'])
+def exam_edit():
+    try:
+        questions = g.course.questions
+    except:
+        return render_template('exampackeditoradmin.html')
+
+    if request.method == 'POST':
+        session.pop("question_id", None)
+        session['question_id'] = int(request.form["question"])
+        # Redirect to exam editor page
+        return redirect(url_for('login_bp.exam_update', edit="update"))
+
+    if len(questions) > 0:
+        return render_template('exampackeditoradmin.html', questions = questions)
+    else:
+        return render_template('exampackeditoradmin.html')
+
+@login_bp.route('/exam-edit', methods = ['POST'])
+def exam_update():
+
+    return render_template('exampackeditoradmin.html')
+'''
 
 #not used atm   
 '''
