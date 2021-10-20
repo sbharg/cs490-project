@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ exam.username }}:{{ question.question_id }}</title>
+  <link rel="stylesheet" href="../static/select.css">
+</head>
+<!--- same as rest of the other files, please fix the data structure (where it brings the data) I tried to make clear which data is needed where --->
+<body>
+  <main id="main-holder">
+    
+      <h1>Question ID : {{ question.question_id }}</h1>
+      {{ question.question }}
+      <br>
+      <textarea readonly>{{ question.answer }}</textarea>
+      <br>
+      <!---Test case system re-edit required. --->
+      <table>
+        <tr>
+          <td>Test Case</td>
+          <td>Success?</td>
+        </tr>
+        {% set success=0 %}
+        {% if question.testcases %}
+          {% for tcase in question.testcases %}
+          <tr>
+            <td>{{ tcase.case_input }} -> {{ tcase.case_output }}</td>
+            <td>{{ tcase.success }}</td>
+            {% if tcase.success=true %}
+              {% set success=success+1 %}
+            {% endif %}
+          </tr>
+          {% endfor %}
+        {% endif %}
+        <tr>
+          <td>Total</td>
+          <td>{{ success }}</td>
+        </tr>
+      </table>
+      <br>
+      <br>
+      <b>Score</b>
+      <br>
+      {{ actual points }}/<b>{{ max points }}</b>
+      <br>
+      <textarea id="question-comment" placeholder="Comments" readonly>{{ question.comments }}</textarea>
+  </main>
+</body>
+
+</html>
