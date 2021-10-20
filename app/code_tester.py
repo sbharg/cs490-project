@@ -1,4 +1,4 @@
-from models import Testcase
+from app.models import Testcase
 
 class CodeTester():
 
@@ -36,7 +36,9 @@ class CodeTester():
         Method to test a single testcase
 
         Input: case  --  Testcase object
-        Output: returns 1 if the testcase is passed, 0 otherwise
+        Output: returns an array containing and integer and a string
+                If the function passes the testcase, the int is a one and zero otherwise.
+                The string returned is the user's output to the input, or None if there is a failure somewhere
         '''
 
         test_input = case.case_input
@@ -44,12 +46,12 @@ class CodeTester():
 
         # Edge Case: func is empty string
         if(self.func.replace(' ', '') == ""):
-            return 0
+            return [0, None]
 
         try:
             exec(self.func)                         # Executes the user defined function and makes it callable
         except SyntaxError:
-            return 0                       
+            return [0, None]                       
 
         global_params = {}                          # Allows execution of only __builtins__ functions      
 
@@ -61,12 +63,12 @@ class CodeTester():
         try:
             out = eval(self.func_name + '(%s)' % test_input, global_params, local_params)
         except NameError:
-            return 0
+            return [0, None]
         
         if str(out) != test_output:
-            return 0
+            return [0, out]
         else:
-            return 1
+            return [1, out]
 
     def test_on_cases(self, test_cases: list[Testcase]):
         '''
@@ -77,7 +79,7 @@ class CodeTester():
         '''
         cases_passed = 0
         for case in test_cases:
-            cases_passed += self.test_single_case(case)
+            cases_passed += self.test_single_case(case)[0]
         prop_passed = cases_passed / len(test_cases)
         return prop_passed
 
@@ -87,7 +89,7 @@ if __name__ == "__main__":
     code = """def test(a):
             return a+5
     """
-    tester = CodeTester(code)
+    tester = CodeTester(code, 'test')
 
     case1 = Testcase(1, "1", "int", "6", "int")
     case2 = Testcase(1, "2", "int", "7", "int")
