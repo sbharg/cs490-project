@@ -37,6 +37,7 @@ class Course(db.Model):
     users = relationship("UserCourse", back_populates="course")
     # One to many relation
     questions = relationship("Question")
+    exams = relationship("Exam")
 
     def __init__(self, class_name, class_password_hash):
         self.course_name = class_name    
@@ -66,30 +67,6 @@ class UserCourse(db.Model):
         db.session.commit()
     def update(self):
         db.session.commit()
-
-'''
-class QuestionCluster(db.Model):
-    __tablename__ = 'question_clusters'
-    cluster_id = Column(Integer, primary_key=True)
-    course_id = Column(ForeignKey('courses.course_id'), nullable=False)
-    category = Column(String())
-    difficulty = Column(String())
-
-    # One to Many relation
-    questions = relationship("Question")
-    # Many to Many relation
-    exams = relationship("ExamQuestionCluster", back_populates="cluster")
-
-    def __init__(self, course_id, category, difficulty):
-        self.course_id = course_id
-        self.category = category
-        self.difficulty = difficulty
-    def insert(self):
-        db.session.add(self)
-        db.session.commit()
-    def update(self):
-        db.session.commit()
-'''
 
 class Question(db.Model):
     __tablename__ = 'questions'
@@ -199,3 +176,12 @@ class GradedExamQuestion(db.Model):
         db.session.commit()
     def update(self):
         db.session.commit()
+
+'''
+def SubmittedExam(db.Model):
+    __tablename__ = 'submitted_exams'
+    exam_id = Column(Integer, primary_key=True)
+    user_id = Column(ForeignKey('users.user_id'), primary_key=True)
+    course_id = Column(ForeignKey('courses.course_id'), primary_key=True)
+    asdf
+'''
