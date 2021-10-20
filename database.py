@@ -29,8 +29,8 @@ def init_db(env):
     q2_text = "Write a function called factorial that takes an integer x as input and returns x!"
     q2 = create_question(q2_text, course1, 10, "for loop", "easy", "factorial")
 
-    t1_1 = create_testcase(q1, "1", "6")
-    t2_1 = create_testcase(q1, "2", "7")
+    t1_1 = create_testcase(q1, "1", "7")
+    t2_1 = create_testcase(q1, "2", "8")
     t3_1 = create_testcase(q1, "3", "9")
 
     t1_2 = create_testcase(q2, "1", "1")
@@ -47,12 +47,12 @@ def init_db(env):
     eq2 = add_question_to_exam(q2, e)
 
     sub_exam = create_user_exam(user2, e)
-    ge1 = grade_exam_question(q1, sub_exam, "asdfasdfasdf", 8.9, "qwerty")
-    ge2 = grade_exam_question(q2, sub_exam, "bababhdkbaf", 9.9, "masdf")
+    ge1 = grade_exam_question(q1, sub_exam, "def plus_six(x):\r return x+6", 0, "")
+    ge2 = grade_exam_question(q2, sub_exam, "def factorial(x):\r fact = 1\r for i in range(1, x+1):\r  fact*=i\r return fact", 0, "")
 
     sub_exam2 = create_user_exam(user3, e)
-    ge1 = grade_exam_question(q1, sub_exam2, "bhbcbxzvuoi", 8.9, "mkmj")
-    ge2 = grade_exam_question(q2, sub_exam2, "pokpkvzc", 9.9, "njn")
+    ge1 = grade_exam_question(q1, sub_exam2, "bhbcbxzvuoi", 0, "mkmj")
+    ge2 = grade_exam_question(q2, sub_exam2, "pokpkvzc", 0, "njn")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
