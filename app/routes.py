@@ -53,11 +53,7 @@ def adminlanding():
 def userlanding():
     if not g.user or g.user.user_type != 'student':
         return redirect(url_for('login_bp.index'))
-    visibleExams = []
-    for exam in g.course.exams:
-        if exam.visible:
-            visibleExams.append(exam)
-    return render_template('userlanding.html', exams=visibleExams)
+    return render_template('userlanding.html', loggedperson = g.user.username)
 
 @login_bp.route('/')
 def index():
@@ -253,3 +249,13 @@ def submit_answers():
                 '''
                 geq = help.grade_exam_question(q, ue, val, 0)
         return redirect(url_for('login_bp.userlanding'))
+
+@login_bp.route('/available-exams', methods = ['GET'])
+def available_exams():
+    if request.method == 'GET':
+        return render_template('user_available_exams_selector.html', exams = help.get_visible_course_exams(g.course))
+
+@login_bp.route('/exam-grades', methods = ['GET'])
+def exam_results():
+    if request.method == 'GET':
+        return render_template('user_exam_result_selector.html', exams = help.get_visible_user_exams(g.user))
