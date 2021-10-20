@@ -14,7 +14,7 @@
         <!--- Forloop of question list--->
           {% if questions %}
             {% for question in questions %}
-              <option value="{{ question.question_id }}">{{ question.question_id }}:{{ question.question }}</option>
+              <option value="{{ question.question_id }}">{{ question.question_id }}:{{ question.func_name }}</option>
             {% endfor %}
           {% endif %}
       </select>
