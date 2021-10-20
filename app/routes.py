@@ -109,7 +109,7 @@ def question_bank():
     try:
         questions = g.course.questions
     except:
-        return render_template('qselector.html')
+        return render_template('questionbank.html')
 
     if request.method == 'POST':
         session.pop("question_id", None)
@@ -118,9 +118,9 @@ def question_bank():
         return redirect(url_for('login_bp.question_editor', edit="update"))
 
     if len(questions) > 0:
-        return render_template('qselector.html', questions = questions)
+        return render_template('questionbank.html', questions = questions)
     else:
-        return render_template('qselector.html')
+        return render_template('questionbank.html')
 
 @login_bp.route('/question-editor', methods = ['POST', 'GET'])
 def question_editor():
@@ -191,6 +191,8 @@ def new_exam():
         exam = help.create_exam(g.course, False)
         session['exam_id'] = exam.exam_id
         # Create a g.exam thing like how we made g.question and g.course
+        return render_template('new_exam.html', question_bank=g.course.questions)
+
         '''
         if request.args.get('edit') == "new":
             session.pop("exam_id", None)
@@ -201,9 +203,9 @@ def new_exam():
                 return render_template('new_exam.html', - , - )
             else:
                 return render_template('new_exam.html', question_bank=g.course.questions)
-    elif request.method == 'POST':
-        return render_template("ERROR")
-    '''
+        elif request.method == 'POST':
+            return render_template("ERROR")
+        '''
 @login_bp.route('/add-question-to-exam', methods = ['POST'])
 def add_question_to_exam():
     if request.method == 'POST':
@@ -220,49 +222,3 @@ def publish_exam():
         db.session.commit()
         return redirect(url_for('login_bp.adminlanding'))
 
-
-#Exam editor not needed atm
-'''
-@login_bp.route('/exeditor', methods = ['POST', 'GET'])
-def exam_edit():
-    try:
-        questions = g.course.questions
-    except:
-        return render_template('exampackeditoradmin.html')
-
-    if request.method == 'POST':
-        session.pop("question_id", None)
-        session['question_id'] = int(request.form["question"])
-        # Redirect to exam editor page
-        return redirect(url_for('login_bp.exam_update', edit="update"))
-
-    if len(questions) > 0:
-        return render_template('exampackeditoradmin.html', questions = questions)
-    else:
-        return render_template('exampackeditoradmin.html')
-
-@login_bp.route('/exam-edit', methods = ['POST'])
-def exam_update():
-
-    return render_template('exampackeditoradmin.html')
-'''
-
-#not used atm   
-'''
-@login_bp.route('/question', methods = ['POST'])
-def question():
-    if request.method == 'POST':
-        courseid = session['course_id']
-        cat = request.form['cat']
-        diff = request.form['diff']
-
-        cluster = help.create_question_cluster(courseid, cat, diff)
-
-        text = request.form('text')
-        func = request.form('func')
-        numofQ = request.form('num')
-
-        for x in numofQ:
-            question = help.create_question(text, cluster, func)
-            #cluster.questions.append(question)
-'''
