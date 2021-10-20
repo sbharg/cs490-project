@@ -112,6 +112,9 @@ def create_exam(c: Course, visible):
     exam.insert()
     return exam
 
+def find_exam_by_exam_id(db, exam_id):
+    return db.session.query(Exam).filter(Exam.exam_id == exam_id).first()
+
 def add_question_to_exam(q: Question, e: Exam):
     '''
     Adds a question to an exam
@@ -134,6 +137,20 @@ def get_questions_in_exam(e: Exam):
     for qs in e.questions:
         questions.append(qs.question)
     return questions
+
+def get_graded_exam(e: Exam, u: User):
+    graded_questions = []
+    for graded_q in u.exams:
+        if graded_q.exam_id == e.exam_id:
+            graded_questions.append(graded_q)
+    return graded_questions
+
+def get_submitted_exams(c: Course):
+    submitted_exams = []
+    for exam in c.exams:
+        for uc in c.users:
+            submitted_exams.append(get_graded_exam(exam, uc.user))
+    return submitted_exams
 
 def grade_exam_question(eq: ExamQuestion, u: User, ans: str, grade: float, comment=""):
     '''
