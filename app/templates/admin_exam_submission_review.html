@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ user_exam.user.username }}'s Exam</title>
+  <link rel="stylesheet" href="../static/select.css">
+</head>
+
+<body>
+    <main id="main-holder">
+
+        <form action="/release_exam" method="post">
+            <input type="submit" value="Show Tescase Information" id="exam_edit_submit">
+            <h1>Results</h1>
+            <br>
+            <div>
+                {% if gradedexamquestions %}
+                    {% for gq in gradedexamquestions %}
+                        Question ID: {{ gq.question_id }}
+                        <br>
+                        {{ gq.exam_question.question.question }}
+                        <br>
+                        Student Answer:<br>
+                        <textarea id="student_ans{{ gq.question_id }}" name="student_answ{{ gq.question_id }}" rows="4" cols="50" readonly>
+{{ gq.student_answer }}
+                        </textarea>
+                        <br>
+
+                        <label for="points">Points:</label><br>
+                        <input type="text" id="points{{ gq.question_id }}" name="points{{ gq.exam_id }}/{{ gq.question_id }}/{{ gq.user_id }}" value="{{ gq.grade * gq.exam_question.question.points }}"><br>
+                        <br>
+
+                        {% with code_tester = CodeTester(gq.student_answer, gq.exam_question.question.func_name) %}
+                        Func Name -> {% if code_tester.check_func_name() %} Pass {% else %} Fail {% endif %}<br>
+                        {% for testcase in gq.exam_question.question.testcases %}
+                            Inputs: {{ testcase.case_input }}, Output: {{ testcase.case_output }}, Student Output: {{ code_tester.test_single_case(testcase)[1] }} -> {% if code_tester.test_single_case(testcase)[0] == 1 %} Pass {% else %} Fail {% endif %}
+                            <br>
+                        {% endfor %}
+                        {% endwith %}
+
+                        <label for="comment"></label>Comment:</label><br>
+                        <textarea id="teacher_com{{ gq.question_id }}" name="teacher_com{{ gq.exam_id }}/{{ gq.question_id }}/{{ gq.user_id }}" rows="4" cols="50">
+{{ gq.comment }}
+                        </textarea>
+                        <br>
+
+                        <br>
+                    {% endfor %}
+                {% endif %}
+            <input type="submit" value="Finish" id="exam_edit_submit">
+        </form>
+
+    </main>
+</body>
+
+</html>

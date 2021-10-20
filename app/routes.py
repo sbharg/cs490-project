@@ -14,6 +14,7 @@ from sqlalchemy.exc import IntegrityError
 from app import db
 import app.helpers as help
 from werkzeug.security import check_password_hash
+from app.code_tester import CodeTester
 
 # Blueprint Configuration
 login_bp = Blueprint(
@@ -210,18 +211,6 @@ def submitted_exams():
         submitted_exams = help.get_submitted_exams(g.course)
         return render_template('submitted_exams.html', submitted_exams=submitted_exams)
 
-@login_bp.route('/edit-submission', methods = ['POST'])
-def edit_submission():
-    if request.method == 'POST':
-        session.pop("submitted_exam", None)
-        val = request.form["exam"]
-        e_id, _, u_id = val.partition(',')
-        session['submitted_exam'] = [int(e_id), int(u_id)]
-
-        # Redirect to exam submission editor page
-        #return redirect(url_for('login_bp.question_editor', edit="update"))
-        print("Working on this")
-
 @login_bp.route('/begin-exam', methods = ['POST'])
 def begin_exam():
     if request.method == 'POST':
@@ -259,3 +248,21 @@ def available_exams():
 def exam_results():
     if request.method == 'GET':
         return render_template('user_exam_result_selector.html', exams = help.get_visible_user_exams(g.user))
+
+@login_bp.route('/edit-submission', methods = ['POST'])
+def edit_submission():
+    if request.method == 'POST':
+        session.pop("submitted_exam", None)
+        val = request.form["exam"]
+        e_id, _, u_id = val.partition(',')
+        session['submitted_exam'] = [int(u_id), int(e_id)]
+        #g.submitted_exam = help.find_user_exam(db, session['submitted_exam'], )
+        # Redirect to exam submission editor page, pass a user_exam
+        #return redirect(url_for('login_bp.question_editor', edit="update"))
+        return redirect(url_for('login_bp.exam_review'))
+
+@login_bp.route('/exam-review', methods = ['GET', 'POST'])
+def exam_review():
+    if request.method == 'GET':
+        return render_template('admin_exam_submission_review.html', user_exam = g.submitted_exam, 
+                                gradedexamquestions = g.submitted_exam.questions, CodeTester = CodeTester)
