@@ -144,7 +144,7 @@ def get_graded_exam(e: Exam, u: User):
         if graded_q.exam_id == e.exam_id:
             graded_questions.append(graded_q)
     return graded_questions
-
+ 
 def grade_exam_question(q: Question, ue: UserExam, ans: str, grade: float, comment=""):
     '''
     Grades an exam question for a specified user
