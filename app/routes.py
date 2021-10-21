@@ -50,11 +50,12 @@ def adminlanding():
         return redirect(url_for('login_bp.index'))
     return render_template('adminlanding.html', loggedperson = g.user.username)
 
-@login_bp.route('/userlanding')
+@login_bp.route('/userlanding', methods = ['POST', 'GET'])
 def userlanding():
     if not g.user or g.user.user_type != 'student':
         return redirect(url_for('login_bp.index'))
     return render_template('userlanding.html', loggedperson = g.user.username)
+
 
 @login_bp.route('/')
 def index():
@@ -233,12 +234,11 @@ def submit_answers():
             if key.startswith("q_answ"):
                 question_id = int(key[6:])
                 q = help.find_question_by_question_id(db, question_id)
-                '''
-                insert code tester here to get grade
-                '''
-                
+                ct = CodeTester(val, q.func_name)
+                proportion = ct.test_on_case(q.testcases)
                 # The grade of the geq should be (prop of testcases passed) * question_points
-                geq = help.grade_exam_question(q, ue, val, 0)
+                geq = help.grade_exam_question(q, ue, val, proportion*q.points)
+
         return redirect(url_for('login_bp.userlanding'))
 
 @login_bp.route('/available-exams', methods = ['GET'])
@@ -258,9 +258,6 @@ def edit_submission():
         val = request.form["exam"]
         e_id, _, u_id = val.partition(',')
         session['submitted_exam'] = [int(u_id), int(e_id)]
-        #g.submitted_exam = help.find_user_exam(db, session['submitted_exam'], )
-        # Redirect to exam submission editor page, pass a user_exam
-        #return redirect(url_for('login_bp.question_editor', edit="update"))
         return redirect(url_for('login_bp.exam_review'))
 
 @login_bp.route('/exam-review', methods = ['GET'])
@@ -285,3 +282,18 @@ def release_exam():
                 geq.comment = new_com
                 db.session.commit()
         return redirect(url_for('login_bp.adminlanding'))
+
+@login_bp.route('/view-exam-result', methods = ['POST'])
+def view_exam_result():
+    if request.method == 'POST':
+        examid = int(request.form['exam-selection'])
+        session.pop('submitted_exam', None)
+        session['submitted_exam'] = [g.user.user_id, examid]
+        return redirect(url_for('login_bp.exam_result', exam=examid))
+
+
+@login_bp.route('/exam_result', methods = ['GET']) #user view exam result
+def exam_result():
+    if request.method == 'GET':
+        return render_template('user_view_exam_result.html', user_exam = g.submitted_exam, 
+                                gradedexamquestions = g.submitted_exam.questions, CodeTester = CodeTester)
