@@ -236,6 +236,8 @@ def submit_answers():
                 '''
                 insert code tester here to get grade
                 '''
+                
+                # The grade of the geq should be (prop of testcases passed) * question_points
                 geq = help.grade_exam_question(q, ue, val, 0)
         return redirect(url_for('login_bp.userlanding'))
 
@@ -261,8 +263,25 @@ def edit_submission():
         #return redirect(url_for('login_bp.question_editor', edit="update"))
         return redirect(url_for('login_bp.exam_review'))
 
-@login_bp.route('/exam-review', methods = ['GET', 'POST'])
+@login_bp.route('/exam-review', methods = ['GET'])
 def exam_review():
     if request.method == 'GET':
         return render_template('admin_exam_submission_review.html', user_exam = g.submitted_exam, 
                                 gradedexamquestions = g.submitted_exam.questions, CodeTester = CodeTester)
+
+@login_bp.route('/release_exam', methods = ['POST'])
+def release_exam():
+    if request.method == 'POST':
+        g.submitted_exam.visible = True
+        db.session.commit()
+
+        for key, val in request.form.items():
+            if key.startswith("student_ans"):
+                question_id = int(key[len("student_ans"):])
+                geq = help.find_graded_exam_question(db, g.submitted_exam.user_id, question_id, g.submitted_exam.exam_id)
+                new_grade = float(request.form["points" + str(question_id)])
+                new_com = request.form["teacher_com" + str(question_id)]
+                geq.grade = new_grade
+                geq.comment = new_com
+                db.session.commit()
+        return redirect(url_for('login_bp.adminlanding'))

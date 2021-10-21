@@ -157,6 +157,11 @@ def grade_exam_question(q: Question, ue: UserExam, ans: str, grade: float, comme
     exam_question_grade.insert()
     return exam_question_grade
 
+def find_graded_exam_question(db, u_id, q_id, e_id):
+    return db.session.query(GradedExamQuestion).filter(GradedExamQuestion.user_id == u_id, 
+            GradedExamQuestion.exam_id == e_id, 
+            GradedExamQuestion.question_id == q_id).first()
+
 def update_grade(geq: GradedExamQuestion, new_grade: float):
     '''
     Updates the grade for an exam question for a specified user
@@ -165,7 +170,7 @@ def update_grade(geq: GradedExamQuestion, new_grade: float):
     Output: Updates the grade in the database
     '''
     geq.grade = new_grade
-    geq.update()
+    db.session.commit()
 
 def update_comment(geq: GradedExamQuestion, new_comment: str):
     '''
@@ -175,7 +180,7 @@ def update_comment(geq: GradedExamQuestion, new_comment: str):
     Output: Updates the comment in the database
     '''
     geq.comment = new_comment
-    geq.update()
+    db.session.commit()
 
 def get_user_grade_on_question(u: User, eq: ExamQuestion):
     '''

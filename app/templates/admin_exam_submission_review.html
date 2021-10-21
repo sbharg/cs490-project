@@ -12,7 +12,6 @@
     <main id="main-holder">
 
         <form action="/release_exam" method="post">
-            <input type="submit" value="Show Tescase Information" id="exam_edit_submit">
             <h1>Results</h1>
             <br>
             <div>
@@ -23,13 +22,13 @@
                         {{ gq.exam_question.question.question }}
                         <br>
                         Student Answer:<br>
-                        <textarea id="student_ans{{ gq.question_id }}" name="student_answ{{ gq.question_id }}" rows="4" cols="50" readonly>
+                        <textarea id="student_ans{{ gq.question_id }}" name="student_ans{{ gq.question_id }}" rows="4" cols="50" readonly>
 {{ gq.student_answer }}
                         </textarea>
                         <br>
 
                         <label for="points">Points:</label><br>
-                        <input type="text" id="points{{ gq.question_id }}" name="points{{ gq.exam_id }}/{{ gq.question_id }}/{{ gq.user_id }}" value="{{ gq.grade * gq.exam_question.question.points }}"><br>
+                        <input type="text" id="points{{ gq.question_id }}" name="points{{ gq.question_id }}" value="{{ gq.grade }}"> out of {{ gq.exam_question.question.points }}<br>
                         <br>
 
                         {% with code_tester = CodeTester(gq.student_answer, gq.exam_question.question.func_name) %}
@@ -41,7 +40,7 @@
                         {% endwith %}
 
                         <label for="comment"></label>Comment:</label><br>
-                        <textarea id="teacher_com{{ gq.question_id }}" name="teacher_com{{ gq.exam_id }}/{{ gq.question_id }}/{{ gq.user_id }}" rows="4" cols="50">
+                        <textarea id="teacher_com{{ gq.question_id }}" name="teacher_com{{ gq.question_id }}" rows="4" cols="50">
 {{ gq.comment }}
                         </textarea>
                         <br>
