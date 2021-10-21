@@ -235,7 +235,7 @@ def submit_answers():
                 question_id = int(key[6:])
                 q = help.find_question_by_question_id(db, question_id)
                 ct = CodeTester(val, q.func_name)
-                proportion = ct.test_on_case(q.testcases)
+                proportion = ct.test_on_cases(q.testcases)
                 # The grade of the geq should be (prop of testcases passed) * question_points
                 geq = help.grade_exam_question(q, ue, val, proportion*q.points)
 
