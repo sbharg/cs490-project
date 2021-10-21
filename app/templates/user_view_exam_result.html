@@ -31,12 +31,27 @@
                         {{ gq.grade }} out of {{ gq.exam_question.question.points }}<br>
                         <br>
 
+                        Testcases <br>
                         {% with code_tester = CodeTester(gq.student_answer, gq.exam_question.question.func_name) %}
-                        Func Name -> {% if code_tester.check_func_name() %} Pass {% else %} Fail {% endif %}<br>
+                        Func Name -> {% if code_tester.check_func_name() %} Pass {% else %} Fail {% endif %}
+                        <table>
+                            <tr>
+                                <th>Inputs</th>
+                                <th>Correct Output</th>
+                                <th>User Output</th>
+                                <th>Result</th>
+                            </tr>
                         {% for testcase in gq.exam_question.question.testcases %}
-                            Inputs: {{ testcase.case_input }}, Output: {{ testcase.case_output }}, Student Output: {{ code_tester.test_single_case(testcase)[1] }} -> {% if code_tester.test_single_case(testcase)[0] == 1 %} Pass {% else %} Fail {% endif %}
+                            <!--Inputs: {{ testcase.case_input }}, Output: {{ testcase.case_output }}, Student Output: {{ code_tester.test_single_case(testcase)[1] }} -> {% if code_tester.test_single_case(testcase)[0] == 1 %} Pass {% else %} Fail {% endif %}-->
+                            <tr>
+                                <th>{{ testcase.case_input }}</th>
+                                <th>{{ testcase.case_output }}</th>
+                                <th>{{ code_tester.test_single_case(testcase)[1] }}</th>
+                                <th>{% if code_tester.test_single_case(testcase)[0] == 1 %} Pass {% else %} Fail {% endif %}</th>
+                            </tr>
                             <br>
                         {% endfor %}
+                        </table>
                         {% endwith %}
 
                         Comment:<br>
