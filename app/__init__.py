@@ -16,7 +16,7 @@ def create_app(config_filename):
         from .teacher.teacher_views import teacher_bp
         
         #app.register_blueprint(routes.login_bp)
-        app.register_blueprint(login_bp)
-        app.register_blueprint(student_bp)
-        app.register_blueprint(teacher_bp)
+        app.register_blueprint(login_bp, url_prefix='/')
+        app.register_blueprint(student_bp, url_prefix='/')
+        app.register_blueprint(teacher_bp, url_prefix='/')
         return app

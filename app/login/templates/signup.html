@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up</title>
+  <link rel="stylesheet" href="{{ url_for('login_bp.static', filename='signin-page.css') }}">
+</head>
+
+<body>
+
+  <main id="main-holder">
+    <h1 id="signin-header">Sign Up</h1>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+       {% for message in messages %}
+          {{ message }}
+       {% endfor %}
+    {% endif %}
+    {% endwith %}
+    <form id="signin-form" method="post" action="/register">
+
+      <!--- Uses the code partially from shaw transforming toggle system --->
+      <!--- The selection-output is the part where the form takes information --->
+      <div class="sf-radio-container">
+        <input type='radio' class='selection-output' name="options" value="student" id="student" required checked/> 
+        <input type='radio' class='selection-output' name="options" value="teacher" id="teacher" /> 
+
+
+        <!--- These lables are the ones that actualy get selected, via "for" tag --->
+        <label class="option" for="student">
+          <span class="option__indictator"></span>
+          <span class="option__label">
+          Student
+          </span>
+        </label>
+
+        <label class="option" for="teacher">
+          <span class="option__indictator"></span>
+          <span class="option__label">
+          Class Admin
+          </span>
+        </label>
+      </div>
+
+      <p></p>
+
+      <input type="text" name="username" id="username-field" class="sf-field" placeholder="Username" required>
+      <input type="password" name="password" id="password-field" class="sf-field" placeholder="Password" required>
+      <input type="password" name="passwordconfirm" id="password-field" class="sf-field" placeholder="Confirm Password" required>
+      <input type="submit" value="Sign Up" id="sf-submit">
+    </form>
+  </main>
+</body>
+
+</html>
