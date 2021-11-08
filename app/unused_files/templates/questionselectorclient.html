@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exam {{ exam_id }}</title>
+  <link rel="stylesheet" href="../static/select.css">
+</head>
+
+<body>
+  <main id="main-holder">
+    <form id="question-select-form-client" method="post" action="/submit-answers">
+      <!-- 
+      <select name="question" size="20" style="width:90%;" class="select-css" required>
+          {% if questions %}
+            {% for question in questions %}
+              <option value="{{ question.question_id }}">{{ question.question_id }}: {{ question.question }}</option>
+            {% endfor %}
+          {% endif %}
+      </select>
+      -->
+
+      <br>
+
+      {% if questions %}
+          {% for eq in questions %}
+            Question ID : {{ eq.question_id }}
+            <br>
+            <br>
+            {{ eq.question.question }}
+            <br>
+            <textarea id="q_answ{{ eq.question_id }}" name="q_answ{{ eq.question_id }}" rows="4" cols="50" required></textarea>
+            <!--<input type="submit" value="Submit" id="answer_submit" name="answer_submit">-->
+            <br>
+          {% endfor %}
+      {% endif %}
+
+      <br>
+      <input type="submit" value="Submit" id="qf-selectq">
+    </form>
+    
+  </main>
+</body>
+
+</html>

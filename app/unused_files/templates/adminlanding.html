@@ -1,0 +1,20 @@
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome, {{loggedperson| safe}}</title>
+  <link rel="stylesheet" href="../static/login-page.css">
+</head>
+
+<body>
+  <main id="main-holder">
+    <h1 id="login-header">Welcome, {{loggedperson | safe}}</h1>
+    <a id="lf-qeditor" class="lf-signin" onclick="window.location.href='/questionbank';">Question Bank</a>
+    <a id="lf-exeditor" class="lf-signin" onclick="window.location.href='/new-exam';">Create New Exam</a>
+    <a id="lf-exeditor" class="lf-signin" onclick="window.location.href='/submitted-exams';">View Submitted Exams</a>
+    <!---removed for demo limit--->
+    <!---<a id="lf-clseditor" class="lf-signin" onclick="window.location.href='/clseditor';">Class Editor</a> --->
+  </main>
+</body>
+
+</html>
+         

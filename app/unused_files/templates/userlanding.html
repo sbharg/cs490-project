@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exam Selector</title>
+  <link rel="stylesheet" href="../static/login-page.css">
+</head>
+
+<body>
+  <main id="main-holder">
+    <h1 id="login-header">Welcome, {{loggedperson | safe}}</h1>
+    <a id="lf-qeditor" class="lf-signin" onclick="window.location.href='/available-exams';">Take an Exam</a>
+    <a id="lf-exeditor" class="lf-signin" onclick="window.location.href='/exam-grades';">View Graded Exams</a>
+  </main>
+</body>
+
+</html>
