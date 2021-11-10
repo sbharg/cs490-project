@@ -19,7 +19,11 @@
                     {% for gq in gradedexamquestions %}
                         Question ID: {{ gq.question_id }}
                         <br>
-                        {{ gq.exam_question.question.question }}
+                        {% with question_arr = gq.exam_question.question.question.split('\n') %}
+                        {% for qustion_line in question_arr %}
+                            {{ qustion_line | safe  }}<br>
+                        {% endfor %}
+                        {% endwith %}
                         <br>
                         Student Answer:<br>
                         <textarea id="student_ans{{ gq.question_id }}" name="student_ans{{ gq.question_id }}" rows="4" cols="50" readonly>
@@ -28,7 +32,7 @@
                         <br>
 
                         <label for="points">Points:</label><br>
-                        <input type="text" id="points{{ gq.question_id }}" name="points{{ gq.question_id }}" value="{{ gq.grade }}"> out of {{ gq.exam_question.question.points }}<br>
+                        <input type="text" id="points{{ gq.question_id }}" name="points{{ gq.question_id }}" value="{{ gq.grade }}"> out of {{ gq.exam_question.points }}<br>
                         <br>
 
                         Testcases <br>

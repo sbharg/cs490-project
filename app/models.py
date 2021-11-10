@@ -75,17 +75,15 @@ class Question(db.Model):
     question = Column(String(), nullable=False)
     course_id = Column(ForeignKey('courses.course_id'), nullable=False)
     func_name = Column(String(), nullable=False)
-    points = Column(Integer, nullable=False)
     category = Column(String())
     difficulty = Column(String(4))
 
     testcases = relationship("Testcase")
     exams = relationship("ExamQuestion", back_populates="question")
 
-    def __init__(self, question, course_id, points, category, difficulty, func_name):
+    def __init__(self, question, course_id, category, difficulty, func_name):
         self.question = question
         self.course_id = course_id
-        self.points = points
         self.category = category
         self.difficulty = difficulty
         self.func_name = func_name
@@ -139,15 +137,17 @@ class ExamQuestion(db.Model):
     __tablename__ = 'exam_questions'
     exam_id = Column(ForeignKey('exams.exam_id'), primary_key=True)
     question_id = Column(ForeignKey('questions.question_id'), primary_key=True)
+    points = Column(Integer, nullable=False)
 
     exam = relationship("Exam", back_populates="questions")
     question = relationship("Question", back_populates="exams")
 
     grades = relationship("GradedExamQuestion", viewonly=True, back_populates="exam_question")
 
-    def __init__(self, exam_id, question_id):
+    def __init__(self, exam_id, question_id, points):
         self.exam_id = exam_id
         self.question_id = question_id
+        self.points = points
     def insert(self):
         db.session.add(self)
         db.session.commit()

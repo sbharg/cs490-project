@@ -86,16 +86,16 @@ def submit_question():
         q_text = request.form['tbox1']
         cat = request.form['category']
         diff = request.form['DifficultyType']
-        points = int(request.form['points'])
+        #points = int(request.form['points'])
         func_name = request.form['func_name']
         if new_question:
-            question = help.create_question(q_text, g.course, points, cat, diff, func_name)
+            question = help.create_question(q_text, g.course, cat, diff, func_name)
             session['question_id'] = question.question_id
             return render_template('qeditor.html', question = question)
         else:
             g.question.question = q_text
             g.question.func_name = func_name
-            g.question.points = points
+            #g.question.points = points
             g.question.category = cat
             g.question.difficulty = diff
             db.session.commit()
@@ -127,7 +127,8 @@ def add_question_to_exam():
     if request.method == 'POST':
         question_id = int(request.form["question"])
         q = help.find_question_by_question_id(db, question_id)
-        help.add_question_to_exam(q, g.exam)
+        points = request.form['points']
+        help.add_question_to_exam(q, g.exam, int(points))
         eqs = help.get_questions_in_exam(g.exam)
         return render_template('new_exam.html', exam_questions = eqs, question_bank=g.course.questions)
 

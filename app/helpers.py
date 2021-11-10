@@ -72,7 +72,7 @@ def get_user_courses(user: User):
         courses.append(user_course.course)
     return courses
 
-def create_question(question_text, c: Course, points: int, category: str, difficulty: str, func_name: str):
+def create_question(question_text, c: Course, category: str, difficulty: str, func_name: str):
     '''
     Creates a question
 
@@ -82,12 +82,18 @@ def create_question(question_text, c: Course, points: int, category: str, diffic
             the intended function name
     Output: A Question object
     '''
-    question = Question(question_text, c.course_id, points, category, difficulty, func_name)
+    question = Question(question_text, c.course_id, category, difficulty, func_name)
     question.insert()
     return question
 
 def find_question_by_question_id(db, question_id):
     return db.session.query(Question).filter(Question.question_id == question_id).first()
+
+def find_question_by_exam_id(db, question_id, exam_id):
+    return db.session.query(ExamQuestion).filter(
+        ExamQuestion.question_id == question_id,
+        ExamQuestion.exam_id == exam_id
+        ).first()
 
 def create_testcase(q: Question, case_input: str, case_output: str):
     '''
@@ -115,14 +121,14 @@ def create_exam(c: Course, visible):
 def find_exam_by_exam_id(db, exam_id):
     return db.session.query(Exam).filter(Exam.exam_id == exam_id).first()
 
-def add_question_to_exam(q: Question, e: Exam):
+def add_question_to_exam(q: Question, e: Exam, points: int):
     '''
     Adds a question to an exam
 
     Input:  A Question object, and an Exam object
     Output: An ExamQuestion object
     '''
-    exam_question = ExamQuestion(e.exam_id, q.question_id)
+    exam_question = ExamQuestion(e.exam_id, q.question_id, points)
     exam_question.insert()
     return exam_question
 
@@ -159,8 +165,9 @@ def grade_exam_question(q: Question, ue: UserExam, ans: str, grade: float, comme
 
 def find_graded_exam_question(db, u_id, q_id, e_id):
     return db.session.query(GradedExamQuestion).filter(GradedExamQuestion.user_id == u_id, 
-            GradedExamQuestion.exam_id == e_id, 
-            GradedExamQuestion.question_id == q_id).first()
+        GradedExamQuestion.exam_id == e_id, 
+        GradedExamQuestion.question_id == q_id
+        ).first()
 
 def update_grade(geq: GradedExamQuestion, new_grade: float):
     '''

@@ -59,11 +59,12 @@ def submit_answers():
         for key, val in request.form.items():
             if key.startswith("q_answ"):
                 question_id = int(key[6:])
+                q_exam = help.find_question_by_exam_id(db, question_id, g.exam.exam_id)
                 q = help.find_question_by_question_id(db, question_id)
                 ct = CodeTester(val, q.func_name)
                 proportion = ct.test_on_cases(q.testcases)
                 # The grade of the geq should be (prop of testcases passed) * question_points
-                geq = help.grade_exam_question(q, ue, val, proportion*q.points)
+                geq = help.grade_exam_question(q, ue, val, proportion*q_exam.points)
 
         return redirect(url_for('login_bp.userlanding'))
 

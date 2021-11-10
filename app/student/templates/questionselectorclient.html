@@ -27,12 +27,19 @@
           {% for eq in questions %}
             Question ID : {{ eq.question_id }}
             <br>
+            Points: {{ eq.points }}
             <br>
-            {{ eq.question.question }}
+            <br>
+
+            {% with question_arr = eq.question.question.split('\n') %}
+            {% for qustion_line in question_arr %}
+              {{ qustion_line | safe  }}<br>
+            {% endfor %}
+            {% endwith %}
             <br>
             <textarea id="q_answ{{ eq.question_id }}" name="q_answ{{ eq.question_id }}" rows="4" cols="50" required></textarea>
             <!--<input type="submit" value="Submit" id="answer_submit" name="answer_submit">-->
-            <br>
+            <br><br>
           {% endfor %}
       {% endif %}
 
