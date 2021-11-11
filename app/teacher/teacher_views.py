@@ -41,6 +41,10 @@ def before_request():
     if 'submitted_exam' in session:
         g.submitted_exam = help.find_user_exam(db, session['submitted_exam'][0], session['submitted_exam'][1])
 
+@teacher_bp.route('/testing', methods=['POST', 'GET'])
+def testing():
+    return render_template('qeditor_withbank.html')
+
 @teacher_bp.route('/questionbank', methods = ['POST', 'GET'])
 def question_bank():
     try:
@@ -59,7 +63,7 @@ def question_bank():
     else:
         return render_template('questionbank.html')
 
-@teacher_bp.route('/question-editor', methods = ['POST', 'GET'])
+@teacher_bp.route('/question-editor', methods = ['GET'])
 def question_editor():
     try:
         testcases = g.question.testcases
@@ -71,13 +75,13 @@ def question_editor():
             session.pop("question_id", None)
             g.question = None
             return render_template('qeditor.html')
-        else:
+        if request.args.get('edit') == "update":
             if len(testcases) > 0:
                 return render_template('qeditor.html', testcases = testcases, question = g.question)
             else:
                 return render_template('qeditor.html', question = g.question)
-    elif request.method == 'POST':
-        return render_template("ERROR")
+        else:
+            return render_template('qeditor.html')
 
 @teacher_bp.route('/submit-question', methods = ['POST'])
 def submit_question():
@@ -130,7 +134,7 @@ def add_question_to_exam():
         points = request.form['points']
         help.add_question_to_exam(q, g.exam, int(points))
         eqs = help.get_questions_in_exam(g.exam)
-        return render_template('new_exam.html', exam_questions = eqs, question_bank=g.course.questions)
+        return render_template('new_exam.html', exam_questions = g.exam.questions, question_bank=g.course.questions)
 
 @teacher_bp.route('/publish-exam', methods = ['POST'])
 def publish_exam():
