@@ -5,31 +5,28 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Question Editor (new)</title>
+  <link rel="stylesheet" href="{{ url_for('teacher_bp.static', filename='iframe.css') }}">
+  <!--<script src="{{ url_for('teacher_bp.static', filename='iframe.js') }}"></script>-->
 </head>
 
 <body>
+    <main>
+      <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+      <script type="text/javascript">
+        function autoResize(iframe) {
+          $(iframe).height($(iframe).contents().find('html').height());
+        }
+      </script>
 
-     <iframe id="tch-qeditor" src="{{ url_for('teacher_bp.question_editor') }}" frameborder="0" scrolling="yes"                     
-                                    style="overflow: hidden; height: 100%; 
-                                                width: 49%; float: left; " height="100%" width="49%"
-                                   align="left">
-                                  </iframe>  
+      <div class="iframe-container">
+        <iframe id="tch-qeditor" onload="autoResize(this);" src="{{ url_for('teacher_bp.question_editor') }}" width="50%" frameborder="0" align="left"></iframe>  
+      </div>
+  
+      <div class="iframe-container">
+        <iframe id="tch-qbank" onload="autoResize(this);" src="{{ url_for('teacher_bp.question_bank') }}" width="50%" frameborder="0" align="left"></iframe>
+      </div>
 
-     <iframe id="tch-qbank" src="{{ url_for('teacher_bp.question_bank') }}" frameborder="0" scrolling="yes"  
-                                        style="overflow: hidden; height: 100%;
-                                        width: 49%; " height="100%" width="49%"                                 
-                                         align="right">
-                                        </iframe>
-
-     <script>
-     let iframe = document.querySelector("#tch-qeditor");
-
-     iframe.addEventListener('load', function() {
-          iframe.style.height = iframe.contentDocument.body.scrollHeight + 'px';
-          iframe.style.width = iframe.contentDocument.body.scrollWidth + 'px';
-     });
-     </script>
-
+    </main>
 </body>
 
 
