@@ -19,13 +19,15 @@
       </script>
 
       <div class="iframe-container">
-        <iframe id="tch-qeditor" onload="autoResize(this);" src="{{ url_for('teacher_bp.question_editor') }}" width="50%" frameborder="0" align="left"></iframe>  
+        <iframe id="tch-qeditor" onload="autoResize(this);" src="{{ url_for('teacher_bp.temp_edit') }}" width="50%" frameborder="0" align="left"></iframe>  
       </div>
   
       <div class="iframe-container">
-        <iframe id="tch-qbank" onload="autoResize(this);" src="{{ url_for('teacher_bp.question_bank') }}" width="50%" frameborder="0" align="left"></iframe>
+        <iframe id="tch-qbank" onload="autoResize(this);" src="{{ url_for('teacher_bp.temp_bank') }}" width="50%" frameborder="0" align="left"></iframe>
       </div>
 
+      <br>
+      <a id="lf-qeditor" class="lf-signin" onclick="window.location.href='/adminlanding';">Back to Landing Page</a>
     </main>
 </body>
 

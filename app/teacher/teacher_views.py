@@ -45,6 +45,46 @@ def before_request():
 def testing():
     return render_template('qeditor_withbank.html')
 
+@teacher_bp.route('/temp-bank', methods=['POST', 'GET'])
+def temp_bank():
+
+    try:
+        questions = g.course.questions
+    except:
+        return render_template('temp_testing/qbank.html')
+
+    if request.method == 'POST':
+        session.pop("question_id", None)
+        session['question_id'] = int(request.form["question"])
+        # Redirect to question editor page
+        return redirect(url_for('teacher_bp.temp_edit', edit="update"))
+
+    if len(questions) > 0:
+        return render_template('temp_testing/qbank.html', questions = questions)
+    else:
+        return render_template('temp_testing/qbank.html')
+
+@teacher_bp.route('/temp-edit', methods=['POST', 'GET'])
+def temp_edit():
+    try:
+        testcases = g.question.testcases
+    except:
+        return render_template('temp_testing/qedit.html')
+
+    if request.method == 'GET':
+        if request.args.get('edit') == "new":
+            session.pop("question_id", None)
+            g.question = None
+            return render_template('temp_testing/qedit.html')
+        if request.args.get('edit') == "update":
+            if len(testcases) > 0:
+                return render_template('temp_testing/qedit.html', testcases = testcases, question = g.question)
+            else:
+                return render_template('temp_testing/qedit.html', question = g.question)
+        else:
+            return render_template('temp_testing/qedit.html')
+
+
 @teacher_bp.route('/questionbank', methods = ['POST', 'GET'])
 def question_bank():
     try:
