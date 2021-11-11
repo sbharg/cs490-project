@@ -9,13 +9,13 @@
 
 <body>
 
-     <iframe src="link_v1" frameborder="0" scrolling="yes"                           
+     <iframe src="{{ url_for('teacher_bp.question_editor') }}" frameborder="0" scrolling="yes"                           
                                     style="overflow: hidden; height: 100%; 
                                                 width: 49%; float: left; " height="100%" width="49%"
                                    align="left">
                                   </iframe>  
 
-     <iframe src="link_v2" frameborder="0" scrolling="yes"  
+     <iframe src="{{ url_for('teacher_bp.question_bank') }}" frameborder="0" scrolling="yes"  
                                         style="overflow: hidden; height: 100%;
                                         width: 49%; " height="100%" width="49%"                                 
                                          align="right">
