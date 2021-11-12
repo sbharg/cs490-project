@@ -1,3 +1,4 @@
+import re
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.functions import user
@@ -78,15 +79,22 @@ class Question(db.Model):
     category = Column(String())
     difficulty = Column(String(4))
 
+    for_flag = Column(Boolean, nullable=False)
+    while_flag = Column(Boolean, nullable=False)
+    rec_flag = Column(Boolean, nullable=False)
+
     testcases = relationship("Testcase")
     exams = relationship("ExamQuestion", back_populates="question")
 
-    def __init__(self, question, course_id, category, difficulty, func_name):
+    def __init__(self, question, course_id, category, difficulty, func_name, for_flag, while_flag, rec_flag):
         self.question = question
         self.course_id = course_id
         self.category = category
         self.difficulty = difficulty
         self.func_name = func_name
+        self.for_flag = for_flag
+        self.while_flag = while_flag
+        self.rec_flag = rec_flag
     def insert(self):
         db.session.add(self)
         db.session.commit()

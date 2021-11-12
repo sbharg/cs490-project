@@ -1,4 +1,4 @@
-from app.models import Testcase
+from app.models import Testcase, Question
 
 class CodeTester():
 
@@ -30,7 +30,16 @@ class CodeTester():
 
     def check_func_name(self):
         return self.correct_func_name == self.func_name
+
+    def check_for_loop(self):
+        return "for" in self.func.partition('\r')[2]
     
+    def check_while_loop(self):
+        return "while" in self.func.partition('\r')[2]
+
+    def check_recursion(self):
+        return self.func_name in self.func.partition('\r')[2]
+            
     def test_single_case(self, case: Testcase):
         '''
         Method to test a single testcase
@@ -43,6 +52,8 @@ class CodeTester():
 
         test_input = case.case_input
         test_output = case.case_output
+        if test_output[0] == "\"" or test_output[0] == "\'":
+            test_output = test_output[1:-1]
 
         # Edge Case: func is empty string
         if(self.func.replace(' ', '') == ""):

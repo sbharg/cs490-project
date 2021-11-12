@@ -72,7 +72,7 @@ def get_user_courses(user: User):
         courses.append(user_course.course)
     return courses
 
-def create_question(question_text, c: Course, category: str, difficulty: str, func_name: str):
+def create_question(question_text, c: Course, category: str, difficulty: str, func_name: str, for_flag, while_flag, rec_flag):
     '''
     Creates a question
 
@@ -82,7 +82,7 @@ def create_question(question_text, c: Course, category: str, difficulty: str, fu
             the intended function name
     Output: A Question object
     '''
-    question = Question(question_text, c.course_id, category, difficulty, func_name)
+    question = Question(question_text, c.course_id, category, difficulty, func_name, for_flag, while_flag, rec_flag)
     question.insert()
     return question
 
