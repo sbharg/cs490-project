@@ -41,67 +41,64 @@ def before_request():
     if 'submitted_exam' in session:
         g.submitted_exam = help.find_user_exam(db, session['submitted_exam'][0], session['submitted_exam'][1])
 
-    if g.user == None:
-        return redirect(url_for('login_bp.index'))
 
-@teacher_bp.route('/testing', methods=['POST', 'GET'])
-def testing():
+@teacher_bp.route('/qbank', methods=['POST', 'GET'])
+def qbank_full():
     return render_template('qeditor_withbank.html')
 
-@teacher_bp.route('/temp-bank', methods=['POST', 'GET'])
-def temp_bank():
+@teacher_bp.route('/qbank-display', methods=['POST', 'GET'])
+def qbank_display():
 
     try:
         questions = g.course.questions
         questions.sort(key=lambda question: question.question_id)
     except:
-        return render_template('temp_testing/qbank.html')
+        return render_template('qbank.html')
 
+    if len(questions) > 0:
+        return render_template('qbank.html', questions = questions)
+    else:
+        return render_template('qbank.html')
+
+@teacher_bp.route('/qbank-edit', methods=['POST'])
+def qbank_edit():
     if request.method == 'POST':
         session.pop("question_id", None)
         session['question_id'] = int(request.form["question"])
         # Redirect to question editor page
-        return redirect(url_for('teacher_bp.temp_edit', edit="update", split="no"))
+        return redirect(url_for('teacher_bp.qedit', edit="update", split="no"))
 
-    if len(questions) > 0:
-        return render_template('temp_testing/qbank.html', questions = questions)
-    else:
-        return render_template('temp_testing/qbank.html')
-
-@teacher_bp.route('/temp-edit', methods=['POST', 'GET'])
-def temp_edit():
+@teacher_bp.route('/qedit', methods=['POST', 'GET'])
+def qedit():
     try:
         testcases = g.question.testcases
     except:
-        return render_template('temp_testing/qedit.html')
+        return render_template('qedit.html')
 
     if request.method == 'GET':
         if request.args.get('edit') == "new":
 
             session.pop("question_id", None)
             g.question = None
-            if request.args.get('split') == "yes":
-                return redirect(url_for('teacher_bp.testing'))
-            else:
-                return render_template('temp_testing/qedit.html')
+            return render_template('qedit.html')
 
-        if request.args.get('edit') == "update":
+        elif request.args.get('edit') == "update":
             if len(testcases) > 0:
                 if request.args.get('split') == "no":
-                    return render_template('temp_testing/qedit.html', testcases = testcases, question = g.question, split = False)
+                    return render_template('qedit.html', testcases = testcases, question = g.question, split = False)
                 elif request.args.get('split') == "yes":
-                    return render_template('temp_testing/qedit.html', testcases = testcases, question = g.question, split = True)
+                    return render_template('qedit.html', testcases = testcases, question = g.question, split = True)
             else:
                 if request.args.get('split') == "no":
-                    return render_template('temp_testing/qedit.html', question = g.question, split=False)
+                    return render_template('qedit.html', question = g.question, split=False)
                 elif request.args.get('split') == "yes":
-                    return render_template('temp_testing/qedit.html', question = g.question, split=True)
+                    return render_template('qedit.html', question = g.question, split=True)
 
         else:
-            return render_template('temp_testing/qedit.html')
+            return render_template('qedit.html')
 
-@teacher_bp.route('/temp-submit-question', methods = ['POST'])
-def temp_submit_question():
+@teacher_bp.route('/submit-question', methods = ['POST'])
+def submit_question():
     if request.method == 'POST':
         new_question = True if request.form['question_submit'] == "Add Question" else False
         q_text = request.form['tbox1']
@@ -116,7 +113,7 @@ def temp_submit_question():
         if new_question:
             question = help.create_question(q_text, g.course, cat, diff, func_name, for_flag, while_flag, rec_flag)
             session['question_id'] = question.question_id
-            return redirect(url_for('teacher_bp.temp_edit', edit="update", split="yes"))
+            return redirect(url_for('teacher_bp.qedit', edit="update", split="yes"))
         else:
             g.question.question = q_text
             g.question.func_name = func_name
@@ -127,10 +124,10 @@ def temp_submit_question():
             g.question.rec_flag = rec_flag
             db.session.commit()
 
-            return redirect(url_for('teacher_bp.temp_bank'))
+            return redirect(url_for('teacher_bp.qbank_display'))
 
-@teacher_bp.route('/temp-add-testcase', methods = ['POST'])
-def temp_add_testcase():
+@teacher_bp.route('/add-testcase', methods = ['POST'])
+def add_testcase():
     if request.method == 'POST':
         test_inputs = request.form['tbox2']
         test_output = request.form['tbox3']
@@ -140,9 +137,10 @@ def temp_add_testcase():
         except IntegrityError:
             print("Invalid Testcase")
 
-        return render_template('temp_testing/qedit.html', testcases = g.question.testcases, question = g.question)
+        return render_template('qedit.html', testcases = g.question.testcases, question = g.question)
 
 
+'''
 @teacher_bp.route('/questionbank', methods = ['POST', 'GET'])
 def question_bank():
     try:
@@ -222,6 +220,7 @@ def add_testcase():
             print("Invalid Testcase")
 
         return render_template('qeditor.html', testcases = g.question.testcases ,question = g.question)
+'''
 
 @teacher_bp.route('/new-exam', methods = ['GET'])
 def new_exam():
