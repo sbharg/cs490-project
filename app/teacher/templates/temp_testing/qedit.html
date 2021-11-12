@@ -9,7 +9,7 @@
 
 <body>
   <main id="main-holder">
-    <form action="/submit-question" method="post">
+    <form action="/temp-submit-question" method="post">
 
       {% if question %}
         Question ID : {{ question.question_id }}
@@ -30,6 +30,16 @@
           <option value="medi" {% if question.difficulty == "medi" %} selected {% endif %}>Medium</option>
           <option value="hard" {% if question.difficulty == "hard" %} selected {% endif %}>Hard</option>
         </select>
+
+        <br>
+        Constraints
+        <br>
+        <label for="for_flag">For Loop Constraint</label>
+        <input id="for_flag" type="checkbox" name="constraint_flags" value="for_constraint" {% if question.for_flag %} checked {% endif %}>
+        <label for="while_flag">While Loop Constraint</label>
+        <input id="while_flag" type="checkbox" name="constraint_flags" value="while_constraint" {% if question.while_flag %} checked {% endif %}>
+        <label for="rec_flag">Recursion Constraint</label>
+        <input if="rec_flag" type="checkbox" name="constraint_flags" value="rec_constraint" {% if question.rec_flag %} checked {% endif %}>
 
         <br>
 
@@ -55,6 +65,16 @@
         </select>
 
         <br>
+        Constraints
+        <br>
+        <label for="for_flag">For Loop Constraint</label>
+        <input id="for_flag" type="checkbox" name="constraint_flags" value="for_constraint">
+        <label for="while_flag">While Loop Constraint</label>
+        <input id="while_flag" type="checkbox" name="constraint_flags" value="while_constraint">
+        <label for="rec_flag">Recursion Constraint</label>
+        <input if="rec_flag" type="checkbox" name="constraint_flags" value="rec_constraint">
+
+        <br>
 
         <input type="submit" value="Add Question" id="question_submit" name="question_submit">
       {% endif %}
@@ -76,7 +96,7 @@
       </ul>
     {% endif %}
 
-    <form action="/add-testcase" method="post">
+    <form action="/temp-add-testcase" method="post">
       Add New Test Case
       <div>
         <textarea id="tbox2" name="tbox2" rows="4" cols="25" placeholder="Inputs" required></textarea>
@@ -89,7 +109,12 @@
     {% endif %}
 
     <br>
-    {% if question %}
+    {% if question and split == False %}
+    <a id="lf-qeditor" class="lf-signin" onclick="window.location.href='/temp-bank';">Back to Question Bank</a>
+    {% elif question and split == True %}
+    <!--<a id="lf-qeditor" class="lf-signin" onclick="window.location.href='/temp-edit?edit=new&split=yes';">New Question</a>-->
+    <a id="lf-qeditor" class="lf-signin" onclick="window.top.location.reload();">New Question</a>
+    {% elif question %}
     <a id="lf-qeditor" class="lf-signin" onclick="window.location.href='/temp-bank';">Back to Question Bank</a>
     {% endif %}
 
