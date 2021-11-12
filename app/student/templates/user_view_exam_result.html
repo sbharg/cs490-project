@@ -36,8 +36,17 @@
                         <br>
 
                         Testcases <br>
-                        {% with code_tester = CodeTester(gq.student_answer, gq.exam_question.question.func_name) %}
-                        Func Name -> {% if code_tester.check_func_name() %} Pass {% else %} Fail {% endif %}
+                        {% with code_tester = CodeTester(gq.student_answer, gq.exam_question.question.func_name) %} 
+                        Func Name -> {% if code_tester.check_func_name() %} Pass {% else %} Fail {% endif %} <br>
+                        {% if gq.exam_question.question.for_flag %}
+                            For Constraint -> {% if code_tester.check_for_loop() %} Pass {% else %} Fail {% endif %} <br>
+                        {% endif %}
+                        {% if gq.exam_question.question.while_flag %}
+                            While Constraint -> {% if code_tester.check_while_loop() %} Pass {% else %} Fail {% endif %} <br>
+                        {% endif %}
+                        {% if gq.exam_question.question.rec_flag %}
+                            Recursion Constraint -> {% if code_tester.check_recursion() %} Pass {% else %} Fail {% endif %} <br>
+                        {% endif %}
                         <table>
                             <tr>
                                 <th>Inputs</th>
