@@ -37,7 +37,7 @@ Function operation should perform the operation specified by op on the two opera
 
 For example, operation("+", 5, 3) should return 8.
     '''
-    q1 = create_question(q1_text.strip(), course1, "Conditionals", "medi", "operation")
+    q1 = create_question(q1_text.strip(), course1, "Conditionals", "medi", "operation", False, False, False)
 
     q2_text = '''
 Write a function named largest that takes one argument:
@@ -47,7 +47,7 @@ Function largest should iterate through the given list and return the largest va
 
 For example, largest([3,7,2,9,8,1]) should return 9.
     '''
-    q2 = create_question(q2_text.strip(), course1, "For loops", "medi", "largest")
+    q2 = create_question(q2_text.strip(), course1, "For loops", "medi", "largest", False, False, False)
 
     q3_text = '''
 Write a function named sayHello that takes two arguments:
@@ -58,7 +58,18 @@ Function sayHello should return the greeting and the name as a single string.
 
 For example, sayHello("John", "Howdy") should return "Howdy, John"
     '''
-    q3 = create_question(q3_text.strip(), course1, "Strings", "easy", "sayHello")
+    q3 = create_question(q3_text.strip(), course1, "Strings", "easy", "sayHello", False, False, False)
+
+
+    q4_text = '''
+Write a function named factorial that takes one argument:
+    1) x, an int
+
+Function factorial should return the value x!. Use a for loop in your solution. 
+
+For example, factorial(3) should return 6    
+    '''
+    q4 = create_question(q4_text.strip(), course1, "For loops", "easy", "factorial", True, False, False)
 
     '''
     q1_text = "Write a function called plus_six that takes an integer x as input and returns x+6"
