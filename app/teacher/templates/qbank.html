@@ -10,7 +10,7 @@
 
 <body>
   <main id="main-holder">
-    <form id="question-select-form" method="post" action="/qbank-edit">
+    <form id="question-select-form" method="post" action="/qbank-edit" target='_parent'>
       <select name="question" size="20" style="width:90%;" class="select-css" required>
         <!--- Forloop of question list--->
           {% if questions %}
