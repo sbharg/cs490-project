@@ -60,6 +60,19 @@ def qbank_display():
     else:
         return render_template('qbank.html')
 
+@teacher_bp.route('/filter-questions', methods=['POST'])
+def qbank_display_filterd():
+
+    cat = request.form['category']
+    diff = request.form['difficulty']
+    questions = help.find_questions_by_cat_and_diff(g.course, cat, diff)
+    questions.sort(key=lambda question: question.question_id)
+
+    if len(questions) > 0:
+        return render_template('qbank.html', questions = questions)
+    else:
+        return render_template('qbank.html')
+
 @teacher_bp.route('/qbank-edit', methods=['POST'])
 def qbank_edit():
     if request.method == 'POST':
