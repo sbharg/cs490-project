@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{ user_exam.user.username }}'s Exam</title>
-  <link rel="stylesheet" href="../static/select.css">
+  <link rel="stylesheet" href="{{ url_for('student_bp.static', filename='select.css') }}">
 </head>
 
 <body>
@@ -80,7 +80,11 @@
                             <!--Inputs: {{ testcase.case_input }}, Output: {{ testcase.case_output }}, Student Output: {{ code_tester.test_single_case(testcase)[1] }} -> {% if code_tester.test_single_case(testcase)[0] == 1 %} Pass {% else %} Fail {% endif %}-->
                             <tr>
                                 <td>{{ testcase.case_input }}</td>
+                                {% if testcase.case_output.startswith('"') or testcase.case_output.startswith("'") %}
+                                <td>{{ testcase.case_output[1:-1] }}</td>
+                                {% else %}
                                 <td>{{ testcase.case_output }}</td>
+                                {% endif %}
                                 {% with test_output = code_tester.test_single_case(testcase) %}
                                 <td>{{ test_output[1] }}</td>
                                 <td>{% if test_output[0] == 1 %} Pass {% else %} Fail {% endif %}</td>
