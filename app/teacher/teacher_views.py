@@ -101,16 +101,8 @@ def qedit():
 
         elif request.args.get('edit') == "update":
             if len(testcases) > 0:
-                #if request.args.get('split') == "no":
-                #    return render_template('qedit.html', testcases = testcases, question = g.question, split = False)
-                #elif request.args.get('split') == "yes":
-                #    return render_template('qedit.html', testcases = testcases, question = g.question, split = True)
                 return render_template('qedit.html', testcases = testcases, question = g.question)
             else:
-                #if request.args.get('split') == "no":
-                #    return render_template('qedit.html', question = g.question, split=False)
-                #elif request.args.get('split') == "yes":
-                #    return render_template('qedit.html', question = g.question, split=True)
                 return render_template('qedit.html', question = g.question)
 
         else:
@@ -157,89 +149,6 @@ def add_testcase():
             print("Invalid Testcase")
 
         return render_template('qedit.html', testcases = g.question.testcases, question = g.question)
-
-
-'''
-@teacher_bp.route('/questionbank', methods = ['POST', 'GET'])
-def question_bank():
-    try:
-        questions = g.course.questions
-    except:
-        return render_template('questionbank.html')
-
-    if request.method == 'POST':
-        session.pop("question_id", None)
-        session['question_id'] = int(request.form["question"])
-        # Redirect to question editor page
-        return redirect(url_for('teacher_bp.question_editor', edit="update"))
-
-    if len(questions) > 0:
-        return render_template('questionbank.html', questions = questions)
-    else:
-        return render_template('questionbank.html')
-
-@teacher_bp.route('/question-editor', methods = ['GET'])
-def question_editor():
-    try:
-        testcases = g.question.testcases
-    except:
-        return render_template('qeditor.html')
-
-    if request.method == 'GET':
-        if request.args.get('edit') == "new":
-            session.pop("question_id", None)
-            g.question = None
-            return render_template('qeditor.html')
-        if request.args.get('edit') == "update":
-            if len(testcases) > 0:
-                return render_template('qeditor.html', testcases = testcases, question = g.question)
-            else:
-                return render_template('qeditor.html', question = g.question)
-        else:
-            return render_template('qeditor.html')
-
-@teacher_bp.route('/submit-question', methods = ['POST'])
-def submit_question():
-    if request.method == 'POST':
-        new_question = True if request.form['question_submit'] == "Add Question" else False
-        q_text = request.form['tbox1']
-        cat = request.form['category']
-        diff = request.form['DifficultyType']
-        #points = int(request.form['points'])
-        func_name = request.form['func_name']
-        constraints = request.form.getlist('constraint_flags')
-        for_flag = True if 'for_constraint' in constraints else False
-        while_flag = True if 'while_constraint' in constraints else False
-        rec_flag = True if 'rec_constraint' in constraints else False
-        if new_question:
-            question = help.create_question(q_text, g.course, cat, diff, func_name, for_flag, while_flag, rec_flag)
-            session['question_id'] = question.question_id
-            return render_template('qeditor.html', question = question)
-        else:
-            g.question.question = q_text
-            g.question.func_name = func_name
-            g.question.category = cat
-            g.question.difficulty = diff
-            g.question.for_flag = for_flag
-            g.question.while_flag = while_flag
-            g.question.rec_flag = rec_flag
-            db.session.commit()
-
-            return redirect(url_for('teacher_bp.question_bank'))
-
-@teacher_bp.route('/add-testcase', methods = ['POST'])
-def add_testcase():
-    if request.method == 'POST':
-        test_inputs = request.form['tbox2']
-        test_output = request.form['tbox3']
-        tcase = Testcase(g.question.question_id, test_inputs, test_output)
-        try:
-            tcase.insert()
-        except IntegrityError:
-            print("Invalid Testcase")
-
-        return render_template('qeditor.html', testcases = g.question.testcases ,question = g.question)
-'''
 
 @teacher_bp.route('/new-exam', methods = ['GET'])
 def new_exam():
