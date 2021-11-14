@@ -34,14 +34,17 @@
         <br>
         Constraints
         <br>
+        <label for="none_flag">None</label>
+        <input id="none_flag" type="radio" name="constraint" value="none" {% if not question.rec_flag and not question.while_flag and not question.rec_flag %} checked {% endif %}>
+        <br>
         <label for="for_flag">For Loop Constraint</label>
-        <input id="for_flag" type="checkbox" name="constraint_flags" value="for_constraint" {% if question.for_flag %} checked {% endif %}>
+        <input id="for_flag" type="radio" name="constraint" value="for_constraint" {% if question.for_flag %} checked {% endif %}>
         <br>
         <label for="while_flag">While Loop Constraint</label>
-        <input id="while_flag" type="checkbox" name="constraint_flags" value="while_constraint" {% if question.while_flag %} checked {% endif %}>
+        <input id="while_flag" type="radio" name="constraint" value="while_constraint" {% if question.while_flag %} checked {% endif %}>
         <br>
         <label for="rec_flag">Recursion Constraint</label>
-        <input if="rec_flag" type="checkbox" name="constraint_flags" value="rec_constraint" {% if question.rec_flag %} checked {% endif %}>
+        <input if="rec_flag" type="radio" name="constraint" value="rec_constraint" {% if question.rec_flag %} checked {% endif %}>
 
         <br>
 
@@ -69,14 +72,17 @@
         <br>
         Constraints
         <br>
+        <label for="none_flag">None</label>
+        <input id="none_flag" type="radio" name="constraint" value="none">
+        <br>
         <label for="for_flag">For Loop Constraint</label>
-        <input id="for_flag" type="checkbox" name="constraint_flags" value="for_constraint">
+        <input id="for_flag" type="radio" name="constraint" value="for_constraint">
         <br>
         <label for="while_flag">While Loop Constraint</label>
-        <input id="while_flag" type="checkbox" name="constraint_flags" value="while_constraint">
+        <input id="while_flag" type="radio" name="constraint" value="while_constraint">
         <br>
         <label for="rec_flag">Recursion Constraint</label>
-        <input if="rec_flag" type="checkbox" name="constraint_flags" value="rec_constraint">
+        <input if="rec_flag" type="radio" name="constraint" value="rec_constraint">
 
         <br>
 

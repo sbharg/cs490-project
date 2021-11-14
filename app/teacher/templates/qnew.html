@@ -8,7 +8,8 @@
 </head>
 
 <body>
-  <main id="main-holder">
+  <main id="main-holder">    
+
     <form action="/submit-question" method="post">
         New Question
         <br>
@@ -35,14 +36,18 @@
         <br>
         Constraints
         <br>
+        <label for="none_flag">None</label>
+        <input id="none_flag" type="radio" name="constraint" value="none" checked>
+        <br>
         <label for="for_flag">For Loop Constraint</label>
-        <input id="for_flag" type="checkbox" name="constraint_flags" value="for_constraint">
+        <input id="for_flag" type="radio" name="constraint" value="for_constraint">
         <br>
         <label for="while_flag">While Loop Constraint</label>
-        <input id="while_flag" type="checkbox" name="constraint_flags" value="while_constraint">
+        <input id="while_flag" type="radio" name="constraint" value="while_constraint">
         <br>
         <label for="rec_flag">Recursion Constraint</label>
-        <input if="rec_flag" type="checkbox" name="constraint_flags" value="rec_constraint">
+        <input id="rec_flag" type="radio" name="constraint" value="rec_constraint">
+        <br>
 
         <br>
 
