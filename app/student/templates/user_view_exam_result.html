@@ -32,7 +32,7 @@
                         <br>
 
                         {% with code_tester = CodeTester(gq.student_answer, gq.exam_question.question.func_name) %}
-                        {% with total_items =  code_tester.get_prop_per_item(gq.exam_question.question) %}
+                        {% with total_items =  code_tester.get_total_items(gq.exam_question.question) %}
                         {% with points_per_item = gq.exam_question.points / total_items %}
                         <table>
                             <tr>

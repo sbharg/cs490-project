@@ -37,7 +37,7 @@
                         -->
 
                         {% with code_tester = CodeTester(gq.student_answer, gq.exam_question.question.func_name) %}
-                        {% with total_items =  code_tester.get_prop_per_item(gq.exam_question.question) %}
+                        {% with total_items =  code_tester.get_total_items(gq.exam_question.question) %}
                         {% with points_per_item = gq.exam_question.points / total_items %}
                         <table>
                             <tr>
@@ -50,7 +50,7 @@
                                 <td>Function Name</td>
                                 <td colspan="3" style="text-align: center;">{% if code_tester.check_func_name() %} Pass {% else %} Fail {% endif %}</td>
                                 <td>{% if code_tester.check_func_name() %} {{ points_per_item }} {% else %} 0 {% endif %} / {{ points_per_item }}</td>
-                                <td> <input type="text" id="man_grade{{ gq.question_id }}_funcname" name="man_grade{{ gq.question_id }}" value="{% if code_tester.check_func_name() %} {{ points_per_item }} {% else %} 0 {% endif %}" required>/ {{ points_per_item }}</td>
+                                <td> <input type="text" id="man_grade{{ gq.question_id }}_funcname" name="man_grade{{ gq.question_id }}" value="{{ gq.man_grades[0] }}" required>/ {{ points_per_item }}</td>
                             </tr>
                             {% if gq.exam_question.question.for_flag %}
                             <tr>
@@ -58,7 +58,7 @@
                                 <td colspan="3" style="text-align: center;">{% if code_tester.check_for_loop() %} Pass {% else %} Fail {% endif %}</td>
                                 <td>{% if code_tester.check_for_loop() %} {{ points_per_item }} {% else %} 0 {% endif %} / {{ points_per_item }}</td>
                                 <td> <input type="text" id="man_grade{{ gq.question_id }}_for" name="man_grade{{ gq.question_id }}" 
-                                    value="{% if code_tester.check_for_loop() %} {{ points_per_item }} {% else %} 0 {% endif %}" required>/ {{ points_per_item }}</td>
+                                    value="{{ gq.man_grades[1] }}" required>/ {{ points_per_item }}</td>
                             </tr>
                             {% elif gq.exam_question.question.while_flag %}
                             <tr>
@@ -66,7 +66,7 @@
                                 <td colspan="3" style="text-align: center;">{% if code_tester.check_while_loop() %} Pass {% else %} Fail {% endif %}</td>
                                 <td>{% if code_tester.check_while_loop() %} {{ points_per_item }} {% else %} 0 {% endif %} / {{ points_per_item }}</td>
                                 <td> <input type="text" id="man_grade{{ gq.question_id }}while" name="man_grade{{ gq.question_id }}" 
-                                    value="{% if code_tester.check_while_loop() %} {{ points_per_item }} {% else %} 0 {% endif %}" required>/ {{ points_per_item }}</td>
+                                    value="{{ gq.man_grades[1] }}" required>/ {{ points_per_item }}</td>
                             </tr>
                             {% elif gq.exam_question.question.rec_flag %}
                             <tr>
@@ -74,7 +74,7 @@
                                 <td colspan="3" style="text-align: center;">{% if code_tester.check_recursion() %} Pass {% else %} Fail {% endif %}</td>
                                 <td>{% if code_tester.check_recursion() %} {{ points_per_item }} {% else %} 0 {% endif %} / {{ points_per_item }}</td>
                                 <td> <input type="text" id="man_grade{{ gq.question_id }}_rec" name="man_grade{{ gq.question_id }}" 
-                                    value="{% if code_tester.check_recursion() %} {{ points_per_item }} {% else %} 0 {% endif %}" required>/ {{ points_per_item }}</td>
+                                    value="{{ gq.man_grades[1] }}" required>/ {{ points_per_item }}</td>
                             </tr>
                             {% endif %}
                             <tr>
@@ -85,7 +85,11 @@
                                 <th>Auto Grade</th>
                                 <th>Manual Grade</th>
                             </tr>
-                        {% set i = namespace(value=0) %}
+                        {% if not gq.exam_question.question.for_flag and not gq.exam_question.question.while_flag and not gq.exam_question.question.rec_flag %}
+                            {% set i = namespace(value=1) %}
+                        {% else %}
+                            {% set i = namespace(value=2) %}
+                        {% endif %}
                         {% for testcase in gq.exam_question.question.testcases %}
                             <!--Inputs: {{ testcase.case_input }}, Output: {{ testcase.case_output }}, Student Output: {{ code_tester.test_single_case(testcase)[1] }} -> {% if code_tester.test_single_case(testcase)[0] == 1 %} Pass {% else %} Fail {% endif %}-->
                             <tr>
@@ -96,7 +100,7 @@
                                 <td>{% if test_output[0] == 1 %} Pass {% else %} Fail {% endif %}</td>
                                 <td>{% if test_output[0] == 1 %} {{ points_per_item }} {% else %} 0 {% endif %} / {{ points_per_item }}</td>
                                 <td><input type="text" id="man_grade{{ gq.question_id }}_case{{ i.value }}" name="man_grade{{ gq.question_id }}"
-                                    value="{% if test_output[0] == 1 %} {{ points_per_item }} {% else %} 0 {% endif %}" required>/ {{ points_per_item }} </td>
+                                    value="{{ gq.man_grades[i.value] }}" required>/ {{ points_per_item }} </td>
                                 {% set i.value = i.value + 1 %}
                                 {% endwith %}
                             </tr>

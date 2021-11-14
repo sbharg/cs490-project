@@ -62,16 +62,26 @@ def submit_answers():
                 q_exam = help.find_question_by_exam_id(db, question_id, g.exam.exam_id)
                 q = help.find_question_by_question_id(db, question_id)
                 ct = CodeTester(val, q.func_name)
+                man_grades = []
+                num_items = ct.get_total_items(q)
+                total_points = q_exam.points
+                prop_tpoints_per_item = total_points/num_items
+                
                 if q.for_flag:
-                    proportion = ct.auto_grade(q.testcases, "for")
+                    proportion, mask = ct.auto_grade(q.testcases, "for")
                 elif q.while_flag:
-                    proportion = ct.auto_grade(q.testcases, "while")
+                    proportion, mask = ct.auto_grade(q.testcases, "while")
                 elif q.rec_flag:
-                    proportion = ct.auto_grade(q.testcases, "recursion")
+                    proportion, mask = ct.auto_grade(q.testcases, "recursion")
                 else:
-                    proportion = ct.auto_grade(q.testcases)
+                    proportion, mask = ct.auto_grade(q.testcases)
+
+                man_grades = [prop_tpoints_per_item * x for x in mask]
+        
                 # The grade of the geq should be (prop of testcases passed) * question_points
-                geq = help.grade_exam_question(q, ue, val, proportion*q_exam.points)
+                geq = help.grade_exam_question(q, ue, val, proportion*total_points)
+                geq.man_grades = man_grades
+                db.session.commit()
 
         return redirect(url_for('login_bp.userlanding'))
 

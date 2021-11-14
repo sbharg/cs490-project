@@ -81,48 +81,60 @@ class CodeTester():
         else:
             return [1, out]
 
-    def test_on_cases(self, test_cases: list[Testcase]):
-        '''
-        Method to test multiple testcases passed as a list
-
-        Input: test_cases  --  A list with elements of the type Testcase 
-        Output: returns the proportion of test cases passed
-        '''
-        cases_passed = 0
-        for case in test_cases:
-            cases_passed += self.test_single_case(case)[0]
-        prop_passed = cases_passed / len(test_cases)
-        return prop_passed
-
     def auto_grade(self, test_cases: list[Testcase], constraint = None):
+        '''
+        Method to test multiple testcases and passed as a list and a constraint
+
+        Input:  test_cases  --  A list with elements of the type Testcase 
+                constraint  --  A string detailing a type of constraint
+        Output: returns the proportion of test cases passed and a mask of constraints/testcases passed
+        '''
         cases = len(test_cases)
         cases_passed = 0
         constraints = 1
         constraints_passed = 0
-        for case in test_cases:
-            cases_passed += self.test_single_case(case)[0]
+        mask = []
 
         if self.check_func_name():
             constraints_passed += 1
+            mask.append(1)
+        else:
+            mask.append(0)
 
         if constraint != None:
             if constraint == "for":
                 if self.check_for_loop():
                     constraints_passed += 1 
+                    mask.append(1)
+                else:
+                    mask.append(0)
                 constraints += 1
             elif constraint == "while":
                 if self.check_while_loop():
                     constraints_passed += 1 
+                    mask.append(1)
+                else:
+                    mask.append(0)
                 constraints += 1
             elif constraint == "recursion":
                 if self.check_recursion():
                     constraints_passed += 1 
+                    mask.append(1)
+                else:
+                    mask.append(0)
                 constraints += 1
         
+        for case in test_cases:
+            if self.test_single_case(case)[0] == 1:
+                cases_passed += 1
+                mask.append(1)
+            elif self.test_single_case(case)[0] == 0:
+                mask.append(0)
+        
         prop = (cases_passed + constraints_passed) / (cases + constraints)
-        return prop
+        return [prop, mask]
 
-    def get_prop_per_item(self, q: Question):
+    def get_total_items(self, q: Question):
         cases = len(q.testcases)
         constraints = 1
         if q.for_flag:
