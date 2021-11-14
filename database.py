@@ -39,6 +39,10 @@ For example, operation("+", 5, 3) should return 8.
     '''
     q1 = create_question(q1_text.strip(), course1, "Conditionals", "medi", "operation", False, False, False)
 
+    t1_1 = create_testcase(q1, "\"+\", 5, 3", "8")
+    t1_2 = create_testcase(q1, "\"*\", 2, 2", "4")
+    t1_3 = create_testcase(q1, "\"-\", 6, 3", "3")
+
     q2_text = '''
 Write a function named largest that takes one argument:
     1)  lst, a list of numbers
@@ -48,6 +52,10 @@ Function largest should iterate through the given list and return the largest va
 For example, largest([3,7,2,9,8,1]) should return 9.
     '''
     q2 = create_question(q2_text.strip(), course1, "For loops", "medi", "largest", False, False, False)
+
+    t2_1 = create_testcase(q2, "[3,7,2,9,8,1]", "9")
+    t2_2 = create_testcase(q2, "[1, 2, 3, 4, 5]", "5")
+    t2_3 = create_testcase(q2, "[20, 34, 12, 67, 45, 9]", "67")
 
     q3_text = '''
 Write a function named sayHello that takes two arguments:
@@ -60,6 +68,9 @@ For example, sayHello("John", "Howdy") should return "Howdy, John"
     '''
     q3 = create_question(q3_text.strip(), course1, "Strings", "easy", "sayHello", False, False, False)
 
+    t3_1 = create_testcase(q3, '"John", "Howdy"', '"Howdy, John"')
+    t3_2 = create_testcase(q3, '"Sam", "Hello"', '"Hello, Sam"')
+    t3_3 = create_testcase(q3, '"Ben", "Hi"', '"Hi, Ben"')
 
     q4_text = '''
 Write a function named factorial that takes one argument:
