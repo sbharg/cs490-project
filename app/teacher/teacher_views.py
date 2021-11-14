@@ -214,13 +214,14 @@ def release_exam():
             if key.startswith("student_ans"):
                 question_id = int(key[len("student_ans"):])
                 geq = help.find_graded_exam_question(db, g.submitted_exam.user_id, question_id, g.submitted_exam.exam_id)
-                #new_grade = float(request.form["points" + str(question_id)])
-                new_grade = 0   
+                man_grades = []  
+                print(request.form.getlist("man_grade" + str(question_id)))
                 for man_grade in request.form.getlist("man_grade" + str(question_id)):
-                    new_grade += float(man_grade)
+                    man_grades.append(float(man_grade))
 
                 new_com = request.form["teacher_com" + str(question_id)]
-                geq.grade = new_grade
+                geq.grade = sum(man_grades)
+                geq.man_grades = man_grades
                 geq.comment = new_com
                 db.session.commit()
         return redirect(url_for('login_bp.adminlanding'))

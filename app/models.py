@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.functions import user
 from sqlalchemy.sql.schema import Column, ForeignKey, ForeignKeyConstraint
-from sqlalchemy.sql.sqltypes import Boolean, FLOAT, Integer, String
+from sqlalchemy.sql.sqltypes import ARRAY, Boolean, FLOAT, Integer, String
 
 db = SQLAlchemy()
 
@@ -171,6 +171,7 @@ class GradedExamQuestion(db.Model):
     student_answer = Column(String(), nullable=False)
     # Proportion of Testcases Passed
     grade = Column(FLOAT, nullable=False)
+    man_grades = Column(ARRAY(FLOAT))
     comment = Column(String())
 
     __table_args__ = (ForeignKeyConstraint(['exam_id', 'question_id'], 
