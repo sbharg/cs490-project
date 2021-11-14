@@ -79,7 +79,11 @@ def qbank_edit():
         session.pop("question_id", None)
         session['question_id'] = int(request.form["question"])
         # Redirect to question editor page
-        return redirect(url_for('teacher_bp.qedit', edit="update", split="no"))
+        return redirect(url_for('teacher_bp.qedit', edit="update"))
+
+@teacher_bp.route('/qedit-new', methods=['GET'])
+def qedit_new():
+    return render_template('qnew.html')
 
 @teacher_bp.route('/qedit', methods=['POST', 'GET'])
 def qedit():
@@ -97,15 +101,17 @@ def qedit():
 
         elif request.args.get('edit') == "update":
             if len(testcases) > 0:
-                if request.args.get('split') == "no":
-                    return render_template('qedit.html', testcases = testcases, question = g.question, split = False)
-                elif request.args.get('split') == "yes":
-                    return render_template('qedit.html', testcases = testcases, question = g.question, split = True)
+                #if request.args.get('split') == "no":
+                #    return render_template('qedit.html', testcases = testcases, question = g.question, split = False)
+                #elif request.args.get('split') == "yes":
+                #    return render_template('qedit.html', testcases = testcases, question = g.question, split = True)
+                return render_template('qedit.html', testcases = testcases, question = g.question)
             else:
-                if request.args.get('split') == "no":
-                    return render_template('qedit.html', question = g.question, split=False)
-                elif request.args.get('split') == "yes":
-                    return render_template('qedit.html', question = g.question, split=True)
+                #if request.args.get('split') == "no":
+                #    return render_template('qedit.html', question = g.question, split=False)
+                #elif request.args.get('split') == "yes":
+                #    return render_template('qedit.html', question = g.question, split=True)
+                return render_template('qedit.html', question = g.question)
 
         else:
             return render_template('qedit.html')
@@ -126,7 +132,7 @@ def submit_question():
         if new_question:
             question = help.create_question(q_text, g.course, cat, diff, func_name, for_flag, while_flag, rec_flag)
             session['question_id'] = question.question_id
-            return redirect(url_for('teacher_bp.qedit', edit="update", split="yes"))
+            return redirect(url_for('teacher_bp.qedit', edit="update"))
         else:
             g.question.question = q_text
             g.question.func_name = func_name

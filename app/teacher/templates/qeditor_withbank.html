@@ -19,7 +19,7 @@
       </script>
 
         <div class="iframe-container">
-          <iframe id="tch-qeditor" onload="autoResize(this);" src="{{ url_for('teacher_bp.qedit') }}" width="50%" frameborder="0" align="left"></iframe>  
+          <iframe id="tch-qeditor" onload="autoResize(this);" src="{{ url_for('teacher_bp.qedit_new') }}" width="50%" frameborder="0" align="left"></iframe>  
         </div>
   
         <div class="iframe-container">
@@ -29,8 +29,6 @@
         <br>
 
         <div style="text-align: center; bottom:0;">
-          <a id="lf-qeditor" class="lf-signin" onclick="window.top.location.reload();">New Question</a>
-          <br>
           <a id="lf-qeditor" class="lf-signin" onclick="window.location.href='/adminlanding';">Back to Landing Page</a>
         </div>
     </main>

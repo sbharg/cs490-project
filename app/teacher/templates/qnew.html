@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Question Editor</title>
+</head>
+
+<body>
+  <main id="main-holder">
+    <form action="/submit-question" method="post">
+        New Question
+        <br>
+        <br>
+        <label for="func_name">Function Name:</label>
+        <input type="text" id="func_name" name="func_name" required>
+        <br>
+
+        <label for="category">Category:</label>
+        <input type="text" id="category" name="category">
+
+        <label for="fname">Difficulty:</label>
+        <select name="DifficultyType" required>
+          <option value="easy">Easy</option>
+          <option value="med">Medium</option>
+          <option value="hard">Hard</option>
+        </select>
+
+        <br>
+        <textarea id="tbox1" name="tbox1" rows="4" cols="50" placeholder="Question" required></textarea>
+        <br>
+
+        <br>
+        <br>
+        Constraints
+        <br>
+        <label for="for_flag">For Loop Constraint</label>
+        <input id="for_flag" type="checkbox" name="constraint_flags" value="for_constraint">
+        <br>
+        <label for="while_flag">While Loop Constraint</label>
+        <input id="while_flag" type="checkbox" name="constraint_flags" value="while_constraint">
+        <br>
+        <label for="rec_flag">Recursion Constraint</label>
+        <input if="rec_flag" type="checkbox" name="constraint_flags" value="rec_constraint">
+
+        <br>
+
+        <input type="submit" value="Add Question" id="question_submit" name="question_submit" onclick="window.top.location.reload();">
+    </form>
+
+  </main>
+</body>
+
+</html>

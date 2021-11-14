@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Question Editor</title>
+</head>
+
+<body>
+  <main id="main-holder">
+
+        {% if question %}
+            Question ID : {{ question.question_id }}
+            <br>
+            <br>
+            <label for="func_name">Function Name:</label>
+            <input type="text" id="func_name" name="func_name" value="{{ question.func_name }}" required>
+            <br>
+
+            <label for="category">Category:</label>
+            {{ question.category }}
+
+            <label for="fname">Difficulty:</label>
+            {% if question.difficulty == "easy" %} Easy
+            {% elif question.difficulty == "medi" %} Medium
+            {% elif question.difficulty == "hard" %} Hard {% endif %}
+
+            <br>
+            <textarea id="tbox1" name="tbox1" rows="4" cols="50" placeholder="Question" readonly> {{ question.question }} </textarea>
+            <br>
+
+            <br>
+            <br>
+            Constraints
+            <br>
+            <ul>
+                {% if question.for_flag %}
+                <li>For Loop</li>
+                {% endif %}
+                {% if question.while_flag %}
+                <li>While Loop</li>
+                {% endif %}
+                {% if question.rec_flag %}
+                <li>Recursion</li>
+                {% endif %}
+                {% if not question.while_flag and not question.for_flag and not question.rec_flag %}
+                <li>None</li>
+                {% endif %}
+            </ul>
+
+            <br>
+
+            <br>
+            Test Cases
+            <br>
+            {% if testcases %}
+                <ul>
+                {% for testcase in testcases %}
+                <li> Input: {{ testcase.case_input }}, Output: {{ testcase.case_output }} </li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                <ul>
+                <li>No Test Cases!</li>
+                </ul>
+            {% endif %}
+            {% endif %}
+
+            <br>
+            <a id="lf-qeditor" class="lf-signin" onclick="window.location.href='/qbank-display';">Back to Question Bank</a>
+        {% endif %}
+
+  </main>
+</body>
+
+</html>
