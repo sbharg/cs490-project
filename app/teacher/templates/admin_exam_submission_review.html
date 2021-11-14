@@ -31,36 +31,85 @@
                         </textarea>
                         <br>
 
+                        <!--
                         <label for="points">Points:</label><br>
                         <input type="text" id="points{{ gq.question_id }}" name="points{{ gq.question_id }}" value="{{ gq.grade }}"> out of {{ gq.exam_question.points }}<br>
-                        <br>
+                        -->
 
-                        Testcases <br>
                         {% with code_tester = CodeTester(gq.student_answer, gq.exam_question.question.func_name) %}
-                        Func Name -> {% if code_tester.check_func_name() %} Pass {% else %} Fail {% endif %}
+                        {% with total_items =  code_tester.get_prop_per_item(gq.exam_question.question) %}
+                        {% with points_per_item = gq.exam_question.points / total_items %}
                         <table>
+                            <tr>
+                                <th>Constraint</th>
+                                <th colspan="3">Result</th>
+                                <th>Auto Grade</th>
+                                <th>Manual Grade</th>
+                            </tr>
+                            <tr>
+                                <td>Function Name</td>
+                                <td colspan="3" style="text-align: center;">{% if code_tester.check_func_name() %} Pass {% else %} Fail {% endif %}</td>
+                                <td>{% if code_tester.check_func_name() %} {{ points_per_item }} {% else %} 0 {% endif %} / {{ points_per_item }}</td>
+                                <td> <input type="text" id="man_grade{{ gq.question_id }}_funcname" name="man_grade{{ gq.question_id }}" value="{% if code_tester.check_func_name() %} {{ points_per_item }} {% else %} 0 {% endif %}" required>/ {{ points_per_item }}</td>
+                            </tr>
+                            {% if gq.exam_question.question.for_flag %}
+                            <tr>
+                                <td>For Loop</td>
+                                <td colspan="3" style="text-align: center;">{% if code_tester.check_for_loop() %} Pass {% else %} Fail {% endif %}</td>
+                                <td>{% if code_tester.check_for_loop() %} {{ points_per_item }} {% else %} 0 {% endif %} / {{ points_per_item }}</td>
+                                <td> <input type="text" id="man_grade{{ gq.question_id }}_for" name="man_grade{{ gq.question_id }}" 
+                                    value="{% if code_tester.check_for_loop() %} {{ points_per_item }} {% else %} 0 {% endif %}" required>/ {{ points_per_item }}</td>
+                            </tr>
+                            {% elif gq.exam_question.question.while_flag %}
+                            <tr>
+                                <td>While Loop</td>
+                                <td colspan="3" style="text-align: center;">{% if code_tester.check_while_loop() %} Pass {% else %} Fail {% endif %}</td>
+                                <td>{% if code_tester.check_while_loop() %} {{ points_per_item }} {% else %} 0 {% endif %} / {{ points_per_item }}</td>
+                                <td> <input type="text" id="man_grade{{ gq.question_id }}while" name="man_grade{{ gq.question_id }}" 
+                                    value="{% if code_tester.check_while_loop() %} {{ points_per_item }} {% else %} 0 {% endif %}" required>/ {{ points_per_item }}</td>
+                            </tr>
+                            {% elif gq.exam_question.question.rec_flag %}
+                            <tr>
+                                <td>Recursion</td>
+                                <td colspan="3" style="text-align: center;">{% if code_tester.check_recursion() %} Pass {% else %} Fail {% endif %}</td>
+                                <td>{% if code_tester.check_recursion() %} {{ points_per_item }} {% else %} 0 {% endif %} / {{ points_per_item }}</td>
+                                <td> <input type="text" id="man_grade{{ gq.question_id }}_rec" name="man_grade{{ gq.question_id }}" 
+                                    value="{% if code_tester.check_recursion() %} {{ points_per_item }} {% else %} 0 {% endif %}" required>/ {{ points_per_item }}</td>
+                            </tr>
+                            {% endif %}
                             <tr>
                                 <th>Inputs</th>
                                 <th>Correct Output</th>
                                 <th>User Output</th>
                                 <th>Result</th>
+                                <th>Auto Grade</th>
+                                <th>Manual Grade</th>
                             </tr>
+                        {% set i = namespace(value=0) %}
                         {% for testcase in gq.exam_question.question.testcases %}
                             <!--Inputs: {{ testcase.case_input }}, Output: {{ testcase.case_output }}, Student Output: {{ code_tester.test_single_case(testcase)[1] }} -> {% if code_tester.test_single_case(testcase)[0] == 1 %} Pass {% else %} Fail {% endif %}-->
                             <tr>
-                                <th>{{ testcase.case_input }}</th>
-                                <th>{{ testcase.case_output }}</th>
-                                <th>{{ code_tester.test_single_case(testcase)[1] }}</th>
-                                <th>{% if code_tester.test_single_case(testcase)[0] == 1 %} Pass {% else %} Fail {% endif %}</th>
+                                <td>{{ testcase.case_input }}</td>
+                                <td>{{ testcase.case_output }}</td>
+                                {% with test_output = code_tester.test_single_case(testcase) %}
+                                <td>{{ test_output[1] }}</td>
+                                <td>{% if test_output[0] == 1 %} Pass {% else %} Fail {% endif %}</td>
+                                <td>{% if test_output[0] == 1 %} {{ points_per_item }} {% else %} 0 {% endif %} / {{ points_per_item }}</td>
+                                <td><input type="text" id="man_grade{{ gq.question_id }}_case{{ i.value }}" name="man_grade{{ gq.question_id }}"
+                                    value="{% if test_output[0] == 1 %} {{ points_per_item }} {% else %} 0 {% endif %}" required>/ {{ points_per_item }} </td>
+                                {% set i.value = i.value + 1 %}
+                                {% endwith %}
                             </tr>
                             <br>
                         {% endfor %}
                         </table>
                         {% endwith %}
+                        {% endwith %}
+                        {% endwith %}
 
                         <label for="comment"></label>Comment:</label><br>
                         <textarea id="teacher_com{{ gq.question_id }}" name="teacher_com{{ gq.question_id }}" rows="4" cols="50">
-{{ gq.comment }}
+                        {{ gq.comment }}
                         </textarea>
                         <br>
 

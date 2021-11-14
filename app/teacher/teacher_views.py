@@ -44,6 +44,8 @@ def before_request():
 
 @teacher_bp.route('/qbank', methods=['POST', 'GET'])
 def qbank_full():
+    if g.user == None:
+        return redirect(url_for('login_bp.index'))
     return render_template('qeditor_withbank.html')
 
 @teacher_bp.route('/qbank-display', methods=['POST', 'GET'])
@@ -117,10 +119,10 @@ def submit_question():
         diff = request.form['DifficultyType']
         #points = int(request.form['points'])
         func_name = request.form['func_name']
-        constraints = request.form.getlist('constraint_flags')
-        for_flag = True if 'for_constraint' in constraints else False
-        while_flag = True if 'while_constraint' in constraints else False
-        rec_flag = True if 'rec_constraint' in constraints else False
+        constraint = request.form['constraint']
+        for_flag = True if constraint == "for_constraint" else False
+        while_flag = True if constraint == "while_constraint" else False
+        rec_flag = True if constraint == "rec_constraint" else False
         if new_question:
             question = help.create_question(q_text, g.course, cat, diff, func_name, for_flag, while_flag, rec_flag)
             session['question_id'] = question.question_id
@@ -152,10 +154,15 @@ def add_testcase():
 
 @teacher_bp.route('/new-exam', methods = ['GET'])
 def new_exam():
+    if g.user == None:
+        return redirect(url_for('login_bp.index'))
+
     if request.method == 'GET':
         exam = help.create_exam(g.course, False)
         session['exam_id'] = exam.exam_id
-        return render_template('new_exam.html', question_bank=g.course.questions)
+        questions = g.course.questions
+        questions.sort(key=lambda question: question.question_id)
+        return render_template('new_exam.html', question_bank=questions)
 
 @teacher_bp.route('/add-question-to-exam', methods = ['POST'])
 def add_question_to_exam():
@@ -165,7 +172,9 @@ def add_question_to_exam():
         points = request.form['points']
         help.add_question_to_exam(q, g.exam, int(points))
         eqs = help.get_questions_in_exam(g.exam)
-        return render_template('new_exam.html', exam_questions = g.exam.questions, question_bank=g.course.questions)
+        questions = g.course.questions
+        questions.sort(key=lambda question: question.question_id)
+        return render_template('new_exam.html', exam_questions = g.exam.questions, question_bank=questions)
 
 @teacher_bp.route('/publish-exam', methods = ['POST'])
 def publish_exam():
@@ -205,7 +214,11 @@ def release_exam():
             if key.startswith("student_ans"):
                 question_id = int(key[len("student_ans"):])
                 geq = help.find_graded_exam_question(db, g.submitted_exam.user_id, question_id, g.submitted_exam.exam_id)
-                new_grade = float(request.form["points" + str(question_id)])
+                #new_grade = float(request.form["points" + str(question_id)])
+                new_grade = 0   
+                for man_grade in request.form.getlist("man_grade" + str(question_id)):
+                    new_grade += float(man_grade)
+
                 new_com = request.form["teacher_com" + str(question_id)]
                 geq.grade = new_grade
                 geq.comment = new_com

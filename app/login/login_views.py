@@ -45,13 +45,13 @@ def before_request():
 
 @login_bp.route('/adminlanding')
 def adminlanding():
-    if not g.user or g.user.user_type != 'teacher':
+    if g.user == None or g.user.user_type != 'teacher':
         return redirect(url_for('login_bp.index'))
     return render_template('adminlanding.html', loggedperson = g.user.username)
 
 @login_bp.route('/userlanding', methods = ['POST', 'GET'])
 def userlanding():
-    if not g.user or g.user.user_type != 'student':
+    if g.user == None or g.user.user_type != 'student':
         return redirect(url_for('login_bp.index'))
     return render_template('userlanding.html', loggedperson = g.user.username)
 

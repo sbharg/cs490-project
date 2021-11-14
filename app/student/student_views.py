@@ -62,7 +62,14 @@ def submit_answers():
                 q_exam = help.find_question_by_exam_id(db, question_id, g.exam.exam_id)
                 q = help.find_question_by_question_id(db, question_id)
                 ct = CodeTester(val, q.func_name)
-                proportion = ct.test_on_cases(q.testcases)
+                if q.for_flag:
+                    proportion = ct.auto_grade(q.testcases, "for")
+                elif q.while_flag:
+                    proportion = ct.auto_grade(q.testcases, "while")
+                elif q.rec_flag:
+                    proportion = ct.auto_grade(q.testcases, "recursion")
+                else:
+                    proportion = ct.auto_grade(q.testcases)
                 # The grade of the geq should be (prop of testcases passed) * question_points
                 geq = help.grade_exam_question(q, ue, val, proportion*q_exam.points)
 

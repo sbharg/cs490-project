@@ -94,6 +94,46 @@ class CodeTester():
         prop_passed = cases_passed / len(test_cases)
         return prop_passed
 
+    def auto_grade(self, test_cases: list[Testcase], constraint = None):
+        cases = len(test_cases)
+        cases_passed = 0
+        constraints = 1
+        constraints_passed = 0
+        for case in test_cases:
+            cases_passed += self.test_single_case(case)[0]
+
+        if self.check_func_name():
+            constraints_passed += 1
+
+        if constraint != None:
+            if constraint == "for":
+                if self.check_for_loop():
+                    constraints_passed += 1 
+                constraints += 1
+            elif constraint == "while":
+                if self.check_while_loop():
+                    constraints_passed += 1 
+                constraints += 1
+            elif constraint == "recursion":
+                if self.check_recursion():
+                    constraints_passed += 1 
+                constraints += 1
+        
+        prop = (cases_passed + constraints_passed) / (cases + constraints)
+        return prop
+
+    def get_prop_per_item(self, q: Question):
+        cases = len(q.testcases)
+        constraints = 1
+        if q.for_flag:
+            constraints += 1
+        elif q.while_flag:
+            constraints += 1
+        elif q.rec_flag:
+            constraints += 1
+
+        cases += constraints
+        return cases
 
 if __name__ == "__main__":
 
