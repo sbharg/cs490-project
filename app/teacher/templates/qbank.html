@@ -10,6 +10,18 @@
 
 <body>
   <main id="main-holder">
+    <form id="question-sorting-form" method="post" action="/qbank-search-sort">
+      {% if searchoptions %}
+        {% for option in searchoptions %}
+          {% if option.included %}
+            <input type = "checkbox" name="{{ option.option_name }}" value= "{{ option.option_name }}" checked>
+          {% else %}
+            <input type = "checkbox" name="{{ option.option_name }}" value= "{{ option.option_name }}">
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+      <input type="submit" value="Advanced Search">
+    </form>
     <form id="question-select-form" method="post" action="/qbank-edit">
       <select name="question" size="20" style="width:90%;" class="select-css" required>
         <!--- Forloop of question list--->
