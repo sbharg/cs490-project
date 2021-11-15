@@ -58,7 +58,7 @@ def qbank_display():
         return render_template('qbank.html')
 
     if len(questions) > 0:
-        return render_template('qbank.html', questions = questions)
+        return render_template('qbank.html', questions = questions, diff = "all")
     else:
         return render_template('qbank.html')
 
@@ -71,9 +71,9 @@ def qbank_display_filterd():
     questions.sort(key=lambda question: question.question_id)
 
     if len(questions) > 0:
-        return render_template('qbank.html', questions = questions)
+        return render_template('qbank.html', questions = questions, cat = cat, diff = diff)
     else:
-        return render_template('qbank.html')
+        return render_template('qbank.html', cat = cat, diff = diff)
 
 @teacher_bp.route('/qbank-edit', methods=['POST'])
 def qbank_edit():
@@ -160,21 +160,46 @@ def new_exam():
     if request.method == 'GET':
         exam = help.create_exam(g.course, False)
         session['exam_id'] = exam.exam_id
+        return render_template('nexam.html')
+
+@teacher_bp.route('/nexam-qbank', methods = ['GET'])
+def nexam_qbank():
+    if request.method == 'GET':
         questions = g.course.questions
         questions.sort(key=lambda question: question.question_id)
-        return render_template('new_exam.html', question_bank=questions)
+        return render_template('nexam_qbank.html', questions=questions)
+
+@teacher_bp.route('/filter-questions-exam', methods=['POST'])
+def exam_qbank_display_filterd():
+
+    cat = request.form['category']
+    diff = request.form['difficulty']
+    questions = help.find_questions_by_cat_and_diff(g.course, cat, diff)
+    questions.sort(key=lambda question: question.question_id)
+
+    if len(questions) > 0:
+        return render_template('nexam_qbank.html', questions = questions, cat = cat, diff = diff)
+    else:
+        return render_template('nexam_qbank.html', cat = cat, diff = diff)
+
+@teacher_bp.route('/nexam-display', methods = ['GET'])
+def nexam_display():
+    return render_template('nexam_display.html', exam_questions=g.exam.questions)
 
 @teacher_bp.route('/add-question-to-exam', methods = ['POST'])
 def add_question_to_exam():
     if request.method == 'POST':
-        question_id = int(request.form["question"])
-        q = help.find_question_by_question_id(db, question_id)
-        points = request.form['points']
-        help.add_question_to_exam(q, g.exam, int(points))
-        eqs = help.get_questions_in_exam(g.exam)
-        questions = g.course.questions
-        questions.sort(key=lambda question: question.question_id)
-        return render_template('new_exam.html', exam_questions = g.exam.questions, question_bank=questions)
+        if "add_to_exam" in request.form:
+            question_id = int(request.form["question"])
+            q = help.find_question_by_question_id(db, question_id)
+            points = request.form['points']
+            help.add_question_to_exam(q, g.exam, int(points))
+            return redirect(url_for('teacher_bp.nexam_qbank'))
+        elif "more_info" in request.form:
+            question_id = int(request.form["question"])
+            q = help.find_question_by_question_id(db, question_id)
+            tcs = q.testcases
+            return render_template('qinfo.html', question = q, testcases = tcs)
 
 @teacher_bp.route('/publish-exam', methods = ['POST'])
 def publish_exam():
@@ -215,7 +240,6 @@ def release_exam():
                 question_id = int(key[len("student_ans"):])
                 geq = help.find_graded_exam_question(db, g.submitted_exam.user_id, question_id, g.submitted_exam.exam_id)
                 man_grades = []  
-                print(request.form.getlist("man_grade" + str(question_id)))
                 for man_grade in request.form.getlist("man_grade" + str(question_id)):
                     man_grades.append(float(man_grade))
 

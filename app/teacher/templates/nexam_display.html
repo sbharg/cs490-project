@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Exam</title>
+  <link rel="stylesheet" href="{{ url_for('teacher_bp.static', filename='select.css') }}">
+</head>
+
+<body>
+    <main id="main-holder">
+        <!-- Displays questions already in the exam -->
+        <form action="/publish-exam" method="post">
+            Questions
+            <br>
+            {% if exam_questions %}
+            <ul>
+                {% for question in exam_questions %}
+                    <li> 
+                        {{ question.question.question_id }}: {{ question.question.func_name }} ( {{question.points}} Points)
+                    </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <ul>
+                <li>Add a question</li>
+            </ul>
+            {% endif %}
+
+            <input type="submit" value="Publish Exam" id="publish_exam" onclick="window.top.location.href='/adminlanding';">
+        </form>
+
+    </main>
+</body>
+
+
+
+
+</html>
