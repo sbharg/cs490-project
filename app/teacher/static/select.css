@@ -3,7 +3,7 @@ html {
 }
 
 body {
-    	background-image: url('https://i.imgur.com/EP15VMX.png);
+    	background-image: url('https://i.imgur.com/EP15VMX.png');
     	background-repeat: repeat-y;
     	background-size: 50% auto;
 }
@@ -37,8 +37,6 @@ framecontainer
 	-moz-appearance: none;
 	-webkit-appearance: none;
 	appearance: none;
-	
-
 }
 
 

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Template Question Bank</title>
+  <link rel="stylesheet" href="{{ url_for('teacher_bp.static', filename='select.css') }}">
+  <script src="{{url_for('teacher_bp.static', filename='nexam.js')}}"></script>
+</head>
+
+<body>
+  <main id="main-holder">
+    <form id="question-sorting-form" method="post" action="/filter-questions-exam">
+
+        <label for="category">Category:</label>
+        <input type="text" id="category" name="category" value="{% if cat %}{{ cat }}{% endif %}">
+
+        <label for="difficulty">Difficulty:</label>
+        <select id="difficulty" name="difficulty" required>
+          <option value="all" {% if diff == "all" %} selected {% endif %}>All</option>
+          <option value="easy" {% if diff == "easy" %} selected {% endif %}>Easy</option>
+          <option value="medi" {% if diff == "medi" %} selected {% endif %}>Medium</option>
+          <option value="hard" {% if diff == "hard" %} selected {% endif %}>Hard</option>
+        </select>
+
+      <input type="submit" value="Filter">
+    </form>
+
+    <form id="question-select-form" method="post" action="/add-question-to-exam">
+        <select name="question" size="20" style="width:90%;" class="select-css" required>
+        <!--- Forloop of question list--->
+            {% if questions %}
+                {% for question in questions %}
+                 <option value="{{ question.question_id }}">{{ question.question_id }}: {{ question.func_name }}</option>
+                {% endfor %}
+            {% endif %}
+        </select>
+
+        <br>
+        <div>
+            <label for="points">Points:</label>
+            <input type="text" id="points" name="points">
+        </div>
+
+        <br>
+        <input type="submit" value="Expand Question" id="qf-selectq" name="more_info">
+        <input type="submit" value="Add to exam" id="qf-selectq" name="add_to_exam">
+    </form>
+  </main>
+</body>
+
+</html>

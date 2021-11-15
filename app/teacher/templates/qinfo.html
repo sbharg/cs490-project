@@ -19,12 +19,20 @@
             <br>
 
             <label for="category">Category:</label>
-            {{ question.category }}
+            <div name="category" id="category">{{ question.category }}</div>
 
-            <label for="fname">Difficulty:</label>
-            {% if question.difficulty == "easy" %} Easy
-            {% elif question.difficulty == "medi" %} Medium
-            {% elif question.difficulty == "hard" %} Hard {% endif %}
+            <label for="diff">Difficulty:</label>
+            <div name="diff" id="diff">
+            {% if question.difficulty == "easy" %}
+            Easy
+            {% endif %}
+            {% if question.difficulty == "medi" %}
+            Medium
+            {% endif %}
+            {% if question.difficulty == "hard" %}
+            Hard
+            {% endif %}
+            </div>
 
             <br>
             <textarea id="tbox1" name="tbox1" rows="4" cols="50" placeholder="Question" readonly> {{ question.question }} </textarea>
@@ -65,10 +73,9 @@
                 <li>No Test Cases!</li>
                 </ul>
             {% endif %}
-            {% endif %}
 
             <br>
-            <a id="lf-qeditor" class="lf-signin" onclick="window.location.href='/qbank-display';">Back to Question Bank</a>
+            <a id="lf-qeditor" class="lf-signin" onclick="window.location.href='/nexam-qbank';">Back to Question Bank</a>
         {% endif %}
 
   </main>
