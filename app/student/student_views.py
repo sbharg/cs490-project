@@ -79,9 +79,7 @@ def submit_answers():
                 man_grades = [prop_tpoints_per_item * x for x in mask]
         
                 # The grade of the geq should be (prop of testcases passed) * question_points
-                geq = help.grade_exam_question(q, ue, val, proportion*total_points)
-                geq.man_grades = man_grades
-                db.session.commit()
+                geq = help.grade_exam_question(q, ue, val, proportion*total_points, man_grades, "")
 
         return redirect(url_for('login_bp.userlanding'))
 

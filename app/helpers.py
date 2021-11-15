@@ -163,7 +163,7 @@ def get_graded_exam(e: Exam, u: User):
             graded_questions.append(graded_q)
     return graded_questions
  
-def grade_exam_question(q: Question, ue: UserExam, ans: str, grade: float, comment=""):
+def grade_exam_question(q: Question, ue: UserExam, ans: str, grade: float, man_grades=None, comment=""):
     '''
     Grades an exam question for a specified user
 
@@ -171,7 +171,7 @@ def grade_exam_question(q: Question, ue: UserExam, ans: str, grade: float, comme
             The user answer is expected to be a string, while the grade is expected to be a float
     Output: A GradedExamQuestion object
     '''
-    exam_question_grade = GradedExamQuestion(ue.exam_id, q.question_id, ue.user_id, ans, grade, comment)
+    exam_question_grade = GradedExamQuestion(ue.exam_id, q.question_id, ue.user_id, ans, grade, comment, man_grades)
     exam_question_grade.insert()
     return exam_question_grade
 

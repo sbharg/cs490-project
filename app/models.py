@@ -181,13 +181,15 @@ class GradedExamQuestion(db.Model):
                     {})
     exam_question = relationship("ExamQuestion", back_populates="grades", uselist=False, viewonly=True)
 
-    def __init__(self, exam_id, question_id, user_id, student_answer, grade, comment):
+    def __init__(self, exam_id, question_id, user_id, student_answer, grade, comment, man_grades=None):
         self.exam_id = exam_id
         self.question_id = question_id
         self.user_id = user_id
         self.grade = grade
         self.student_answer = student_answer
         self.comment = comment
+        if man_grades != None:
+            self.man_grades = man_grades
     def insert(self):
         db.session.add(self)
         db.session.commit()
