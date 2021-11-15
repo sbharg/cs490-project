@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Exam</title>
+  <link rel="stylesheet" href="{{ url_for('teacher_bp.static', filename='select.css') }}">
+</head>
+
+<body>
+    <main id="main-holder">
+        <!-- Displays questions already in the exam -->
+        <form action="/publish-exam" method="post">
+            Questions
+            <br>
+            {% if exam_questions %}
+            <ul>
+                {% for question in exam_questions %}
+                    <li> 
+                        {{ question.question.question_id }}: {{ question.question.func_name }} ( {{question.points}} Points)
+                    </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <ul>
+                <li>Add a question</li>
+            </ul>
+            {% endif %}
+
+            <input type="submit" value="Publish Exam" id="publish_exam">
+        </form>
+
+        <!-- Displays the question bank -->
+        <!-- Can select a question to add to the exam -->
+        <form action="/add-question-to-exam" method="post">
+            Question Bank
+            <div>
+                <select name="question" size="20" style="width:90%;" class="select-css" required>
+                {% if question_bank %}
+                    {% for question in question_bank %}
+                        <option value="{{ question.question_id }}">{{ question.question_id }}:{{ question.func_name }}</option>
+                    {% endfor %}
+                {% endif %}
+                </select>
+            </div>
+            <div>
+                <label for="points">Points:</label>
+                <input type="text" id="points" name="points" required>
+            </div>
+            <input type="submit" value="Add question to exam" id="question_submit">
+        </form>
+
+    </main>
+</body>
+
+
+
+
+</html>
