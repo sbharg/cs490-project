@@ -11,16 +11,27 @@
 <body>
   <main id="main-holder">
     <form id="question-sorting-form" method="post" action="/qbank-search-sort">
-      {% if searchoptions %}
-        {% for option in searchoptions %}
-          {% if option.included %}
-            <input type = "checkbox" name="{{ option.option_name }}" value= "{{ option.option_name }}" checked>
-          {% else %}
-            <input type = "checkbox" name="{{ option.option_name }}" value= "{{ option.option_name }}">
-          {% endif %}
-        {% endfor %}
-      {% endif %}
-      <input type="submit" value="Advanced Search">
+		<label for="category">Category:</label>
+		<input type="text" id="category" name="category-filter">
+		</select>
+		<br>
+		<label for="fname">Difficulty:</label>
+        <select name="difficulty-filter" required>
+		  <option value="all">All Difficulty</option>
+          <option value="easy">Easy</option>
+          <option value="med">Medium</option>
+          <option value="hard">Hard</option>
+        </select>
+	    <br>
+	    <label for="fname">Constraints:</label>
+        <select name="constraints-filter" required>
+		  <option value="all">All Contraints</option>
+          <option value="easy">For</option>
+          <option value="med">While</option>
+          <option value="hard">Recursion</option>
+        </select>
+		<br>
+		<input type="submit" value="Advanced Search">
     </form>
     <form id="question-select-form" method="post" action="/qbank-edit">
       <select name="question" size="20" style="width:90%;" class="select-css" required>
