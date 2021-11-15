@@ -18,7 +18,7 @@ teacher_bp = Blueprint(
     'teacher_bp', __name__,
     template_folder='templates',
     static_folder='static',
-    static_url_path='/static'
+    static_url_path='/teacher/static'
 )
 
 @teacher_bp.before_request
