@@ -8,6 +8,17 @@ body {
     	background-size: 50% auto;
 }
 
+main {
+	height: 100%;
+	width: 100%;
+}
+
+#iframe-container
+{
+	width: 50%;
+	height: 100;
+}
+
 .select-css {
 	display: block;
 	font-size: 16px;
