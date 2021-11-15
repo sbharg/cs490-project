@@ -13,10 +13,10 @@ main {
 	width: 100%;
 }
 
-#iframe-container
+framecontainer
 {
-	width: 50%;
-	height: 100;
+	width: 100%
+	height: fit-content;
 }
 
 .select-css {
