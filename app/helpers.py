@@ -96,10 +96,16 @@ def find_question_by_exam_id(db, question_id, exam_id):
         ).first()
 
 def find_questions_by_cat_and_diff(c: Course, cat, diff):
-    if diff == "all" or diff == "All" or diff == "ALL":
-        return [q for q in c.questions if q.category == cat]
+    if cat == "":
+        if diff == "all" or diff == "All" or diff == "ALL":
+            return c.questions
+        else:
+            return [q for q in c.questions if q.difficulty == diff]
     else:
-        return [q for q in c.questions if (q.category == cat and q.difficulty == diff)]
+        if diff == "all" or diff == "All" or diff == "ALL":
+            return [q for q in c.questions if q.category == cat]
+        else:
+            return [q for q in c.questions if (q.category == cat and q.difficulty == diff)]
 
 def create_testcase(q: Question, case_input: str, case_output: str):
     '''
