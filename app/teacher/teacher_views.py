@@ -158,8 +158,9 @@ def new_exam():
         return redirect(url_for('login_bp.index'))
 
     if request.method == 'GET':
-        exam = help.create_exam(g.course, False)
-        session['exam_id'] = exam.exam_id
+        session.pop("exam_id", None)
+        #exam = help.create_exam(g.course, False)
+        #session['exam_id'] = exam.exam_id
         return render_template('nexam.html')
 
 @teacher_bp.route('/nexam-qbank', methods = ['GET'])
@@ -184,12 +185,21 @@ def exam_qbank_display_filterd():
 
 @teacher_bp.route('/nexam-display', methods = ['GET'])
 def nexam_display():
+    try:
+        exam_questions=g.exam.questions
+    except AttributeError:
+        return render_template('nexam_display.html')
     return render_template('nexam_display.html', exam_questions=g.exam.questions)
 
 @teacher_bp.route('/add-question-to-exam', methods = ['POST'])
 def add_question_to_exam():
     if request.method == 'POST':
         if "add_to_exam" in request.form:
+            if session.get('exam_id') is None:
+                exam = help.create_exam(g.course, False)
+                session['exam_id'] = exam.exam_id
+                g.exam = exam
+                
             question_id = int(request.form["question"])
             q = help.find_question_by_question_id(db, question_id)
             points = request.form['points']
