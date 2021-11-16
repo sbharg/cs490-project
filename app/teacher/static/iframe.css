@@ -2,6 +2,7 @@ iframe{
     overflow: visible; 
     width: 49%; 
     float: left;
+    
 }
 
 html,
@@ -9,6 +10,12 @@ body {
    margin:0;
    padding:0;
    height:100%;
+
+    background-color: none;
+    background-image: none;
+    background-repeat: none;
+    background-size: none;
+    color: #b8b8b8;
 }
 
 .tbox1 textarea

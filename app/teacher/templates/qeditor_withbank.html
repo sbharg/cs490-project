@@ -11,22 +11,29 @@
 
 <body id=".select-css">
     <main>
+
+
+
       <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.0.js"></script>
       <script type="text/javascript">
         function autoResize(iframe) {
           $(iframe).height($(iframe).contents().find('html').height());
         }
 		
-		function autoCss(iframe){
-		    let head = $(iframe).contents().find("head");
-			let css = "<link rel=\"stylesheet\" href=\"{{ url_for('teacher_bp.static', filename='iframe.css') }}\">";
-			$(head).append(css);
-		}
-		
-		function autoDiv(div){
-		}
+  		function autoCss(iframe){
+  		    let head = $(iframe).contents().find("head");
+  			let css = "<link rel=\"stylesheet\" href=\"{{ url_for('teacher_bp.static', filename='iframe.css') }}\">";
+  			$(head).append(css);
+  		}
 		
       </script>
+
+        <div class="topnav-teacher">
+          <a href="{{ url_for('login_bp.adminlanding') }}">Home</a>
+          <a class="active" href="{{ url_for('teacher_bp.qbank_full') }}">Question Editor</a>
+          <a href="{{ url_for('teacher_bp.new_exam') }}">Exam Template Editor</a>
+          <a href="{{ url_for('teacher_bp.submitted_exams') }}">Published Exam Manager</a>
+        </div>
 
         <div id="framecontainer" class="iframe-container" onload="autoDiv(div)">
           <iframe id="tch-qeditor" onload="autoResize(this);autoCss(this);" src="{{ url_for('teacher_bp.qedit_new') }}" width="49%" frameborder="0" border="5px" align="left"></iframe> 
@@ -34,10 +41,6 @@
         </div>
   
 		<br>
-
-        <p id="lf-return-box" align="center">
-          <a id="lf-qeditor" class="lf-signin" onclick="window.location.href='/adminlanding';">Back to Landing Page</a>
-        </p>
     </main>
 </body>
 
