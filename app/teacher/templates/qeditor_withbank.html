@@ -16,19 +16,14 @@
         $(iframe).height($(iframe).contents().find('html').height());
       }
 		
-        function autoCss(iframe){
-          let head = $(iframe).contents().find("head");
-          let css = "<link rel=\"stylesheet\" href=\"{{ url_for('teacher_bp.static', filename='iframe.css') }}\">";
-          $(head).append(css);
-        }
       </script>
       
       {% import "nav_bar.html" as nbar %}
       {{ nbar.nav_bar("qedit") }}
 
       <div id="framecontainer" class="iframe-container">
-        <iframe id="tch-qeditor" onload="autoResize(this);autoCss(this);" src="{{ url_for('teacher_bp.qedit_new') }}" width="50%" frameborder="0" border="5px" align="left"></iframe> 
-        <iframe id="tch-qbank" onload="autoResize(this);autoCss(this);" src="{{ url_for('teacher_bp.qbank_display') }}" width="50%" frameborder="0" border="5px" align="left"></iframe>
+        <iframe id="tch-qeditor" onload="autoResize(this);" src="{{ url_for('teacher_bp.qedit_new') }}" width="50%" frameborder="0" border="5px" align="left"></iframe> 
+        <iframe id="tch-qbank" onload="autoResize(this);" src="{{ url_for('teacher_bp.qbank_display') }}" width="50%" frameborder="0" border="5px" align="left"></iframe>
       </div>
   
 		<br>
