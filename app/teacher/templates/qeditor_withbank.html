@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="{{ url_for('teacher_bp.static', filename='select.css') }}">
 </head>
 
-<body id=".select-css">
+<body>
     <main>
 
       <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js' type='text/javascript'></script>
@@ -28,8 +28,8 @@
       {{ nbar.nav_bar("qedit") }}
 
       <div id="framecontainer" class="iframe-container">
-        <iframe id="tch-qeditor" onload="autoResize(this);" src="{{ url_for('teacher_bp.qedit_new') }}" width="50%" frameborder="0" border="5px" align="left"></iframe> 
-        <iframe id="tch-qbank" onload="autoResize(this);" src="{{ url_for('teacher_bp.qbank_display') }}" width="50%" frameborder="0" border="5px" align="left"></iframe>
+        <iframe id="tch-qeditor" onload="autoResize(this);autoCss(this);" src="{{ url_for('teacher_bp.qedit_new') }}" width="50%" frameborder="0" border="5px" align="left"></iframe> 
+        <iframe id="tch-qbank" onload="autoResize(this);autoCss(this);" src="{{ url_for('teacher_bp.qbank_display') }}" width="50%" frameborder="0" border="5px" align="left"></iframe>
       </div>
   
 		<br>
