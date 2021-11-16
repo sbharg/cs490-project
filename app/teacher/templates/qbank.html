@@ -11,27 +11,20 @@
   <main id="main-holder">
     <form id="question-sorting-form" method="post" action="/filter-questions">
 		<label for="category">Category:</label>
-		<input type="text" id="category" name="category-filter">
+		<input type="text" id="category" name="category" value="{% if cat %}{{ cat }}{% endif %}">
 		</select>
 		<br>
-		<label for="fname">Difficulty:</label>
-        <select name="difficulty-filter" required>
-		      <option value="all">All</option>
-          <option value="easy">Easy</option>
-          <option value="med">Medium</option>
-          <option value="hard">Hard</option>
-        </select>
-	    <br>
 
-      <!--
-	      <label for="fname">Constraints:</label>
-        <select name="constraints-filter" required>
-		      <option value="all">All Contraints</option>
-          <option value="easy">For</option>
-          <option value="med">While</option>
-          <option value="hard">Recursion</option>
-        </select>
-      -->
+    <label for="fname">Difficulty:</label>
+    <select name="difficulty" required>
+      <option value="all" {% if diff == "all" %} selected {% endif %}>All</option>
+      <option value="easy" {% if diff == "easy" %} selected {% endif %}>Easy</option>
+      <option value="medi" {% if diff == "medi" %} selected {% endif %}>Medium</option>
+      <option value="hard" {% if diff == "hard" %} selected {% endif %}>Hard</option>
+    </select>
+
+	  <br>
+
 		<br>
 		<input type="submit" value="Advanced Search">
     </form>
