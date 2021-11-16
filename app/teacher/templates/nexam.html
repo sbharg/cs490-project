@@ -12,10 +12,10 @@
     <main>
       <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js' type='text/javascript'></script>
       <script type="text/javascript">
-        function autoResize(iframe) {
-          $(iframe).height($(iframe).contents().find('html').height());
-        }
 
+      function autoResize(iframe) {
+        $(iframe).height($(iframe).contents().find('html').height());
+      }
       function autoCss(iframe){
         let head = $(iframe).contents().find("head");
         let css = "<link rel=\"stylesheet\" href=\"{{ url_for('teacher_bp.static', filename='iframe.css') }}\">";

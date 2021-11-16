@@ -16,7 +16,11 @@ body {
     background-image: none;
     background-repeat: none;
     background-size: none;
-    color: #b8b8b8;
+    color: #ffffff;
+}
+
+label{
+    color: #ffffff;
 }
 
 .tbox1 textarea
