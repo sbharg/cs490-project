@@ -6,11 +6,11 @@
   <link rel="stylesheet" href="{{ url_for('teacher_bp.static', filename='select.css') }}">
 </head>
 
-{% macro nav_bar(active) -%}
+{% macro nav_bar(active) %}
     <div class="topnav-teacher">
         <a href="{{ url_for('login_bp.adminlanding') }}">Home</a>
         <a {% if active == "qedit" %} class="active" {% endif %} href="{{ url_for('teacher_bp.qbank_full') }}">Question Bank</a>
         <a {% if active == "nexam" %} class="active" {% endif %} href="{{ url_for('teacher_bp.new_exam') }}">Create New Exam</a>
         <a {% if active == "subexam" %} class="active" {% endif %} href="{{ url_for('teacher_bp.submitted_exams') }}">Review Submitted Exams</a>
     </div>
-{%- endmacro %}
+{% endmacro %}
