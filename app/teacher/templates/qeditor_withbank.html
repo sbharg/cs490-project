@@ -28,12 +28,17 @@
 		
       </script>
 
+        <!--
         <div class="topnav-teacher">
           <a href="{{ url_for('login_bp.adminlanding') }}">Home</a>
           <a class="active" href="{{ url_for('teacher_bp.qbank_full') }}">Question Editor</a>
           <a href="{{ url_for('teacher_bp.new_exam') }}">Exam Template Editor</a>
           <a href="{{ url_for('teacher_bp.submitted_exams') }}">Published Exam Manager</a>
         </div>
+        -->
+
+        {% import "nav_bar.html" as nbar %}
+        {{ nbar.nav_bar("qedit") }}
 
         <div id="framecontainer" class="iframe-container" onload="autoDiv(div)">
           <iframe id="tch-qeditor" onload="autoResize(this);autoCss(this);" src="{{ url_for('teacher_bp.qedit_new') }}" width="49%" frameborder="0" border="5px" align="left"></iframe> 

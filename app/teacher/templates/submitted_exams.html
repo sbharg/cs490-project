@@ -10,6 +10,9 @@
 
 <body>
     <main id="main-holder">
+        {% import "nav_bar.html" as nbar %}
+        {{ nbar.nav_bar("subexam") }}
+
         <form action="/edit-submission" method="post">
             Submitted Exams
             <br>
