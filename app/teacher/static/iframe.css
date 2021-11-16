@@ -2,13 +2,15 @@ iframe{
     overflow: visible; 
     width: 49%; 
     float: left;
-    
+    scroll: no;
 }
 
 body {
     /*margin:0;*/
     padding:0;
     height:100%;
+
+    overflow:hidden;
 
     background-color: none;
     background-image: none;

@@ -5,7 +5,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Question Editor (new)</title>
-  <link rel="stylesheet" href="{{ url_for('teacher_bp.static', filename='iframe.css') }}">
   <link rel="stylesheet" href="{{ url_for('teacher_bp.static', filename='select.css') }}">
 </head>
 
@@ -16,17 +15,20 @@
         function autoResize(iframe) {
           $(iframe).height($(iframe).contents().find('html').height());
         }
+
+      function autoCss(iframe){
+        let head = $(iframe).contents().find("head");
+        let css = "<link rel=\"stylesheet\" href=\"{{ url_for('teacher_bp.static', filename='iframe.css') }}\">";
+        $(head).append(css);
+      }
       </script>
 
       {% import "nav_bar.html" as nbar %}
       {{ nbar.nav_bar("nexam") }}
 
-      <div class="iframe-container">
-        <iframe id="nexam-qbank" onload="autoResize(this);" src="{{ url_for('teacher_bp.nexam_qbank') }}" width="50%" frameborder="0" align="left"></iframe>  
-      </div>
-
-      <div class="iframe-container">
-        <iframe id="nexam-display" onload="autoResize(this);" src="{{ url_for('teacher_bp.nexam_display') }}" width="50%" frameborder="0" align="left"></iframe>
+      <div id="framecontainer" class="iframe-container" >
+        <iframe id="nexam-qbank" onload="autoResize(this);autoCss(this);" src="{{ url_for('teacher_bp.nexam_qbank') }}" width="50%" frameborder="0" align="left"></iframe>
+        <iframe id="nexam-display" onload="autoResize(this);autoCss(this);" src="{{ url_for('teacher_bp.nexam_display') }}" width="50%" frameborder="0" align="left"></iframe>
       </div>
 
       <br>
