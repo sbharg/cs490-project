@@ -194,22 +194,16 @@ def nexam_display():
 @teacher_bp.route('/add-question-to-exam', methods = ['POST'])
 def add_question_to_exam():
     if request.method == 'POST':
-        if "add_to_exam" in request.form:
-            if session.get('exam_id') is None:
-                exam = help.create_exam(g.course, False)
-                session['exam_id'] = exam.exam_id
-                g.exam = exam
-                
-            question_id = int(request.form["question"])
-            q = help.find_question_by_question_id(db, question_id)
-            points = request.form['points']
-            help.add_question_to_exam(q, g.exam, int(points))
-            return redirect(url_for('teacher_bp.nexam_qbank'))
-        elif "more_info" in request.form:
-            question_id = int(request.form["question"])
-            q = help.find_question_by_question_id(db, question_id)
-            tcs = q.testcases
-            return render_template('qinfo.html', question = q, testcases = tcs)
+        if session.get('exam_id') is None:
+            exam = help.create_exam(g.course, False)
+            session['exam_id'] = exam.exam_id
+            g.exam = exam
+            
+        question_id = int(request.form["question"])
+        q = help.find_question_by_question_id(db, question_id)
+        points = request.form['points']
+        help.add_question_to_exam(q, g.exam, int(points))
+        return redirect(url_for('teacher_bp.nexam_qbank'))
 
 @teacher_bp.route('/publish-exam', methods = ['POST'])
 def publish_exam():

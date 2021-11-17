@@ -5,16 +5,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Template Question Bank</title>
-  <script src="{{url_for('teacher_bp.static', filename='nexam.js')}}"></script>
-    <link rel="stylesheet" href="{{ url_for('teacher_bp.static', filename='iframe.css') }}">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('teacher_bp.static', filename='iframe.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('teacher_bp.static', filename='select.css') }}">
 </head>
 
-<body>
-  <main id="main-holder">
+<body class="left-side">
+  <main id="main-holder" class="left-side">
     <form id="question-sorting-form" method="post" action="/filter-questions-exam">
 
-        <label for="category">Category:</label>
-        <input type="text" id="category" name="category" value="{% if cat %}{{ cat }}{% endif %}">
+        <label for="category" class="white-text">Category:</label>
+        <input class="white-text" type="text" id="category" name="category" value="{% if cat %}{{ cat }}{% endif %}">
 
         <label for="difficulty">Difficulty:</label>
         <select id="difficulty" name="difficulty" required>
@@ -31,23 +33,46 @@
         <select name="question" size="20" style="width:90%;" class="select-css" required>
         <!--- Forloop of question list--->
             {% if questions %}
-                {% for question in questions %}
-                 <option value="{{ question.question_id }}">{{ question.question_id }}: {{ question.func_name }}</option>
+                {% for q in questions %}
+                  {% set q_constraint = namespace(value='none') %}
+                  {% if q.for_flag %}
+                    {% set q_constraint.value = 'for' %}
+                  {% elif q.while_flag %}
+                    {% set q_constraint.value = 'while' %}
+                  {% elif q.rec_flag %}
+                    {% set q_constraint.value = 'rec' %}
+                  {% endif %}
+                  <option class="q-link" value="{{ q.question_id }}" q-link_id="{{ q.question_id }}" q-link_name="{{ q.func_name }}" q-link_text="{{ q.question }}" q-link_constraint="{{ q_constraint.value }}" q-link_diff="{{ q.difficulty }}" q-link_cat="{{ q.category }}">
+                   {{ q.question_id }}: {{ q.func_name }}
+                  </option>
                 {% endfor %}
             {% endif %}
         </select>
 
         <br>
         <div>
-            <label for="points">Points:</label>
+            <label for="points" class="white-text">Points:</label>
             <input type="text" id="points" name="points" required>
         </div>
 
         <br>
-        <input type="submit" value="Expand Question" id="qf-selectq" name="more_info">
         <input type="submit" value="Add to exam" id="qf-selectq" name="add_to_exam">
     </form>
+
+    {% include 'q_quickview.html' %}
+
   </main>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="{{url_for('teacher_bp.static', filename='nexam.js')}}"></script>
+    <script type="text/javascript">
+      window.addEventListener("load", function() { 
+          parent.document.getElementById('nexam-display').contentWindow.location.reload();
+      });
+    </script>
 </body>
 
 </html>

@@ -6,16 +6,35 @@ html {
 }
 
 body {
-    color: #ffffff;
+    color: #000000;
+}
+
+.left-side{
+	background-image: url('https://i.imgur.com/EP15VMX.png');
+   	background-repeat: repeat-y;
+   	background-size: 100% 100%;
+}
+
+.right-side{
+	background-color: #7f7f7f;
+	padding: 5px;
 }
 
 main {
 	height: 100%;
 	width: 100%;
+	color: #000000;
+}
+
+#white-text{
 	color: #ffffff;
 }
 
+#q-link{
+	color: #000000;
+}
 
+select option { color: black; }
 
 #framecontainer
 {
@@ -54,6 +73,7 @@ main {
 
 /*I have no idea what this is - Liam*/
 
+/*
 .select-css {
 	display: block;
 	font-size: 16px;
@@ -95,3 +115,4 @@ main {
 table, th, td {
   border: 1px solid black;
 }
+*/

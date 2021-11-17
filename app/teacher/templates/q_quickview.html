@@ -1,0 +1,29 @@
+<div class="modal fade" id="QuestionModal" tabindex="-1" role="dialog" aria-labelledby="LabelModel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content" align="left">
+            <div class="modal-header">
+                <h5 class="modal-title" style="color: black;" id="funcName"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <h6 style="display:inline;">Category: </h6>
+                <p style="color: black;display:inline" id="funcCat"></p>
+                <h6 style="display:inline;">Difficulty: </h6>
+                <p style="color: black;display:inline" id="funcDiff"></p>
+                <br>
+                <h6>Question: </h6>
+                <textarea class="form-control" rows="8" type="text" readonly></textarea>
+                <br>
+                <h6>Constraints: </h6>
+                <p style="color: black;" id="funcConstraints"></p>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
