@@ -69,9 +69,11 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script src="{{url_for('teacher_bp.static', filename='nexam.js')}}"></script>
     <script type="text/javascript">
-      window.addEventListener("load", function() { 
-          parent.document.getElementById('nexam-display').contentWindow.location.reload();
-      });
+      $(document).ready(function(){
+          $("#qf-selectq").click(setTimeout(function(){
+            parent.document.getElementById('nexam-display').contentWindow.location.reload();
+          }), 100);
+      })
     </script>
 </body>
 
