@@ -17,7 +17,6 @@
 		<label for="category">Category:</label>
 		<input type="text" id="category" name="category" value="{% if cat %}{{ cat }}{% endif %}">
 		</select>
-		<br>
 
     <label for="fname">Difficulty:</label>
     <select name="difficulty" required>
@@ -27,13 +26,10 @@
       <option value="hard" {% if diff == "hard" %} selected {% endif %}>Hard</option>
     </select>
 
-	  <br>
-
-		<br>
 		<input type="submit" value="Advanced Search">
     </form>
     <form id="question-select-form" method="post" action="/qbank-edit">
-      <select name="question" size="20" style="width:90%;" class="select-css" required>
+      <select name="question" size="20" style="width:100%;" class="select-css" required>
         <!--- Forloop of question list--->
           {% if questions %}
             {% for q in questions %}
@@ -54,6 +50,7 @@
 
       <br>
       <input type="submit" value="Edit" id="qf-selectq">
+      <br><br><br><br><br><br><br><br><br>
     </form>
 
     {% include 'q_quickview.html' %}

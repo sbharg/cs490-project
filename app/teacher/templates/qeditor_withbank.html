@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Question Editor (new)</title>
+  <title>Question Bank</title>
   <link rel="stylesheet" href="{{ url_for('teacher_bp.static', filename='select.css') }}">
 </head>
 
@@ -25,7 +25,7 @@
         <iframe id="tch-qeditor" onload="autoResize(this);" src="{{ url_for('teacher_bp.qedit_new') }}" width="50%" frameborder="0" border="5px" align="left"></iframe> 
         <iframe id="tch-qbank" onload="autoResize(this);" src="{{ url_for('teacher_bp.qbank_display') }}" width="50%" frameborder="0" border="5px" align="left"></iframe>
       </div>
-  
+      
 		<br>
     </main>
 </body>
