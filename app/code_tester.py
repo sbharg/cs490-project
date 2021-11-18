@@ -1,4 +1,4 @@
-from models import Testcase, Question
+from app.models import Testcase, Question
 
 class CodeTester():
 
