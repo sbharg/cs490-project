@@ -1,4 +1,4 @@
-from app.models import Testcase, Question
+from models import Testcase, Question
 
 class CodeTester():
 
@@ -6,27 +6,6 @@ class CodeTester():
         self.func = func
         self.correct_func_name = correct_func_name
         self.func_name = func.partition('(')[0][4:]
-
-    '''
-    def __type_mapping(self, v: str, v_type: str):
-        
-        Private method to return correct type for a variable
-
-        Inputs:
-        v       --  value as a string
-        v_type  --  value type as a string
-
-        Output: v as its correct type, else None if type is not str, int, or float
-        
-        if v_type == "str" or v_type == "string" or v_type == "String":
-            return str(v)
-        elif v_type == "int" or v_type == "Int":
-            return int(v)
-        elif v_type == "float" or v_type == "Float":
-            return float(v)
-        else:
-            return None
-    '''
 
     def check_func_name(self):
         return self.correct_func_name == self.func_name
@@ -38,7 +17,7 @@ class CodeTester():
         return "while" in self.func.partition('\r')[2]
 
     def check_recursion(self):
-        return self.func_name in self.func.partition('\r')[2]
+        return self.func_name in self.func.partition('\n')[2]
             
     def test_single_case(self, case: Testcase):
         '''
@@ -56,13 +35,13 @@ class CodeTester():
             test_output = test_output[1:-1]
 
         # Edge Case: func is empty string
-        if(self.func.replace(' ', '') == ""):
+        if (self.func.replace(' ', '') == ""):
             return [0, None]
 
         try:
             exec(self.func)                         # Executes the user defined function and makes it callable
         except SyntaxError:
-            return [0, None]                       
+            return [0, None]       
 
         global_params = {}                          # Allows execution of only __builtins__ functions      
 
@@ -71,11 +50,18 @@ class CodeTester():
         method = possibles.get(self.func_name)
         local_params = {self.func_name: method}     # Allows execution of user defined method 
 
-        try:
-            out = eval(self.func_name + '(%s)' % test_input, global_params, local_params)
-        except NameError:
-            return [0, None]
-        
+
+        if not self.check_recursion():
+            try:
+                out = eval(self.func_name + '(%s)' % test_input, global_params, local_params)
+            except NameError:
+                return [0, None]
+        else:
+            func_body = self.func
+            func_body = func_body.strip() + "\nret_val = %s(%s)" % (self.func_name, test_input)
+            exec(func_body, globals(), globals())
+            out = ret_val
+
         if str(out) != test_output:
             return [0, out]
         else:
@@ -149,14 +135,20 @@ class CodeTester():
 
 if __name__ == "__main__":
 
-    code = """def test(a):
-            return a+5
+    code = """def fibo(n):
+        if n==1:
+            return 1
+        elif n==2:
+            return 1
+        else:
+            return fibo(n-1) + fibo(n-2)
     """
-    tester = CodeTester(code, 'test')
+    tester = CodeTester(code, 'fibo')
 
-    case1 = Testcase(1, "1", "int", "6", "int")
-    case2 = Testcase(1, "2", "int", "7", "int")
-    case3 = Testcase(1, "3", "int", "9", "int")
+    case1 = Testcase(1, "1", "1")
+    case2 = Testcase(1, "2", "1")
+    case3 = Testcase(1, "3", "2")
+    case4 = Testcase(1, "5", "5")
 
-    percent = tester.test_on_cases([case1, case2, case3])
+    percent = tester.auto_grade([case3, case4], 'recursion')
     print(percent)
