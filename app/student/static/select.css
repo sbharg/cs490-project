@@ -1,3 +1,20 @@
+html {
+	 background-color: #7f7f7f;
+	 background-image: url('https://i.imgur.com/EP15VMX.png');
+   background-repeat: repeat-y;
+   background-size: 100% 100%;
+}
+
+body {
+    color: #000000;
+}
+
+main {
+	height: 100%;
+	width: 100%;
+	color: #ffffff;
+}
+
 .select-css {
 	display: block;
 	font-size: 16px;
