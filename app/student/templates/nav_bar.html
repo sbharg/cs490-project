@@ -1,0 +1,10 @@
+{% macro nav_bar(active, available_url) %}
+    <div class="topnav">
+        <a href="{{ url_for('login_bp.userlanding') }}">Home</a>
+        {% if available_url %}
+            {% for url in available_url %}
+                <a {% if active == "{{ url.pagename }}" %} class="active" {% endif %} href="{{ url_for('{{ student_bp.{{ url.pagename }} }}') }}">{{ url.pagedisplay }}</a>
+            {% endfor %}
+        {% endif %}
+    </div>
+{% endmacro %}
