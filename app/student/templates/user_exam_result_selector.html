@@ -10,6 +10,9 @@
 
 <body>
   <main id="main-holder">
+    {% import "nav_bar.html" as nbar %}
+    {{ nbar.nav_bar("exam-grades") }}
+
     <form id="exam-select-form" method="post" action="/view-exam-result">
       <select name="exam-selection" size="20" style="width:90%;" class="select-css" required>
         <!--- Forloop of exams list. currently in limited reference due to limited computing power. need replacement--->

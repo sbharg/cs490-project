@@ -50,7 +50,7 @@ def exam():
     if request.method == 'GET':
         for q in g.exam.questions:
             print(q.question)
-        return render_template('questionselectorclient.html', exam_id=g.exam.exam_id, questions=g.exam.questions)
+        return render_template('exam_display.html', exam_id=g.exam.exam_id, questions=g.exam.questions)
 
 @student_bp.route('/submit-answers', methods = ['POST'])
 def submit_answers():
@@ -85,11 +85,15 @@ def submit_answers():
 
 @student_bp.route('/available-exams', methods = ['GET'])
 def available_exams():
+    if g.user == None:
+        return redirect(url_for('login_bp.index'))
     if request.method == 'GET':
         return render_template('user_available_exams_selector.html', exams = help.get_visible_course_exams(g.course))
 
 @student_bp.route('/exam-grades', methods = ['GET'])
 def exam_results():
+    if g.user == None:
+        return redirect(url_for('login_bp.index'))
     if request.method == 'GET':
         return render_template('user_exam_result_selector.html', exams = help.get_visible_user_exams(g.user))
 
