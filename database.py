@@ -42,7 +42,7 @@ For example, operation("+", 5, 3) should return 8.
     t1_1 = create_testcase(q1, "\"+\", 5, 3", "8")
     t1_2 = create_testcase(q1, "\"*\", 2, 2", "4")
     t1_3 = create_testcase(q1, "\"-\", 6, 3", "3")
-    t1_4 = create_testcase(q1, "\"/\", 10, 5", "2")
+    t1_4 = create_testcase(q1, "\"/\", 10, 5", "2.0")
 
     q2_text = '''
 Write a function named largest that takes one argument:
@@ -69,7 +69,6 @@ Function sayHello should return the greeting and the name as a single string.
 For example, sayHello("John", "Howdy") should return "Howdy, John"
     '''
     q3 = create_question(q3_text.strip(), course1, "Strings", "easy", "sayHello", False, False, False)
-
     t3_1 = create_testcase(q3, '"John", "Howdy"', '"Howdy, John"')
     t3_2 = create_testcase(q3, '"Sam", "Hello"', '"Hello, Sam"')
     t3_3 = create_testcase(q3, '"Ben", "Hi"', '"Hi, Ben"')
@@ -84,11 +83,39 @@ Function factorial should return the value x!. Use a for loop in your solution.
 For example, factorial(3) should return 6    
     '''
     q4 = create_question(q4_text.strip(), course1, "For loops", "easy", "factorial", True, False, False)
-
     t4_1 = create_testcase(q4, "1", "1")
     t4_2 = create_testcase(q4, "2", "2")
     t4_3 = create_testcase(q4, "3", "6")
     t4_3 = create_testcase(q4, "4", "24")
+
+    q5_text = '''
+Write a function named fib that that takes one argument:
+    1) n, an int greater than 0
+
+Function fib should return the nth Fibonacci number. Use recursion in your solution
+
+For example, fib(3) should return 2 and fib(1) should return 1
+    '''
+    q5 = create_question(q5_text.strip(), course1, "Recursion", "medi", "fib", False, False, True)
+    t5_1 = create_testcase(q5, "1", "1")
+    t5_2 = create_testcase(q5, "2", "1")
+    t5_3 = create_testcase(q5, "3", "2")
+    t5_3 = create_testcase(q5, "5", "5")
+
+    q6_text = '''
+Write a function named gcd that takes two arguments:
+    1) a, an int
+    2) b, an int
+
+Function gcd should return the greatest common divisor of a and b. Use a while loop in your solution
+
+For example, gcd(12, 10) should return 2
+    '''
+    q6 = create_question(q6_text.strip(), course1, "While Loop", "medi", "gcd", False, True, False)
+    t6_1 = create_testcase(q6, "20, 12", "4")
+    t6_2 = create_testcase(q6, "9, 5", "1")
+    t6_3 = create_testcase(q6, "12, 36", "12")
+    t6_3 = create_testcase(q6, "99, 55", "11")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
