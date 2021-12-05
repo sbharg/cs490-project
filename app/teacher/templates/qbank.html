@@ -9,27 +9,36 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" type="text/css" href="{{ url_for('teacher_bp.static', filename='iframe.css') }}">
   <link rel="stylesheet" type="text/css" href="{{ url_for('teacher_bp.static', filename='select.css') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
 </head>
 
 <body class="right-side">
   <main id="main-holder" class="right-side">
     <form id="question-sorting-form" method="post" action="/filter-questions">
-		<label for="category">Category:</label>
-		<input type="text" id="category" name="category" value="{% if cat %}{{ cat }}{% endif %}">
-		</select>
-
-    <label for="fname">Difficulty:</label>
-    <select name="difficulty" required>
-      <option value="all" {% if diff == "all" %} selected {% endif %}>All</option>
-      <option value="easy" {% if diff == "easy" %} selected {% endif %}>Easy</option>
-      <option value="medi" {% if diff == "medi" %} selected {% endif %}>Medium</option>
-      <option value="hard" {% if diff == "hard" %} selected {% endif %}>Hard</option>
-    </select>
-
-		<input type="submit" value="Advanced Search">
+      <div class="form-row">
+        <div class="form-group col">
+          <label for="category">Category:</label>
+          <input class="form-control form-control-sm" type="text" id="category" name="category" value="{% if cat %}{{ cat }}{% endif %}">
+        </div>
+        <div class="form-group col">
+          <label for="difficulty">Difficulty:</label>
+          <select class="form-control form-control-sm" name="difficulty" required>
+            <option value="all" {% if diff == "all" %} selected {% endif %}>All</option>
+            <option value="easy" {% if diff == "easy" %} selected {% endif %}>Easy</option>
+            <option value="medi" {% if diff == "medi" %} selected {% endif %}>Medium</option>
+            <option value="hard" {% if diff == "hard" %} selected {% endif %}>Hard</option>
+          </select>
+        </div>
+        <div class="form-group col ml-auto align-self-end">
+          <input class="btn btn-sm btn-light" type="submit" value="Filter">
+        </div>
+      </div>
     </form>
+
     <form id="question-select-form" method="post" action="/qbank-edit">
-      <select name="question" size="20" style="width:100%;" class="select-css" required>
+      <select name="question" size="17" style="width:100%;" class="select-css" required>
         <!--- Forloop of question list--->
           {% if questions %}
             {% for q in questions %}
@@ -49,8 +58,10 @@
       </select>
 
       <br>
-      <input type="submit" value="Edit" id="qf-selectq">
-      <br><br><br><br><br><br><br><br><br>
+      <br>
+      <br>
+      <input class="btn btn-light" style="width: 100%;" type="submit" value="Edit" id="qf-selectq">
+      <br><br><br><br><br><br><br><br><br><br><br><br><br>
     </form>
 
     {% include 'q_quickview.html' %}

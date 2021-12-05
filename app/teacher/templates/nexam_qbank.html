@@ -9,28 +9,36 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" type="text/css" href="{{ url_for('teacher_bp.static', filename='iframe.css') }}">
   <link rel="stylesheet" type="text/css" href="{{ url_for('teacher_bp.static', filename='select.css') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
 </head>
 
 <body class="left-side">
   <main id="main-holder" class="left-side">
     <form id="question-sorting-form" method="post" action="/filter-questions-exam">
-
-        <label for="category" class="white-text">Category:</label>
-        <input class="white-text" type="text" id="category" name="category" value="{% if cat %}{{ cat }}{% endif %}">
-
-        <label for="difficulty">Difficulty:</label>
-        <select id="difficulty" name="difficulty" required>
-          <option value="all" {% if diff == "all" %} selected {% endif %}>All</option>
-          <option value="easy" {% if diff == "easy" %} selected {% endif %}>Easy</option>
-          <option value="medi" {% if diff == "medi" %} selected {% endif %}>Medium</option>
-          <option value="hard" {% if diff == "hard" %} selected {% endif %}>Hard</option>
-        </select>
-
-      <input type="submit" value="Filter">
+      <div class="form-row">
+        <div class="form-group col">
+          <label for="category">Category:</label>
+          <input class="form-control form-control-sm" type="text" id="category" name="category" value="{% if cat %}{{ cat }}{% endif %}">
+        </div>
+        <div class="form-group col">
+          <label for="difficulty">Difficulty:</label>
+          <select class="form-control form-control-sm" name="difficulty" required>
+            <option value="all" {% if diff == "all" %} selected {% endif %}>All</option>
+            <option value="easy" {% if diff == "easy" %} selected {% endif %}>Easy</option>
+            <option value="medi" {% if diff == "medi" %} selected {% endif %}>Medium</option>
+            <option value="hard" {% if diff == "hard" %} selected {% endif %}>Hard</option>
+          </select>
+        </div>
+        <div class="form-group col ml-auto align-self-end">
+          <input class="btn btn-sm btn-light" type="submit" value="Filter">
+        </div>
+      </div>
     </form>
 
     <form id="question-select-form" method="post" action="/add-question-to-exam">
-        <select name="question" size="20" style="width:90%;" class="select-css" required>
+        <select name="question" size="16" style="width:100%;" class="select-css" required>
         <!--- Forloop of question list--->
             {% if questions %}
                 {% for q in questions %}
@@ -49,33 +57,37 @@
             {% endif %}
         </select>
 
-        <br>
-        <div>
-            <label for="points" class="white-text">Points:</label>
-            <input type="text" id="points" name="points" required>
-        </div>
 
-        <br>
-        <input type="submit" value="Add to exam" id="qf-selectq" name="add_to_exam">
-        <br><br><br><br><br><br><br><br><br>
+        <div class="form-row">
+          <div class="form-group col">
+            <label for="points" class="white-text">Points:</label>
+            <input class="form-control form-control-sm" type="text" id="points" name="points" required>
+          </div>
+          <div class="form-group col ml-auto align-self-end">
+            <input class="btn btn-sm btn-light" type="submit" value="Add to exam" id="qf-selectq" name="add_to_exam">
+          </div>
+        </div>
+        <br><br><br><br><br><br><br><br><br><br><br><br><br>
     </form>
 
     {% include 'q_quickview.html' %}
 
   </main>
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    <script src="{{url_for('teacher_bp.static', filename='nexam.js')}}"></script>
-    <script type="text/javascript">
-      $(document).ready(function(){
-          $("#qf-selectq").click(setTimeout(function(){
-            parent.document.getElementById('nexam-display').contentWindow.location.reload();
-          }), 100);
-      })
-    </script>
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script src="{{url_for('teacher_bp.static', filename='nexam.js')}}"></script>
+  <script type="text/javascript">
+    function refresh_q_display() {
+      parent.document.getElementById('nexam-display').contentWindow.location.reload(true);
+    }
+
+    $(document).ready(function(){
+      $("qf-selectq").click(setTimeout(refresh_q_display, 100))
+    });
+  </script>
 </body>
 
 </html>

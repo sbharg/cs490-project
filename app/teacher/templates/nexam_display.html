@@ -2,33 +2,38 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>New Exam</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Exam</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('teacher_bp.static', filename='select.css') }}">
     <link rel="stylesheet" href="{{ url_for('teacher_bp.static', filename='iframe.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
 </head>
 
 <body>
     <main id="main-holder">
         <!-- Displays questions already in the exam -->
-        <form action="/publish-exam" method="post">
-            Questions
+        <form class="gray-bg" action="/publish-exam" method="post">
+            <h4 style="color: #f5f5f5;">Questions</h4>
             <br>
             {% if exam_questions %}
-            <ul>
+            <ul class="list-group">
                 {% for question in exam_questions %}
-                    <li> 
-                        {{ question.question.question_id }}: {{ question.question.func_name }} ( {{question.points}} Points)
+                    <li class="list-group-item"> 
+                        {{ question.question.func_name }} ( {{question.points}} Points)
                     </li>
                 {% endfor %}
             </ul>
             {% else %}
-            <ul>
-                <li>Add a question</li>
+            <ul class="list-group">
+                <li class="list-group-item">Add a question</li>
             </ul>
             {% endif %}
-
-            <input type="submit" value="Publish Exam" id="publish_exam" onclick="window.top.location.href='/adminlanding';">
+            <br>
+            <input class="btn btn-sm btn-light" style="width: 100%;" type="submit" value="Publish Exam" id="publish_exam" onclick="window.top.location.href='/adminlanding';">
         </form>
 
     </main>

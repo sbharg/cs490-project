@@ -5,7 +5,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Submitted Exams</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" href="{{ url_for('teacher_bp.static', filename='single_select.css') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -13,20 +17,21 @@
         {% import "nav_bar.html" as nbar %}
         {{ nbar.nav_bar("subexam") }}
 
-        <form action="/edit-submission" method="post">
-            Submitted Exams
-            <br>
+        <form class="bg" action="/edit-submission" method="post">
+            <center>
+            <h4>Submitted Exams</h4> 
             <div>
-                <select name="exam" size="20" style="width:90%;" class="select-css" required>
+                <select name="exam" size="20" style="width:85%;" class="select-css" required>
                 {% if submitted_exams %}
                     {% for exam in submitted_exams %}
-                        <option value="{{ exam.exam_id }},{{ exam.user_id }}">Exam {{ exam.exam_id }} submitted by {{ exam.user_id }}:{{ exam.user.username }}</option>
+                        <option value="{{ exam.exam_id }},{{ exam.user_id }}">Exam {{ exam.exam_id }} submitted by {{ exam.user.username }}</option>
                     {% endfor %}
                 {% endif %}
                 </select>
             </div>
             <br>
-            <input type="submit" value="Edit/Review Submission" id="question_submit">
+            <input class="btn btn-light" style="width: 85%;" type="submit" value="Edit/Review Submission" id="question_submit">
+            </center>
         </form>
 
     </main>
