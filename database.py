@@ -52,7 +52,7 @@ Function largest should iterate through the given list and return the largest va
 
 For example, largest([3,7,2,9,8,1]) should return 9.
     '''
-    q2 = create_question(q2_text.strip(), course1, "For loops", "medi", "largest", False, False, False)
+    q2 = create_question(q2_text.strip(), course1, "For Loop", "medi", "largest", False, False, False)
 
     t2_1 = create_testcase(q2, "[3,7,2,9,8,1]", "9")
     t2_2 = create_testcase(q2, "[1, 2, 3, 4, 5]", "5")
@@ -82,7 +82,7 @@ Function factorial should return the value x!. Use a for loop in your solution.
 
 For example, factorial(3) should return 6    
     '''
-    q4 = create_question(q4_text.strip(), course1, "For loops", "easy", "factorial", True, False, False)
+    q4 = create_question(q4_text.strip(), course1, "For Loop", "easy", "factorial", True, False, False)
     t4_1 = create_testcase(q4, "1", "1")
     t4_2 = create_testcase(q4, "2", "2")
     t4_3 = create_testcase(q4, "3", "6")

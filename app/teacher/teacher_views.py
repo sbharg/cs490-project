@@ -240,8 +240,8 @@ def release_exam():
         db.session.commit()
 
         for key, val in request.form.items():
-            if key.startswith("student_ans"):
-                question_id = int(key[len("student_ans"):])
+            if key.startswith("teacher_com"):
+                question_id = int(key[len("teacher_com"):])
                 geq = help.find_graded_exam_question(db, g.submitted_exam.user_id, question_id, g.submitted_exam.exam_id)
                 man_grades = []  
                 for man_grade in request.form.getlist("man_grade" + str(question_id)):
