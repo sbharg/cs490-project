@@ -36,6 +36,7 @@
                         </div>
                     </div>
                     <div class="col-lg-8">
+                        <div class="table-wrapper">
                         {%- with code_tester = CodeTester(gq.student_answer, gq.exam_question.question.func_name) -%}
                         {%- with total_items =  code_tester.get_total_items(gq.exam_question.question) -%}
                         {%- with points_per_item = gq.exam_question.points / total_items -%}
@@ -165,6 +166,7 @@
                                 {%- endfor -%}
                             </tbody>
                         </table>
+                        </div>
                         {%- endwith -%}
                         {%- endwith -%}
                         {%- endwith -%}
@@ -175,7 +177,7 @@
             <br>
             {%- endfor -%}
             {%- endif -%}
-            <input class="btn btn-dark m-3" type="submit" value="Finish" id="exam_edit_submit">
+            <input class="btn btn-light" style="margin-left: 37px;margin-bottom: 50px;width: 95%;" type="submit" value="Finish" id="exam_edit_submit">
         </form>
 
     </main>

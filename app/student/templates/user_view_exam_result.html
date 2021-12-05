@@ -23,7 +23,7 @@
                 <div class="row m-1"><h6>Question ID: {{ gq.question_id }}</h6></div>
                 <div class="row m-1"><h6>Total Points: {{ gq.exam_question.points }}<h6></h6></div>
                 <div class="row">
-                    <div class="col-lg-4">
+                    <div class="col-lg-6">
                         <textarea class="form-control" rows="8" type="text" readonly>{{ gq.exam_question.question.question }}</textarea>
                         <br>
                         <div>
@@ -35,7 +35,8 @@
                             <textarea class="form-control" id="teacher_com{{ gq.question_id }}" name="teacher_com{{ gq.question_id }}" rows="8" readonly>{{ gq.comment }}</textarea>
                         </div>
                     </div>
-                    <div class="col-lg-8">
+                    <div class="col-lg-6">
+                        <div class="table-wrapper">
                         {%- with code_tester = CodeTester(gq.student_answer, gq.exam_question.question.func_name) -%}
                         {%- with total_items =  code_tester.get_total_items(gq.exam_question.question) -%}
                         {%- with points_per_item = gq.exam_question.points / total_items -%}
@@ -133,6 +134,7 @@
                                 {%- endfor -%}
                             </tbody>
                         </table>
+                        </div>
                         {%- endwith -%}
                         {%- endwith -%}
                         {%- endwith -%}
@@ -144,7 +146,7 @@
             {%- endfor -%}
             {%- endif -%}
     
-            <input type="submit" value="Finish" id="exam_review_done">
+            <input class="btn btn-light" style="margin-left: 37px;margin-bottom: 50px;width: 95%;" type="submit" value="Finish" id="exam_review_done">
         </form>
 
     </main>
