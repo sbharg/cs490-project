@@ -58,3 +58,8 @@ main {
 table, th, td {
   border: 1px solid black;
 }
+
+.exam-check textarea {
+	width: 99.6%;
+	resize: none;
+}
