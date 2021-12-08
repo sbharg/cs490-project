@@ -40,6 +40,7 @@
                         {%- with code_tester = CodeTester(gq.student_answer, gq.exam_question.question.func_name) -%}
                         {%- with total_items =  code_tester.get_total_items(gq.exam_question.question) -%}
                         {%- with points_per_item = gq.exam_question.points / total_items -%}
+                        {%- set student_points = namespace(value=0) -%}
                         <table class="table text-center">
                             <thead>
                                 <tr>
@@ -57,8 +58,9 @@
                                     <td class="align-middle table-danger" colspan="3" style="text-align: center;">Fail</td> 
                                     {% endif %}
                                     <td class="align-middle"> 
-                                        {{ "%.2f"|format(gq.man_grades[1]) }} / {{ "%.2f"|format(points_per_item) }}
+                                        {{ "%.2f"|format(gq.man_grades[0]) }} / {{ "%.2f"|format(points_per_item) }}
                                     </td>
+                                    {% set student_points.value = student_points.value + gq.man_grades[0] %}
                                 </tr>
                                 {%- if gq.exam_question.question.for_flag -%}
                                 <tr>
@@ -71,6 +73,7 @@
                                     <td class="align-middle"> 
                                         {{ "%.2f"|format(gq.man_grades[1]) }} / {{ "%.2f"|format(points_per_item) }}
                                     </td>
+                                    {% set student_points.value = student_points.value + gq.man_grades[1] %}
                                 </tr>
                                 {%- elif gq.exam_question.question.while_flag -%}
                                 <tr>
@@ -83,6 +86,7 @@
                                     <td class="align-middle"> 
                                         {{ "%.2f"|format(gq.man_grades[1]) }} / {{ "%.2f"|format(points_per_item) }}
                                     </td>
+                                    {% set student_points.value = student_points.value + gq.man_grades[1] %}
                                 </tr>
                                 {%- elif gq.exam_question.question.rec_flag -%}
                                 <tr>
@@ -95,6 +99,7 @@
                                     <td class="align-middle"> 
                                         {{ "%.2f"|format(gq.man_grades[1]) }} / {{ "%.2f"|format(points_per_item) }}
                                     </td>
+                                    {% set student_points.value = student_points.value + gq.man_grades[1] %}
                                 </tr>
                                 {% endif %}
                                 <tr>
@@ -128,10 +133,16 @@
                                     <td class="align-middle">
                                         {{ "%.2f"|format(gq.man_grades[i.value]) }} / {{ "%.2f"|format(points_per_item) }}
                                     </td>
+                                    {% set student_points.value = student_points.value + gq.man_grades[i.value] %}
                                     {% set i.value = i.value + 1 %}
                                     {% endwith %}
                                 </tr>
                                 {%- endfor -%}
+                                <tr>
+                                    <td class="align-middle" colspan="3"></td>
+                                    <th scope="row">Final Grade</th>
+                                    <td class="align-middle">{{ "%.2f"|format(student_points.value) }} / {{ "%.2f"|format(gq.exam_question.points) }}</td>
+                                </tr>
                             </tbody>
                         </table>
                         </div>
