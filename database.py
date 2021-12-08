@@ -86,7 +86,11 @@ For example, factorial(3) should return 6
     t4_1 = create_testcase(q4, "1", "1")
     t4_2 = create_testcase(q4, "2", "2")
     t4_3 = create_testcase(q4, "3", "6")
-    t4_3 = create_testcase(q4, "4", "24")
+    t4_4 = create_testcase(q4, "4", "24")
+    t4_5 = create_testcase(q4, "5", "120")
+    t4_6 = create_testcase(q4, "6", "720")
+    t4_7 = create_testcase(q4, "7", "5040")
+    t4_8 = create_testcase(q4, "8", "40320")
 
     q5_text = '''
 Write a function named fib that that takes one argument:
