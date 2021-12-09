@@ -45,6 +45,10 @@ form {
 	padding: 10px;
 }
 
+.exam-check textarea {
+	width: 99.6%;
+	resize: none;
+}
 
 table {
     width: 100%;
