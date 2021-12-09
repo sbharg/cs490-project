@@ -28,6 +28,17 @@ form {
 	border-radius: 7px;
 	box-shadow: 0px 0px 5px 2px black;
     padding: 50px 50px 50px 50px;
+    width: 95%;
+    margin: auto;
+    font-family: 'Lato', sans-serif;
+	padding: 10px;
+}
+
+.question-holder {
+	background-color: #f5f5f5;
+	border-radius: 7px;
+	box-shadow: 0px 0px 5px 2px black;
+    padding: 50px 50px 50px 50px;
     width: 50%;
     margin: auto;
     font-family: 'Lato', sans-serif;
