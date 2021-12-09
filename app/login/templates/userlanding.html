@@ -5,14 +5,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Exam Selector</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" href="{{ url_for('login_bp.static', filename='login-page.css') }}">
 </head>
 
 <body>
   <main id="main-holder">
     <h1 id="login-header">Welcome, {{loggedperson | safe}}</h1>
-    <a id="lf-qeditor" class="lf-signin" onclick="window.location.href='/available-exams';">Take an Exam</a>
-    <a id="lf-exeditor" class="lf-signin" onclick="window.location.href='/exam-grades';">View Graded Exams</a>
+    <a class="btn btn-dark" id="lf-qeditor" class="lf-signin" onclick="window.location.href='/available-exams';">Take an Exam</a>
+    <a class="btn btn-dark" id="lf-exeditor" class="lf-signin" onclick="window.location.href='/exam-grades';">View Graded Exams</a>
   </main>
 </body>
 

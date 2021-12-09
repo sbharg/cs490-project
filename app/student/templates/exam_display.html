@@ -5,30 +5,43 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Exam {{ exam_id }}</title>
-  <link rel="stylesheet" href="{{ url_for('student_bp.static', filename='select.css') }}">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('student_bp.static', filename='exam_result.css') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
 </head>
 
 <body>
   <main id="main-holder">
     <form id="question-select-form-client" method="post" action="/submit-answers">
+      <br>
+      <br>
       {%- if questions -%}
           {%- for eq in questions -%}
-            <p>Question ID: {{ eq.question_id }} <br>Points: {{ eq.points }}</p>
+          <div class="container-fluid main-holder">
+            <div class="row m-1"><h6>Question ID: {{ eq.question_id }}</h6></div>
+            <div class="row m-1"><h6>Total Points: {{ eq.points }}<h6></h6></div>
             <br>
-            {%- with question_arr = eq.question.question.split('\n') -%}
-            {%- for qustion_line in question_arr -%}
-              {{ qustion_line | safe  }}<br>
-            {%- endfor -%}
-            {%- endwith -%}
-            <br>
-            <textarea id="q_answ{{ eq.question_id }}" name="q_answ{{ eq.question_id }}" rows="4" cols="50" required></textarea>
-            <br>
-            <br>
-            <hr class="solid">
+
+            <div class="row">
+              <div class="col-lg-5">
+                <textarea class="form-control" rows="10" type="text" readonly>{{ eq.question.question }}</textarea>
+                <br>
+              </div>
+              <div class="col-lg-7">
+                <textarea class="form-control" id="q_answ{{ eq.question_id }}" name="q_answ{{ eq.question_id }}" rows="10" style="font-family: 'Courier New', monospace;" required></textarea>
+                <br>
+                <br>
+              </div>
+            </div>
+          </div>
+          <br>
+          <br>
           {%- endfor -%}
       {%- endif -%}
       <br>
-      <input type="submit" value="Submit" id="qf-selectq">
+      <input class="btn btn-light" style="margin-left: 37px;margin-bottom: 50px;width: 95%;" type="submit" value="Submit" id="qf-selectq">
     </form>
   </main>
 </body>

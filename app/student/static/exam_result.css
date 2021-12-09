@@ -6,7 +6,7 @@ html {
 }
 
 body {
-    color: #ffffff;
+    color: #000000;
 }
 
 main {
@@ -24,12 +24,14 @@ form {
 }
 
 .main-holder {
-	background-color: white;
+	background-color: #f5f5f5;
 	border-radius: 7px;
 	box-shadow: 0px 0px 5px 2px black;
     padding: 50px 50px 50px 50px;
     width: 95%;
     margin: auto;
+    font-family: 'Lato', sans-serif;
+	padding: 10px;
 }
 
 

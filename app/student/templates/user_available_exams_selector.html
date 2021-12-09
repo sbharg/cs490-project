@@ -5,8 +5,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Exam Selector</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" href="{{ url_for('student_bp.static', filename='select.css') }}">
   <link rel="stylesheet" href="{{ url_for('student_bp.static', filename='navbar.css') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -15,8 +19,9 @@
     {% import "nav_bar_student.html" as nbar %}
     {{ nbar.nav_bar("avail-exams") }}
 
-    <form id="exam-select-form" method="post" action="/begin-exam">
-      <select name="exam-selection" size="20" style="width:90%;" class="select-css" required>
+    <form class="bg" id="exam-select-form" method="post" action="/begin-exam">
+      <center>
+      <select name="exam-selection" size="20" style="width:85%;" class="select-css" required>
         <!--- Forloop of exams list. currently in limited reference due to limited computing power. need replacement--->
           {% if exams %}
             {% for exam in exams %}
@@ -25,7 +30,9 @@
           {% endif %}
       </select>
 
-      <input type="submit" value="Take Exam" id="exam-client-submit">
+      <br>
+      <input class="btn btn-light" style="width: 85%;" type="submit" value="Take Exam" id="exam-client-submit">
+      </center>
     </form>
   </main>
 </body>
