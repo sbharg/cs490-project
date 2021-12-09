@@ -25,12 +25,12 @@
             <br>
 
             <div class="row">
-              <div class="col-lg-5">
+              <div class="col-lg-7">
                 <textarea class="form-control" rows="10" type="text" readonly>{{ eq.question.question }}</textarea>
                 <br>
               </div>
-              <div class="col-lg-7">
-                <textarea class="form-control" id="q_answ{{ eq.question_id }}" name="q_answ{{ eq.question_id }}" rows="10" style="font-family: 'Courier New', monospace;" required></textarea>
+              <div class="col-lg-5">
+                <textarea class="exam-check" id="q_answ{{ eq.question_id }}" name="q_answ{{ eq.question_id }}" rows="11" style="font-family: 'Courier New', monospace;" required></textarea>
                 <br>
                 <br>
               </div>
@@ -41,7 +41,7 @@
           {%- endfor -%}
       {%- endif -%}
       <br>
-      <input class="btn btn-light" style="margin-left: 37px;margin-bottom: 50px;width: 95%;" type="submit" value="Submit" id="qf-selectq">
+      <input class="btn btn-light" style="margin-left: 360px;margin-bottom: 50px;width: 50%;" type="submit" value="Submit" id="qf-selectq">
     </form>
   </main>
 </body>
